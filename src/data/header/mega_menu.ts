@@ -1,0 +1,160 @@
+export type TMegaMenuData = {
+  title: string;
+  link: string;
+  image: string;
+  child: TChild[];
+};
+
+type TChild = {
+  title: string;
+  link: string;
+  border_r: boolean;
+};
+
+export const MegaMenuData: TMegaMenuData[] = [
+  {
+    title: "موبایل و تبلت",
+    link: "isLinkMobile",
+    image: "/images/mega-menu/mobile.svg",
+    child: [
+      { title: "گوشی موبایل", link: "mobileLink", border_r: true },
+      { title: "شیائومی", link: "#", border_r: false },
+      { title: "سامسونگ", link: "#", border_r: false },
+      { title: "اپل", link: "#", border_r: false },
+      { title: "هواوی", link: "#", border_r: false },
+      { title: "نوکیا", link: "#", border_r: false },
+      { title: "آنر", link: "#", border_r: false },
+      { title: "گوشی های ساده", link: "#", border_r: false },
+      {
+        title: "گلس گوشی موبایل (محافظ صفحه نمایش)",
+        link: "#",
+        border_r: false,
+      },
+      { title: "کیف و کاور گوشی", link: "#", border_r: false },
+      { title: "کابل و مبدل", link: "#", border_r: false },
+      { title: "کارت حافظه گوشی موبایل", link: "#", border_r: false },
+      { title: "پایه نگه دارنده تبلت و گوشی", link: "#", border_r: false },
+      { title: "شارژر گوشی", link: "#", border_r: false },
+      { title: "هدفون,هدست,هندزفری", link: "#", border_r: true },
+      { title: "باتری گوشی", link: "#", border_r: false },
+      { title: "پاور بانک (شارژر همراه)", link: "#", border_r: true },
+      { title: "محافظ لنز دوربین گوشی موبایل", link: "#", border_r: false },
+      { title: "لوازم جانبی موبایل", link: "#", border_r: true },
+      { title: "قلم هوشمند", link: "#", border_r: false },
+      { title: "کیف و کاور هندزفری", link: "#", border_r: false },
+      { title: "تبلت", link: "#", border_r: true },
+    ],
+  },
+  {
+    title: "لوازم جانبی موبایل",
+    link: "isLinkMobile",
+    image: "/images/mega-menu/janebi.png",
+    child: [
+      { title: "برند گوشی", link: "mobileLink", border_r: true },
+      { title: "لوازم جانبی اپل", link: "#", border_r: false },
+      { title: "لوازم جانبی سامسونگ", link: "#", border_r: false },
+      { title: "لوازم جانبی شیائومی", link: "#", border_r: false },
+      { title: "لوازم جانبی هواوی و آنر", link: "#", border_r: false },
+      { title: "لوازم جانبی نوکیا", link: "#", border_r: false },
+      { title: "لوازم جانبی جی پلاس", link: "#", border_r: false },
+      { title: "لوازم جانبی متورولا", link: "#", border_r: false },
+      { title: "دسته بندی محصولات", link: "#", border_r: true },
+      { title: "شارژر", link: "#", border_r: false },
+      { title: "کابل و مبدل", link: "#", border_r: false },
+      { title: "پاور بانک", link: "#", border_r: false },
+      { title: "باتری گوشی موبایل", link: "#", border_r: false },
+      { title: "کارت حافظه گوشی موبایل", link: "#", border_r: false },
+      { title: "کاور و کیف گوشی موبایل", link: "#", border_r: false },
+      { title: "محافظ لنز گوشی موبایل", link: "#", border_r: false },
+      { title: "پایه نگهدارنده گوشی موبایل", link: "#", border_r: false },
+      { title: "گلس و محافظ صفحه گوشی موبایل", link: "#", border_r: false },
+      { title: "هدفون و هندزفری", link: "#", border_r: false },
+      { title: "کیف و کاور هندزفری", link: "#", border_r: false },
+      { title: "اسپیکر بلوتوثی", link: "#", border_r: false },
+      { title: "ساعت هوشمند", link: "#", border_r: false },
+    ],
+  },
+  {
+    title: "لپ تاپ و کامپیوتر",
+    link: "isLinkMobile",
+    image: "/images/mega-menu/laptop.svg",
+    child: [
+      { title: "لپ تاپ", link: "#", border_r: true },
+      { title: "کامپیوتر کوچک", link: "#", border_r: true },
+      { title: "کامپیوتر All-in-One", link: "#", border_r: true },
+      { title: "قطعات اصلی", link: "#", border_r: true },
+      { title: "پردازنده", link: "#", border_r: false },
+      { title: "مادربورد", link: "#", border_r: false },
+      { title: "رم کامپیوتر", link: "#", border_r: false },
+      { title: "منبع تغذیه", link: "#", border_r: false },
+      { title: "کارت گرافیک", link: "#", border_r: false },
+      { title: "کیس", link: "#", border_r: false },
+      { title: "هارد دیسک", link: "#", border_r: false },
+      { title: "درایو نوری", link: "#", border_r: false },
+      { title: "فن - خنک کننده", link: "#", border_r: false },
+      { title: "مانیتور", link: "#", border_r: true },
+      { title: "اسپیکر", link: "#", border_r: true },
+      { title: "جانبی کامپیوتر و لپ تاپ", link: "#", border_r: true },
+      { title: "کیبورد", link: "#", border_r: false },
+      { title: "ماوس", link: "#", border_r: false },
+      { title: "مواس پد", link: "#", border_r: false },
+      { title: "کیف هارد", link: "#", border_r: false },
+      { title: "کابل تبدیل و مبدل", link: "#", border_r: false },
+      { title: "کیف و کوله", link: "#", border_r: false },
+      { title: "پایه خنک کننده", link: "#", border_r: false },
+      { title: "براکت هارداینترنال", link: "#", border_r: false },
+      { title: "سایر قطعات جانبی", link: "#", border_r: false },
+      { title: "فلش مموری", link: "#", border_r: true },
+      { title: "ذخیره ساز اطلاعات", link: "#", border_r: true },
+      { title: "حافظه اکسترنال", link: "#", border_r: false },
+      { title: "حافظه SSD", link: "#", border_r: false },
+      { title: "تجهیزات شبکه", link: "#", border_r: true },
+      { title: "دوربین مداربسته", link: "#", border_r: true },
+      { title: "نرم افزار", link: "#", border_r: true },
+    ],
+  },
+  {
+    title: "گجت های هوشمند",
+    link: "isLinkMobile",
+    image: "/images/mega-menu/gajet.svg",
+    child: [
+      { title: "ساعت هوشمند", link: "#", border_r: true },
+      { title: "مچ بند هوشمند", link: "#", border_r: true },
+      { title: "لوازم جانبی شیایومی", link: "#", border_r: true },
+      {
+        title: "لوازم جانبی مچ بند و ساعت هوشمند",
+        link: "#",
+        border_r: true,
+      },
+    ],
+  },
+  {
+    title: "لوازم صوتی و تصویری",
+    link: "isLinkMobile",
+    image: "/images/mega-menu/soti.svg",
+    child: [
+      { title: "تلوزیون", link: "#", border_r: true },
+      { title: "سینمای خانگی و ساندبار", link: "#", border_r: true },
+      { title: "لوازم جانبی صوتی و تصویری", link: "#", border_r: true },
+      { title: "رادیو", link: "#", border_r: true },
+    ],
+  },
+  {
+    title: "ماشین های اداری",
+    link: "isLinkMobile",
+    image: "/images/mega-menu/mashin.svg",
+    child: [
+      { title: "پرینتر", link: "#", border_r: true },
+      { title: "پرینتر لیبل زن و لوازم جانبی", link: "#", border_r: true },
+    ],
+  },
+  {
+    title: "کنسول بازی",
+    link: "isLinkMobile",
+    image: "/images/mega-menu/console.svg",
+    child: [
+      { title: "کنسول بازی خانگی", link: "#", border_r: true },
+      { title: "تجهیزات جانبی کنسول بازی", link: "#", border_r: true },
+    ],
+  },
+];

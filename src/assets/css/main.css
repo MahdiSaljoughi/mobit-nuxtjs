@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: "IRAN-B";
+}
+
+@font-face {
+  font-family: "IRAN-B";
+  src: url("assets/fonts/IRANSansXFaNum-Bold.woff2") format("woff2");
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "IRAN-R";
+  src: url("assets/fonts/IRANSansXFaNum-Regular.woff2") format("woff2");
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  font-display: auto;
+}
