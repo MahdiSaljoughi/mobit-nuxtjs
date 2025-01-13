@@ -7,7 +7,7 @@
     </Head>
 
     <NuxtRouteAnnouncer />
-    <NuxtLoadingIndicator color="cyan" />
+    <NuxtLoadingIndicator color="blue" />
     <NuxtPage />
   </div>
 </template>

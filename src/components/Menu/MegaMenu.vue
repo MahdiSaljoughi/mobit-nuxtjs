@@ -7,14 +7,14 @@ const activeSubMenuIndex = ref<number>(0);
 </script>
 
 <template>
-  <div class="flex items-center gap-x-10">
+  <div class="flex items-center gap-x-4 xl:gap-x-10">
     <div
       class="relative cursor-pointer transition-colors z-40"
       @mouseenter="showMenu = true"
       @mouseleave="showMenu = false"
     >
       <div
-        :class="`menu-item flex items-center gap-x-4 ${
+        :class="`menu-item flex items-center gap-x-2 xl:gap-x-4 ${
           showMenu && 'text-blue-500'
         }`"
       >
@@ -40,14 +40,14 @@ const activeSubMenuIndex = ref<number>(0);
             {{ item.title }}
           </p>
           <div
-            v-if="activeSubMenuIndex === index"
+            v-show="activeSubMenuIndex === index"
             :class="`flex flex-col flex-wrap gap-x-8 gap-y-2.5 pr-2 ${
               activeSubMenuIndex === 0 || activeSubMenuIndex === 1
                 ? 'w-[500px]'
                 : activeSubMenuIndex === 2
                 ? 'w-[700px]'
                 : 'w-60'
-            } h-full absolute top-0 right-full bg-white dark:bg-zinc-900 shadow-xl pt-6 rounded-bl-xl`"
+            } h-full absolute top-0 right-full bg-white dark:bg-zinc-900 shadow-xl pb-2 rounded-bl-xl`"
           >
             <NuxtLink
               v-for="(child, idx) in item.child"
@@ -70,7 +70,7 @@ const activeSubMenuIndex = ref<number>(0);
       v-for="(menu_item, index) in MenuData"
       :key="index"
       :to="menu_item.href"
-      class="menu-item relative hover:text-blue-500 transition-colors flex items-center gap-x-4"
+      class="menu-item relative hover:text-blue-500 transition-colors flex items-center gap-x-2 xl:gap-x-4"
     >
       <UIcon :name="menu_item.icon" class="size-5" />
       {{ menu_item.title }}
@@ -94,7 +94,6 @@ const activeSubMenuIndex = ref<number>(0);
   background-color: #377dff;
   transition: width 0.3s ease-out;
   border-radius: 40px;
-  /* transform: translateY(24px); */
   z-index: 50;
 }
 

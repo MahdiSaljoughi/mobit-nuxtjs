@@ -1,11 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
+  <div class="min-h-screen">
     <Header />
-    <div class="min-h-screen">
-      <slot name="main" />
-    </div>
+    <slot name="main" />
     <Footer />
+    <MenuBottomMenu />
   </div>
 </template>

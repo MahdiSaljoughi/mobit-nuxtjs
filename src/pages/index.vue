@@ -3,7 +3,10 @@
     <template #main>
       <div>Poster</div>
       <Container>
-        <p>خانه</p>
+        <div class="h-[2000px]">
+          <p>8 آیتم</p>
+          <p>پیشنهاد ویژه</p>
+        </div>
       </Container>
     </template>
   </NuxtLayout>

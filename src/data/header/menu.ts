@@ -13,7 +13,7 @@ export const MenuData: TMenuData[] = [
   {
     title: "اخبار و مقالات روز",
     href: "https://www.mobit.ir/mag/",
-    icon: "i-ant-design-notification-outlined",
+    icon: "i-solar-notebook-bookmark-linear",
   },
   {
     title: "همکار و قیمت عمده",
