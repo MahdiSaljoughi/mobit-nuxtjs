@@ -1,12 +1,9 @@
 <template>
   <NuxtLayout name="main">
     <template #main>
-      <div>Poster</div>
+      <SliderHomeTop />
       <Container>
-        <div class="h-[2000px]">
-          <p>8 آیتم</p>
-          <p>پیشنهاد ویژه</p>
-        </div>
+        <div class="h-screen" />
       </Container>
     </template>
   </NuxtLayout>

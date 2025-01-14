@@ -1,22 +1,22 @@
 <template>
-  <div class="pt-12 block lg:hidden z-20">
+  <div class="pt-16 block lg:hidden z-20">
     <div
-      class="py-2 px-6 sm:px-10 fixed bottom-0 inset-x-0 border-t dark:border-none bg-white dark:bg-zinc-900 text-[10px] text-zinc-400 flex items-center justify-between"
+      class="py-2 px-8 sm:px-20 fixed bottom-0 inset-x-0 bg-white dark:bg-zinc-900 text-[10px] text-zinc-400 flex items-center justify-between shadow-lg shadow-black"
     >
       <NuxtLink to="/" class="flex flex-col items-center gap-y-2">
-        <UIcon name="i-solar-home-smile-bold" size="20" />
+        <IconSvg icon-id="i-homefill" class="w-6" />
         صفحه اصلی
       </NuxtLink>
       <button class="flex flex-col items-center gap-y-2">
-        <UIcon name="i-solar-widget-3-bold-duotone" size="20" />
+        <IconSvg icon-id="i-categoryfill" class="w-6" />
         دسته بندی
       </button>
       <NuxtLink to="/cart" class="flex flex-col items-center gap-y-2">
-        <UIcon name="i-heroicons-shopping-cart-solid" size="20" />
+        <IconSvg icon-id="i-cart-fill-new" class="w-5" />
         سبدخرید
       </NuxtLink>
       <NuxtLink to="/auth" class="flex flex-col items-center gap-y-2">
-        <UIcon name="i-solar-user-bold" size="20" />
+        <IconSvg icon-id="i-profilefill" class="w-6" />
         ورود
       </NuxtLink>
     </div>

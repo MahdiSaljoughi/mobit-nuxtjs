@@ -8,6 +8,7 @@
           <NuxtImg src="/images/logo/mobit-logo.svg" alt="logo" />
         </NuxtLink>
       </div>
+
       <div
         class="flex items-center w-full bg-zinc-100 dark:bg-zinc-800 rounded-xl pr-4"
       >

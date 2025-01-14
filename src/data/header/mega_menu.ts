@@ -1,4 +1,4 @@
-export type TMegaMenuData = {
+type TMegaMenuData = {
   title: string;
   link: string;
   image: string;
@@ -11,7 +11,7 @@ type TChild = {
   border_r: boolean;
 };
 
-export const MegaMenuData: TMegaMenuData[] = [
+export const megaMenuData: TMegaMenuData[] = [
   {
     title: "موبایل و تبلت",
     link: "isLinkMobile",

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { MegaMenuData } from "~/data/header/mega_menu";
-import { MenuData } from "~/data/header/menu";
+import { megaMenuData } from "~/data/header/mega_menu";
+import { menuData } from "~/data/header/menu";
 
 const isOpenMenu = ref<boolean>(false);
 const isOpenCategory = ref<boolean>(true);
@@ -57,12 +57,12 @@ const toggleSubMenu = (index: number): void => {
 
         <div class="flex flex-col gap-y-6">
           <NuxtLink
-            v-for="(menu_item, index) in MenuData"
+            v-for="(menu_item, index) in menuData"
             :key="index"
             :to="menu_item.href"
             class="flex items-center gap-x-4"
           >
-            <UIcon :name="menu_item.icon" size="24" />
+            <IconSvg :icon-id="menu_item.icon" class="w-7" />
             {{ menu_item.title }}
           </NuxtLink>
 
@@ -72,11 +72,7 @@ const toggleSubMenu = (index: number): void => {
               @click="isOpenCategory = !isOpenCategory"
             >
               <div class="flex items-center gap-x-4">
-                <UIcon
-                  name="i-solar-widget-2-bold"
-                  size="24"
-                  class="opacity-70"
-                />
+                <IconSvg icon-id="i-categoryfill" class="w-7" />
                 <span>دسته بندی ها</span>
               </div>
               <span
@@ -93,10 +89,10 @@ const toggleSubMenu = (index: number): void => {
 
             <ul v-show="isOpenCategory">
               <li
-                v-for="(item, index) in MegaMenuData"
+                v-for="(item, index) in megaMenuData"
                 :key="index"
                 class="border-zinc-100 dark:border-zinc-800"
-                :class="MegaMenuData.length - 1 !== index && 'border-b'"
+                :class="megaMenuData.length - 1 !== index && 'border-b'"
               >
                 <div
                   class="w-full flex justify-between items-center py-3"

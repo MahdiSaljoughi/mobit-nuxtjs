@@ -5,7 +5,7 @@ const viewBox = props.viewBox || "0 0 24 24";
 </script>
 
 <template>
-  <svg class="icon" :viewBox="viewBox">
-    <use :xlink:href="`/_nuxt/assets/icons.svg#${iconId}`" />
+  <svg :viewBox="viewBox">
+    <use :href="`/svg/icons.svg#${iconId}`" />
   </svg>
 </template>

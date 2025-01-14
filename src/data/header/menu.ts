@@ -4,20 +4,20 @@ type TMenuData = {
   icon: string;
 };
 
-export const MenuData: TMenuData[] = [
+export const menuData: TMenuData[] = [
   {
     title: "پیشنهادهای شگفت انگیز",
     href: "https://www.mobit.ir/promotion",
-    icon: "i-solar-sale-square-line-duotone",
+    icon: "i-discountfill",
   },
   {
     title: "اخبار و مقالات روز",
     href: "https://www.mobit.ir/mag/",
-    icon: "i-solar-notebook-bookmark-linear",
+    icon: "i-mag-g-fill",
   },
   {
     title: "همکار و قیمت عمده",
     href: "https://mobithamkar.ir/search/category-mobilephone",
-    icon: "i-solar-shop-outline",
+    icon: "i-shop-logo",
   },
 ];

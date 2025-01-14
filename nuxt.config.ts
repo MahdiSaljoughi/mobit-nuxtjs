@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
   },
-  modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxt/image"],
+  modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxt/image", "nuxt-swiper"],
   srcDir: "src/",
   app: {
     head: {

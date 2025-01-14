@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { MenuData } from "~/data/header/menu";
-import { MegaMenuData } from "~/data/header/mega_menu";
+import { menuData } from "~/data/header/menu";
+import { megaMenuData } from "~/data/header/mega_menu";
 
 const showMenu = ref<boolean>(false);
 const activeSubMenuIndex = ref<number>(0);
@@ -18,7 +18,7 @@ const activeSubMenuIndex = ref<number>(0);
           showMenu && 'text-blue-500'
         }`"
       >
-        <UIcon name="i-solar-widget-2-bold" class="size-5" />
+        <IconSvg icon-id="i-categoryfill" class="w-6" />
         <span>دسته بندی ها</span>
       </div>
       <div
@@ -26,7 +26,7 @@ const activeSubMenuIndex = ref<number>(0);
         class="absolute top-16 right-0 w-60 bg-white dark:bg-zinc-900 shadow-xl rounded-br-xl py-2"
       >
         <div
-          v-for="(item, index) in MegaMenuData"
+          v-for="(item, index) in megaMenuData"
           :key="index"
           :class="`flex items-center gap-x-2 px-3 py-1.5 cursor-pointer transition-all border-y-2 border-white/0 ${
             activeSubMenuIndex === index &&
@@ -67,12 +67,12 @@ const activeSubMenuIndex = ref<number>(0);
     </div>
 
     <NuxtLink
-      v-for="(menu_item, index) in MenuData"
+      v-for="(menu_item, index) in menuData"
       :key="index"
       :to="menu_item.href"
       class="menu-item relative hover:text-blue-500 transition-colors flex items-center gap-x-2 xl:gap-x-4"
     >
-      <UIcon :name="menu_item.icon" class="size-5" />
+      <IconSvg :icon-id="menu_item.icon" class="w-6" />
       {{ menu_item.title }}
     </NuxtLink>
   </div>
