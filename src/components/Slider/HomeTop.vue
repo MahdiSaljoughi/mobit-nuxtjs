@@ -38,7 +38,7 @@ const goToSlide = (index: number) => {
       :loop="true"
       :autoplay="{
         delay: 3000,
-        disableOnInteraction: true,
+        disableOnInteraction: false,
       }"
       :round-lengths="true"
       :navigation="{
@@ -71,10 +71,10 @@ const goToSlide = (index: number) => {
       </SwiperSlide>
 
       <div
-        class="flex items-center justify-center gap-x-2 absolute inset-x-0 bottom-6 lg:bottom-4 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500 z-10"
+        class="absolute inset-x-0 bottom-3 lg:bottom-1 flex items-center justify-center gap-x-2 z-10"
       >
         <button
-          class="swiper-button-prev flex items-center justify-center p-1.5 bg-white dark:bg-zinc-700 rounded-lg shadow"
+          class="swiper-button-prev flex items-center justify-center p-1.5 bg-white dark:bg-zinc-700 rounded-lg shadow opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500"
         >
           <UIcon name="i-solar-alt-arrow-right-line-duotone" size="16" />
         </button>
@@ -84,11 +84,16 @@ const goToSlide = (index: number) => {
           <div
             v-for="(slide, index) in slides"
             :key="slide.id"
-            class="relative size-2.5 bg-white/60 dark:bg-black/30 rounded overflow-hidden cursor-pointer shadow hover:scale-110"
+            class="relative overflow-hidden cursor-pointer shadow transition-all duration-300 hover:scale-110"
+            :class="{
+              'w-3 h-2': activeSlide === index && isInitialized,
+              'w-2 h-2': !(activeSlide === index && isInitialized),
+              'rounded-full bg-white/60 dark:bg-black/30': true,
+            }"
             @click="goToSlide(index)"
           >
             <div
-              class="absolute inset-0 bg-white dark:bg-zinc-600 transition-transform shadow hover:scale-110"
+              class="absolute inset-0 bg-white dark:bg-zinc-500 transition-transform"
               :style="{
                 transform:
                   activeSlide === index && isInitialized
@@ -103,7 +108,7 @@ const goToSlide = (index: number) => {
         </div>
 
         <button
-          class="swiper-button-next flex items-center justify-center p-1.5 bg-white dark:bg-zinc-700 rounded-lg shadow"
+          class="swiper-button-next flex items-center justify-center p-1.5 bg-white dark:bg-zinc-700 rounded-lg shadow opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500"
         >
           <UIcon
             name="i-solar-alt-arrow-right-line-duotone"
