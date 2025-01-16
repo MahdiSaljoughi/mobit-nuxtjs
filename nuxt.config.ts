@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
 
@@ -8,7 +7,13 @@ export default defineNuxtConfig({
     typeCheck: true,
   },
 
-  modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxt/image", "nuxt-swiper", "@prisma/nuxt"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxt/eslint",
+    "@nuxt/image",
+    "nuxt-swiper",
+    "@prisma/nuxt",
+  ],
 
   srcDir: "src/",
 
@@ -52,5 +57,10 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.API_URL,
     },
+  },
+
+  prisma: {
+    prismaRoot: "./src",
+    prismaSchemaPath: "./src/prisma/schema.prisma",
   },
 });
