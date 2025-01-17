@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "prisma": {
-    "schema": "/src/prisma/schema.prisma"
+    "schema": "./src/prisma/schema.prisma"
   },
   "dependencies": {
     "@nuxt/eslint": "0.7.5",
