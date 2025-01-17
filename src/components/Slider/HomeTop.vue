@@ -69,6 +69,7 @@ const goToSlide = (index: number) => {
       </NuxtLink>
     </SwiperSlide>
 
+    <!-- navigations -->
     <div
       class="absolute inset-x-0 bottom-3 lg:bottom-1 flex items-center justify-center gap-x-2 z-10"
     >

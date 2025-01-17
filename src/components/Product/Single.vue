@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ product: TProduct }>();
-console.log(props.product.images[0].url);
+defineProps<{ product: TProduct }>();
 </script>
 
 <template>
@@ -14,7 +13,7 @@ console.log(props.product.images[0].url);
       <NuxtImg
         :src="product.images[0].url"
         :alt="product.title"
-        class="max-w-20 sm:max-w-32 lg:max-w-40 group-hover/product:scale-110 transition-transform-2"
+        class="max-w-20 sm:max-w-32 lg:max-w-40 group-hover/product:scale-110 transition-transform duration-300"
       />
     </div>
     <div class="flex flex-col justify-between gap-y-2 w-full">

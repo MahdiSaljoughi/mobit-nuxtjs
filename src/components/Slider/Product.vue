@@ -42,24 +42,21 @@ defineProps<{ products: TProduct[] }>();
       </div>
     </SwiperSlide>
 
-    <div
-      class="hidden lg:flex items-center justify-between gap-x-2 absolute inset-x-0 bottom-32 z-10 mx-1"
+    <!-- navigations -->
+    <button
+      class="swiper-button-prev absolute z-10 bottom-32 right-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
     >
-      <button
-        class="swiper-button-prev flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
-      >
-        <UIcon name="i-solar-alt-arrow-right-line-duotone" size="20" />
-      </button>
+      <UIcon name="i-solar-alt-arrow-right-line-duotone" size="20" />
+    </button>
 
-      <button
-        class="swiper-button-next flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
-      >
-        <UIcon
-          name="i-solar-alt-arrow-right-line-duotone"
-          size="20"
-          class="rotate-180"
-        />
-      </button>
-    </div>
+    <button
+      class="swiper-button-next absolute z-10 bottom-32 left-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
+    >
+      <UIcon
+        name="i-solar-alt-arrow-right-line-duotone"
+        size="20"
+        class="rotate-180"
+      />
+    </button>
   </Swiper>
 </template>
