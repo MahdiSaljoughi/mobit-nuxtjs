@@ -17,7 +17,7 @@ export const megaMenuData: TMegaMenuData[] = [
     link: "isLinkMobile",
     image: "/images/mega-menu/mobile.svg",
     child: [
-      { title: "گوشی موبایل", link: "mobileLink", border_r: true },
+      { title: "گوشی موبایل", link: "#", border_r: true },
       { title: "شیائومی", link: "#", border_r: false },
       { title: "سامسونگ", link: "#", border_r: false },
       { title: "اپل", link: "#", border_r: false },
@@ -50,7 +50,7 @@ export const megaMenuData: TMegaMenuData[] = [
     link: "isLinkMobile",
     image: "/images/mega-menu/janebi.png",
     child: [
-      { title: "برند گوشی", link: "mobileLink", border_r: true },
+      { title: "برند گوشی", link: "#", border_r: true },
       { title: "لوازم جانبی اپل", link: "#", border_r: false },
       { title: "لوازم جانبی سامسونگ", link: "#", border_r: false },
       { title: "لوازم جانبی شیائومی", link: "#", border_r: false },

@@ -9,9 +9,6 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
-  "prisma": {
-    "schema": "./src/prisma/schema.prisma"
-  },
   "dependencies": {
     "@nuxt/eslint": "0.7.5",
     "@nuxt/image": "1.9.0",
