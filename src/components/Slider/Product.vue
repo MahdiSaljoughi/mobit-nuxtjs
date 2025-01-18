@@ -9,7 +9,6 @@ defineProps<{ products: TProduct[] }>();
 <template>
   <Swiper
     class="relative group w-full"
-    :centered-slides="true"
     :round-lengths="true"
     :navigation="{
       nextEl: '.swiper-button-next',
