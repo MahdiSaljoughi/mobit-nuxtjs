@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { menuData } from "~/data/header/menu";
-import { megaMenuData } from "~/data/header/mega_menu";
+import { megaMenuData } from "~/data/header/megaMenu";
 
 const showMenu = ref<boolean>(false);
 const activeSubMenuIndex = ref<number>(0);

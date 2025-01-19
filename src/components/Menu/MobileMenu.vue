@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { megaMenuData } from "~/data/header/mega_menu";
+import { megaMenuData } from "~/data/header/megaMenu";
 import { menuData } from "~/data/header/menu";
 
 const isOpenMenu = ref<boolean>(false);
