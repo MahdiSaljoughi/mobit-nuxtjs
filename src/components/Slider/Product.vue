@@ -37,7 +37,7 @@ defineProps<{ products: TProduct[] }>();
   >
     <SwiperSlide v-for="product in products" :key="product.id">
       <div class="sm:p-2">
-        <ProductSingle :product="product" />
+        <SingleProduct :product="product" />
       </div>
     </SwiperSlide>
 

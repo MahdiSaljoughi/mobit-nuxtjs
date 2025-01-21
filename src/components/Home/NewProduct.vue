@@ -1,13 +1,6 @@
 <script setup lang="ts">
-const runTime = useRuntimeConfig();
-const products = ref<TProduct[]>([]);
-
-onMounted(async () => {
-  const res = await $fetch<{ products: TProduct[] }>(
-    `${runTime.public.apiBase}/products`
-  );
-  products.value = res.products;
-});
+const { getAll } = useProduct();
+const { data } = await getAll();
 </script>
 
 <template>
@@ -28,6 +21,6 @@ onMounted(async () => {
         />
       </NuxtLink>
     </div>
-    <SliderProduct :products="products" />
+    <SliderProduct :products="data!.products" />
   </div>
 </template>

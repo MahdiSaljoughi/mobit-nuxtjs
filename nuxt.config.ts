@@ -9,6 +9,19 @@ export default defineNuxtConfig({
 
   modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxt/image", "nuxt-swiper"],
 
+  imports: {
+    dirs: ["features/**"],
+  },
+
+  components: [
+    "~/components",
+    {
+      path: "~/features/product/components",
+      pathPrefix: false,
+    },
+    { path: "~/features/auth/components", pathPrefix: false },
+  ],
+
   srcDir: "src/",
 
   app: {

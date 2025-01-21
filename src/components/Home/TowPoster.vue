@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="hidden lg:flex items-center justify-between gap-x-4">
     <NuxtLink
