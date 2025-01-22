@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
 
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   typescript: {
     typeCheck: true,
@@ -13,14 +13,7 @@ export default defineNuxtConfig({
     dirs: ["features/**"],
   },
 
-  components: [
-    "~/components",
-    {
-      path: "~/features/product/components",
-      pathPrefix: false,
-    },
-    { path: "~/features/auth/components", pathPrefix: false },
-  ],
+  components: ["~/components", { path: "~/features", pathPrefix: true }],
 
   srcDir: "src/",
 
@@ -46,6 +39,7 @@ export default defineNuxtConfig({
     apiSecret: "",
     public: {
       apiBase: process.env.API_URL,
+      dataBaseUrl: process.env.DATABASE_URL,
     },
   },
 });

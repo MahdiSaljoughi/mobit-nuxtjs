@@ -16,7 +16,7 @@ const { data, error, refresh } = await getAll();
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
           <div v-for="product in data!.products" :key="product.id">
-            <SingleProduct :product="product" />
+            <ProductComponentsSingle :product="product" />
           </div>
         </div>
       </div>

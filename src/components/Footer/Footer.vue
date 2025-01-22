@@ -2,23 +2,23 @@
   <div>
     <ThemSwitcher />
   </div>
-  <footer class="mb-6 mx-auto mt-3 lg:mt-7">
+  <!-- <footer class="mb-6 mx-auto mt-3 lg:mt-7">
     <div>1</div>
     <div>2</div>
     <div>3</div>
     <div>4</div>
-  </footer>
+  </footer> -->
   <footer class="mb-6 mt-3 mx-auto lg:mt-7">
     <div class="w-full">
       <div
-        class="h-[2.31rem] lg:w-[9.25rem] w-32 text-gray-800 text-xs font-bold bg-gray-100 rounded-t-base cursor-pointer lg:h-10 lg:text-sm"
+        class="h-[2.31rem] lg:w-[9.25rem] w-32 text-xs font-bold bg-zinc-100 dark:bg-zinc-800 rounded-t-base cursor-pointer lg:h-10 lg:text-sm"
         data-v-1d463bb4=""
       >
         <span data-v-1d463bb4=""> بازگشت به بالا </span>
       </div>
     </div>
     <div
-      class="bg-gray-100 rounded-base lg:flex lg:justify-between lg:px-6"
+      class="bg-zinc-100 dark:bg-zinc-800 rounded-base lg:flex lg:justify-between lg:px-6"
       data-v-1d463bb4=""
     >
       <div class="hidden flex-col py-5 space-y-4 lg:flex" data-v-1d463bb4="">
@@ -30,7 +30,7 @@
         </div>
         <div class="flex text-sm leading-6" data-v-1d463bb4="">
           <span class="ml-3 text-typo-light" data-v-1d463bb4="">تلفنی :</span>
-          <div class="support text-gray-800 font-medium" data-v-1d463bb4="">
+          <div class="support font-medium" data-v-1d463bb4="">
             <a href="tel:03491002425" data-v-1d463bb4=""> 034-91002425</a>
             <span class="pr-4 text-typo text-sm font-bold" data-v-1d463bb4="">
               شنبه تا چهارشنبه ۸ الی ۲۱ - پنجشنبه 8 الی ۲۰:۳۰
@@ -41,7 +41,7 @@
           <span class="ml-2 text-typo-light" data-v-1d463bb4="">ایمیل :</span>
           <a
             href="mailto:info@mobit.ir"
-            class="text-low--text text-gray-800 font-medium"
+            class="text-low--text font-medium"
             data-v-1d463bb4=""
           >
             info@mobit.ir</a
@@ -64,7 +64,7 @@
               <!----></span
             >
             <div
-              class="mt-4 te text-gray-800 text-xs font-bold leading-6 lg:mt-5 lg:text-sm"
+              class="mt-4 te text-xs font-bold leading-6 lg:mt-5 lg:text-sm"
               data-v-1d463bb4=""
             >
               ارسال سریع کالا
@@ -83,7 +83,7 @@
               <!----></span
             >
             <div
-              class="mt-4 te text-gray-800 text-xs font-bold leading-6 lg:mt-5 lg:text-sm"
+              class="mt-4 te text-xs font-bold leading-6 lg:mt-5 lg:text-sm"
               data-v-1d463bb4=""
             >
               مهلت ۷ روز بازگشت کالا
@@ -102,7 +102,7 @@
               <!----></span
             >
             <div
-              class="mt-4 te text-gray-800 text-xs font-bold leading-6 lg:mt-5 lg:text-sm"
+              class="mt-4 te text-xs font-bold leading-6 lg:mt-5 lg:text-sm"
               data-v-1d463bb4=""
             >
               پشتیبانی تلفنی
@@ -121,7 +121,7 @@
               <!----></span
             >
             <div
-              class="mt-4 te text-gray-800 text-xs font-bold leading-6 lg:mt-5 lg:text-sm"
+              class="mt-4 te text-xs font-bold leading-6 lg:mt-5 lg:text-sm"
               data-v-1d463bb4=""
             >
               تضمین اصالت کالا
@@ -131,17 +131,14 @@
       </div>
     </div>
     <div class="flex flex-col py-5 lg:hidden">
-      <div
-        class="mb-4 text-gray-800 text-base font-extrabold leading-7"
-        data-v-1d463bb4=""
-      >
+      <div class="mb-4 text-base font-extrabold leading-7" data-v-1d463bb4="">
         پشتیبانی
       </div>
       <div
         class="flex gap-4 mb-2 text-sm font-bold leading-6"
         data-v-1d463bb4=""
       >
-        <span class="text-gray-800" data-v-1d463bb4="">تلفنی :</span>
+        <span class="" data-v-1d463bb4="">تلفنی :</span>
         <a href="tel:03491002425" data-v-1d463bb4=""> 034-91002425</a>
       </div>
       <div class="mb-4 text-typo-light font-bold leading-5" data-v-1d463bb4="">
@@ -151,7 +148,7 @@
         <span class="ml-2 text-typo-light" data-v-1d463bb4="">ایمیل :</span>
         <a
           href="mailto:info@mobit.ir"
-          class="text-low--text text-gray-800"
+          class="text-low--text"
           data-v-1d463bb4=""
         >
           info@mobit.ir</a
@@ -435,7 +432,7 @@
           <div class="flex flex-col" data-v-1d463bb4="">
             <div class="flex items-center justify-between" data-v-1d463bb4="">
               <div
-                class="text-gray-800 text-sm font-bold leading-6 lg:text-base lg:leading-7"
+                class="text-sm font-bold leading-6 lg:text-base lg:leading-7"
                 data-v-1d463bb4=""
               >
                 با ما همراه باشید
@@ -451,7 +448,7 @@
         </div>
         <div
           data-v-1d463bb4=""
-          class="lg:py-[0.625rem] pb-3 pt-5 px-3 bg-gray-100 rounded-base lg:flex lg:flex-row lg:justify-between lg:pl-3 lg:pr-4 lg:h-16"
+          class="lg:py-[0.625rem] pb-3 pt-5 px-3 bg-zinc-100 dark:bg-zinc-800 rounded-base lg:flex lg:flex-row lg:justify-between lg:pl-3 lg:pr-4 lg:h-16"
         >
           <div
             data-v-1d463bb4=""
@@ -522,7 +519,7 @@
                 data-v-d5b73d68=""
                 data-v-1d463bb4=""
                 href="/download-app"
-                class="w-[9.25rem] lg:h- [2.75rem] lg:w-[5.875rem] h-11 bg-white rounded lg:h-auto"
+                class="w-[9.25rem] lg:h- [2.75rem] lg:w-[5.875rem] h-11 bg-zinc-200 dark:bg-zinc-600 rounded lg:h-auto"
                 data-test-id="footer-more-download"
                 ><span
                   data-v-1d463bb4=""
@@ -539,7 +536,7 @@
         >
           <div class="lg:w-[55%] w-full" data-v-1d463bb4="">
             <h1
-              class="mb-3 text-gray-800 text-sm font-extrabold leading-7 lg:text-base"
+              class="mb-3 text-sm font-extrabold leading-7 lg:text-base"
               data-v-1d463bb4=""
             >
               فروشگاه اینترنتی مبیت، خرید آسان کالای دیجیتال با مناسب ترین قیمت
@@ -681,7 +678,7 @@
         </div>
       </div>
       <div
-        class="no-scrollbar flex flex-col-reverse pt-6 border-t border-gray-300 overflow-auto sm:justify-center md:justify-center lg:flex-row lg:items-center lg:justify-between lg:mt-0 lg:py-6 lg:w-full"
+        class="no-scrollbar flex flex-col-reverse pt-6 border-t border-gray-300 dark:border-zinc-700 overflow-auto sm:justify-center md:justify-center lg:flex-row lg:items-center lg:justify-between lg:mt-0 lg:py-6 lg:w-full"
         data-v-1d463bb4=""
       >
         <div class="te text-sm font-bold leading-6" data-v-1d463bb4="">
