@@ -6,20 +6,24 @@ import { mag } from "~/data/home/Mag";
 
 <template>
   <Swiper
+    class="w-full"
     :breakpoints="{
       0: {
-        slidesPerView: 2,
-        spaceBetween: 24,
+        slidesPerView: 1.5,
+        spaceBetween: 20,
+      },
+      630: {
+        slidesPerView: 2.2,
+        spaceBetween: 20,
+      },
+      800: {
+        slidesPerView: 3.2,
+        spaceBetween: 20,
       },
     }"
   >
-    <SwiperSlide v-for="item in mag" :key="item.id" :to="item.href">
-      <NuxtLink class="block relative">
-        <NuxtImg :src="item.imgSrc" :alt="item.alt" class="rounded-2xl" />
-        <span class="text-white absolute bottom-4 right-4 backdrop-blur-3xl">{{
-          item.title
-        }}</span>
-      </NuxtLink>
+    <SwiperSlide v-for="item in mag" :key="item.id">
+      <HomeMagSingle :mag="item" />
     </SwiperSlide>
   </Swiper>
 </template>

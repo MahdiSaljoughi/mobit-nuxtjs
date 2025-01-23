@@ -24,11 +24,11 @@ defineProps<{ products: TProduct[] }>();
         spaceBetween: 0,
       },
       1000: {
-        slidesPerView: 3,
+        slidesPerView: 3.5,
         spaceBetween: 0,
       },
-      1400: {
-        slidesPerView: 4,
+      1500: {
+        slidesPerView: 4.5,
         spaceBetween: 0,
       },
     }"

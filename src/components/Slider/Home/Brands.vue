@@ -14,11 +14,11 @@ import { brands } from "~/data/home/Brands";
     }"
     :breakpoints="{
       0: {
-        slidesPerView: 3,
+        slidesPerView: 3.2,
         spaceBetween: 24,
       },
       600: {
-        slidesPerView: 4,
+        slidesPerView: 4.2,
         spaceBetween: 24,
       },
       1000: {

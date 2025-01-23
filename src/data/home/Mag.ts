@@ -1,4 +1,4 @@
-interface IMag {
+export interface IMag {
   id: number;
   title: string;
   imgSrc: string;

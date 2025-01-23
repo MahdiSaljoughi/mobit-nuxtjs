@@ -17,7 +17,7 @@ const isDark = computed({
       color="gray"
       variant="link"
       aria-label="Theme"
-      class="fixed top-12 left-2.5 lg:top-5 lg:left-5 z-50"
+      class="fixed top-12 left-2.5 lg:top-0 lg:left-0 z-50"
       @click="isDark = !isDark"
     />
     <template #fallback>
