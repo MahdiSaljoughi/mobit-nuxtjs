@@ -31,13 +31,6 @@ export const slides: ISlide[] = [
   },
   {
     id: imgId++,
-    srcImg: "/images/home/poster/4.webp",
-    srcImgMobile: "/images/home/poster/4mobile.webp",
-    alt: "poster4",
-    href: "/",
-  },
-  {
-    id: imgId++,
     srcImg: "/images/home/poster/5.webp",
     srcImgMobile: "/images/home/poster/5mobile.webp",
     alt: "poster5",
@@ -55,6 +48,20 @@ export const slides: ISlide[] = [
     srcImg: "/images/home/poster/7.webp",
     srcImgMobile: "/images/home/poster/7mobile.webp",
     alt: "poster7",
+    href: "/",
+  },
+  {
+    id: imgId++,
+    srcImg: "/images/home/poster/10.webp",
+    srcImgMobile: "/images/home/poster/10mobile.webp",
+    alt: "poster10",
+    href: "/",
+  },
+  {
+    id: imgId++,
+    srcImg: "/images/home/poster/11.webp",
+    srcImgMobile: "/images/home/poster/11mobile.webp",
+    alt: "poster11",
     href: "/",
   },
 ];

@@ -35,7 +35,7 @@ const activeSubMenuIndex = ref<number>(0);
           @mouseenter="activeSubMenuIndex = index"
           @mouseleave="activeSubMenuIndex = 0"
         >
-          <NuxtImg :src="item.image" :alt="item.title" class="w-10" />
+          <NuxtImg :src="item.image" :alt="item.title" class="w-10 h-10" />
           <p :class="activeSubMenuIndex === index && 'text-blue-500'">
             {{ item.title }}
           </p>

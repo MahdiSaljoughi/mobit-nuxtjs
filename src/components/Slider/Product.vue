@@ -8,7 +8,7 @@ defineProps<{ products: TProduct[] }>();
 
 <template>
   <Swiper
-    class="relative group w-full"
+    class="relative w-full"
     :round-lengths="true"
     :navigation="{
       nextEl: '.swiper-button-next',
