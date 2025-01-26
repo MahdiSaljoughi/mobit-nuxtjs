@@ -1,13 +1,30 @@
+import tailwindcss from "@tailwindcss/vite";
+
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
 
   devtools: { enabled: false },
 
-  typescript: {
-    typeCheck: true,
+  vite: {
+    plugins: [tailwindcss()],
   },
 
-  modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxt/image", "nuxt-swiper"],
+  typescript: {
+    typeCheck: false,
+  },
+
+  modules: [
+    "@sidebase/nuxt-auth",
+    "@nuxt/ui",
+    "@nuxt/eslint",
+    "@nuxt/image",
+    "nuxt-swiper",
+  ],
+
+  auth: {
+    baseURL: "http://localhost:3000/api/auth",
+    originEnvKey: "http://localhost:3000/api/auth",
+  },
 
   imports: {
     dirs: ["features/**"],
@@ -37,6 +54,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     apiSecret: "",
+    authSecret: process.env.NUXT_AUTH_SECRET,
     public: {
       apiBase: process.env.API_URL,
       dataBaseUrl: process.env.DATABASE_URL,

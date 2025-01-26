@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 const props = defineProps<{ seo: any }>();
 const seoRef = computed(() => props.seo);
 const _seo = seoRef.value ?? seoRef;
@@ -102,4 +102,8 @@ useHead({
   <Head>
     <Title>{{ metaTitle }}</Title>
   </Head>
+</template> -->
+
+<template>
+  <div>1</div>
 </template>

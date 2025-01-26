@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import useAuths from "~/features/auth/composables/useAuths";
+
+const { status, signIn, signOut } = await useAuths();
+const loggedIn = computed(() => status.value === "authenticated");
+
+async function handleSignIn() {
+  await signIn();
+}
+
+async function handleSignOut() {
+  await signOut();
+}
+</script>
+
 <template>
   <!-- Desktop -->
   <header
@@ -30,11 +45,15 @@
 
         <!-- Login And Cart -->
         <div class="flex items-center gap-x-4 xl:gap-x-6 2xl:gap-x-10 text-xs">
-          <NuxtLink to="/auth" class="flex items-center gap-x-2">
+          <NuxtLink
+            :to="!loggedIn ? '/auth' : '/profile'"
+            class="flex items-center gap-x-2"
+          >
             <IconSvg icon-id="i-profilefill" class="w-6" />
-            <span class="hidden xl:block">ورود / ثبت نام</span>
+            <button v-if="loggedIn" @click="handleSignOut">Sign Out</button>
+            <span v-else class="hidden xl:block">ورود / ثبت نام</span>
           </NuxtLink>
-
+          <button @click="handleSignIn">Sign In</button>
           <NuxtLink to="/cart" class="flex items-center">
             <IconSvg icon-id="i-cart-fill-new" class="w-5" />
           </NuxtLink>

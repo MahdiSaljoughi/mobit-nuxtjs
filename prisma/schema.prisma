@@ -28,6 +28,13 @@ model User {
   // orders         Order[]
 }
 
+model Otp {
+  id        Int      @id @default(autoincrement())
+  phone     String
+  code      String
+  expiresAt DateTime
+}
+
 model Product {
   id                  Int               @id @default(autoincrement())
   title               String
