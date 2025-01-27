@@ -1,10 +1,12 @@
 <template>
-  <Head>
-    <Title>فروشگاه اینترنتی مبیت</Title>
-  </Head>
+  <div>
+    <Head>
+      <Title>فروشگاه اینترنتی مبیت</Title>
+    </Head>
 
-  <NuxtRouteAnnouncer />
-  <NuxtLoadingIndicator color="blue" />
-  <NuxtPage />
-  <UNotifications />
+    <NuxtRouteAnnouncer />
+    <NuxtLoadingIndicator color="blue" />
+    <NuxtPage />
+    <UNotifications />
+  </div>
 </template>
