@@ -1,4 +1,4 @@
-const useAuths = async () => {
+const useAuths = () => {
   const {
     status,
     data,

@@ -20,7 +20,7 @@
         />
       </div>
 
-      <MenuMobileMenu />
+      <MenuMobile />
     </div>
   </header>
 </template>

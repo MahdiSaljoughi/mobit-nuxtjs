@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import useAuths from "~/features/auth/composables/useAuths";
+
+const { status } = useAuths();
+</script>
+
 <template>
   <div class="pt-16 block lg:hidden z-20">
     <div
@@ -15,9 +21,15 @@
         <IconSvg icon-id="i-cart-fill-new" class="w-5" />
         سبدخرید
       </NuxtLink>
-      <NuxtLink to="/auth" class="flex flex-col items-center gap-y-2">
+      <NuxtLink
+        :to="status === 'authenticated' ? '/profile' : '/auth'"
+        class="flex flex-col items-center gap-y-2"
+      >
         <IconSvg icon-id="i-profilefill" class="w-6" />
-        ورود
+        <p>
+          <span v-if="status === 'authenticated'"> پروفایل </span>
+          <span v-else>ورود</span>
+        </p>
       </NuxtLink>
     </div>
   </div>

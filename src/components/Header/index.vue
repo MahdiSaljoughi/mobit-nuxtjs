@@ -1,16 +1,7 @@
 <script setup lang="ts">
 import useAuths from "~/features/auth/composables/useAuths";
 
-const { status, signIn, signOut } = await useAuths();
-const loggedIn = computed(() => status.value === "authenticated");
-
-async function handleSignIn() {
-  await signIn();
-}
-
-async function handleSignOut() {
-  await signOut();
-}
+const { status, data } = useAuths();
 </script>
 
 <template>
@@ -26,7 +17,7 @@ async function handleSignOut() {
 
       <div class="flex items-center w-full">
         <!-- Menu -->
-        <MenuMegaMenu class="ml-8 2xl:ml-14" />
+        <MenuMega class="ml-8 2xl:ml-14" />
 
         <!-- Search -->
         <div
@@ -46,14 +37,22 @@ async function handleSignOut() {
         <!-- Login And Cart -->
         <div class="flex items-center gap-x-4 xl:gap-x-6 2xl:gap-x-10 text-xs">
           <NuxtLink
-            :to="!loggedIn ? '/auth' : '/profile'"
+            :to="status === 'authenticated' ? '/profile' : '/auth'"
             class="flex items-center gap-x-2"
           >
             <IconSvg icon-id="i-profilefill" class="w-6" />
-            <button v-if="loggedIn" @click="handleSignOut">Sign Out</button>
-            <span v-else class="hidden xl:block">ورود / ثبت نام</span>
+            <p class="hidden xl:block">
+              <span v-if="status === 'loading'">در حال بررسی</span>
+              <span v-if="status === 'authenticated'" class="mt-0.5 block">
+                {{
+                  (data?.user?.user_name ?? "").length > 14
+                    ? (data?.user?.user_name ?? "").slice(0, 14) + "..."
+                    : data?.user?.user_name ?? ""
+                }}
+              </span>
+              <span v-else>ورود / ثبت نام</span>
+            </p>
           </NuxtLink>
-          <button @click="handleSignIn">Sign In</button>
           <NuxtLink to="/cart" class="flex items-center">
             <IconSvg icon-id="i-cart-fill-new" class="w-5" />
           </NuxtLink>

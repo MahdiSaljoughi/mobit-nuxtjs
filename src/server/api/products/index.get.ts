@@ -1,6 +1,6 @@
-import prisma from "~/lib/prisma";
+import prisma from "../../../../prisma/prisma";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   const products = await prisma.product.findMany({
     include: {
       images: true,

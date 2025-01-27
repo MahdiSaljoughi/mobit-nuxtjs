@@ -4,7 +4,7 @@
       <NuxtImg src="/images/logo/mobit-logo.svg" width="124" />
     </NuxtLink>
     <div
-      class="w-full lg:w-[410px] lg:dark:bg-zinc-900 rounded-3xl p-5 custom-shadow"
+      class="w- full lg:w-[410px] lg:dark:bg-zinc-900 rounded-3xl p-5 custom-shadow"
     >
       <AuthComponentsForm />
     </div>

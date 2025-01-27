@@ -6,6 +6,6 @@
     <ThemSwitcher />
     <slot name="main" />
     <Footer />
-    <MenuBottomMenu />
+    <MenuBottom />
   </div>
 </template>
