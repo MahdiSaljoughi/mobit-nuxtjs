@@ -1,13 +1,7 @@
-import tailwindcss from "@tailwindcss/vite";
-
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
 
   devtools: { enabled: false },
-
-  vite: {
-    plugins: [tailwindcss()],
-  },
 
   typescript: {
     typeCheck: false,
@@ -22,8 +16,8 @@ export default defineNuxtConfig({
   ],
 
   auth: {
-    baseURL: "http://localhost:3000/api/auth",
-    originEnvKey: "http://localhost:3000/api/auth",
+    baseURL: `${process.env.API_URL}/auth`,
+    originEnvKey: `${process.env.API_URL}/auth`,
   },
 
   imports: {

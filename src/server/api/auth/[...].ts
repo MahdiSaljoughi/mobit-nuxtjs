@@ -1,34 +1,30 @@
-// import { NuxtAuthHandler } from "#auth";
-
-// export default NuxtAuthHandler({});
-
 import { NuxtAuthHandler } from "#auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export default NuxtAuthHandler({
-  secret: "afafaafaf",
-  // pages: {
-  //   signIn: "/auth",
-  // },
+  secret: useRuntimeConfig().authSecret,
+  pages: {
+    signIn: "/auth",
+  },
   providers: [
     CredentialsProvider.default({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "email",
+        phone: {
+          label: "phone",
           type: "text",
         },
-        password: { label: "password", type: "password" },
+        code: { label: "code", type: "text" },
       },
-      authorize(credentials: any) {
+      authorize(credentials: { phone: string; code: string }) {
         const user = {
-          email: "test@email.com",
-          password: "123",
+          phone: "test@email.com",
+          code: "123",
         };
 
         if (
-          credentials?.email === user.email &&
-          credentials?.password === user.password
+          credentials?.phone === user.phone &&
+          credentials?.code === user.code
         ) {
           return user;
         } else {

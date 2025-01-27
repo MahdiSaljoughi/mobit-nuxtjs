@@ -14,16 +14,13 @@
     "@nuxt/image": "1.9.0",
     "@nuxt/ui": "^2.21.0",
     "@prisma/client": "^6.2.1",
-    "@tailwindcss/vite": "^4.0.0",
-    "eslint": "^9.18.0",
-    "next-auth": "^4.24.11",
-    "nuxt": "^3.15.2",
+    "eslint": "^9.19.0",
+    "next-auth": "^4.21.1",
+    "nuxt": "^3.15.3",
     "nuxt-swiper": "2.0.0",
     "swiper": "11.2.1",
-    "tailwindcss": "^4.0.0",
     "vue": "latest",
     "vue-router": "latest",
-    "vue-tsc": "^2.2.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
@@ -32,7 +29,8 @@
     "@nuxt/types": "^2.18.1",
     "@sidebase/nuxt-auth": "^0.10.0",
     "prisma": "^6.2.1",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vue-tsc": "^2.1.6"
   },
   "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }

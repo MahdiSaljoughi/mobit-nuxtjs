@@ -3,9 +3,9 @@
     <NuxtLink to="/" class="mb-8">
       <NuxtImg src="/images/logo/mobit-logo.svg" width="124" />
     </NuxtLink>
-    <div class="w-96 dark:bg-zinc-900 rounded-3xl p-5 custom-shadow">
-      <p class="text-xl pb-8 pt-2">ورود به مبیت</p>
-
+    <div
+      class="w-full lg:w-[410px] lg:dark:bg-zinc-900 rounded-3xl p-5 custom-shadow"
+    >
       <AuthComponentsForm />
     </div>
 

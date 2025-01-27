@@ -6,4 +6,5 @@
   <NuxtRouteAnnouncer />
   <NuxtLoadingIndicator color="blue" />
   <NuxtPage />
+  <UNotifications />
 </template>
