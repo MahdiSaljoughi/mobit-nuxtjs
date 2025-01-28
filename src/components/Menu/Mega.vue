@@ -15,7 +15,7 @@ const activeSubMenuIndex = ref<number>(0);
     >
       <div
         :class="`menu-item flex items-center gap-x-2 xl:gap-x-4 ${
-          showMenu && 'text-blue-500'
+          showMenu && 'text-main'
         }`"
       >
         <IconSvg icon-id="i-categoryfill" class="w-6" />
@@ -36,7 +36,7 @@ const activeSubMenuIndex = ref<number>(0);
           @mouseleave="activeSubMenuIndex = 0"
         >
           <NuxtImg :src="item.image" :alt="item.title" class="w-10 h-10" />
-          <p :class="activeSubMenuIndex === index && 'text-blue-500'">
+          <p :class="activeSubMenuIndex === index && 'text-main'">
             {{ item.title }}
           </p>
           <div
@@ -53,9 +53,9 @@ const activeSubMenuIndex = ref<number>(0);
               v-for="(child, idx) in item.child"
               :key="idx"
               to="/"
-              :class="`text-zinc-500 dark:text-zinc-300 hover:text-blue-500 dark:hover:text-blue-500 py-1 ${
+              :class="`text-zinc-500 dark:text-zinc-300 hover:text-main dark:hover:text-main py-1 ${
                 child.border_r
-                  ? 'border-r-4 border-blue-500 rounded-r-[4px] pr-2 text-[12.8px]'
+                  ? 'border-r-4 border-blue-500 rounded-r-[4px] pr-2 text-sx'
                   : 'text-xs'
               } transition-colors`"
             >
@@ -70,7 +70,7 @@ const activeSubMenuIndex = ref<number>(0);
       v-for="(menu_item, index) in menuData"
       :key="index"
       :to="menu_item.href"
-      class="menu-item relative hover:text-blue-500 transition-colors flex items-center gap-x-2 xl:gap-x-4"
+      class="menu-item relative hover:text-main transition-colors flex items-center gap-x-2 xl:gap-x-4"
     >
       <IconSvg :icon-id="menu_item.icon" class="w-6" />
       {{ menu_item.title }}

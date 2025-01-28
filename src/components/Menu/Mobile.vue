@@ -37,18 +37,14 @@ const toggleSubMenu = (index: number): void => {
 
 <template>
   <button class="flex items-center" @click="openMenu">
-    <UIcon
-      name="i-heroicons-solid-dots-vertical"
-      class="text-blue-500"
-      size="20"
-    />
+    <UIcon name="i-heroicons-solid-dots-vertical" class="text-main" size="20" />
   </button>
 
   <!-- Menu -->
   <transition name="menu">
     <div
       v-if="isOpenMenu"
-      class="block lg:hidden bg-white dark:bg-zinc-900 fixed right-0 inset-y-0 w-3/4 sm:w-1/2 z-50 shadow-md text-[12.8px] overflow-y-auto"
+      class="block lg:hidden bg-white dark:bg-zinc-900 fixed right-0 inset-y-0 w-3/4 sm:w-1/2 z-50 shadow-md text-sx overflow-y-auto"
     >
       <div class="pt-6 px-3 flex flex-col gap-y-8">
         <NuxtLink to="/" class="w-20 block mx-auto">

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import useAuths from "~/features/auth/composables/useAuths";
-
 const { status, data } = useAuths();
+
+const userHref = ref<string>(
+  data?.value?.user.role === "ADMIN" ? "/dashboard" : "/profile"
+);
 </script>
 
 <template>
   <!-- Desktop -->
   <header
-    class="hidden lg:block lg:px-4 xl:px-8 2xl:px-14 sticky top-0 z-30 border-b dark:border-none bg-white dark:bg-zinc-900 text-xs xl:text-[12.8px]"
+    class="hidden lg:block lg:px-4 xl:px-8 2xl:px-14 sticky top-0 z-30 border-b dark:border-none bg-white dark:bg-zinc-900 text-xs xl:text-sx"
   >
     <div class="flex items-center">
       <!-- Logo -->
@@ -37,10 +39,16 @@ const { status, data } = useAuths();
         <!-- Login And Cart -->
         <div class="flex items-center gap-x-4 xl:gap-x-6 2xl:gap-x-10 text-xs">
           <NuxtLink
-            :to="status === 'authenticated' ? '/profile' : '/auth'"
+            :to="status === 'authenticated' ? userHref : '/auth'"
             class="flex items-center gap-x-2"
           >
-            <IconSvg icon-id="i-profilefill" class="w-6" />
+            <div class="relative">
+              <IconSvg icon-id="i-profilefill" class="w-6" />
+              <div
+                v-if="status === 'authenticated'"
+                class="bg-main size-1.5 rounded-full absolute bottom-0.5 right-1"
+              />
+            </div>
             <p class="hidden xl:block">
               <span v-if="status === 'loading'">در حال بررسی</span>
               <span v-if="status === 'authenticated'" class="mt-0.5 block">
@@ -61,5 +69,6 @@ const { status, data } = useAuths();
     </div>
   </header>
 
+  <!-- Mobile -->
   <HeaderMobile />
 </template>

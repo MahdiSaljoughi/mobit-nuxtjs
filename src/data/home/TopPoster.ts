@@ -7,6 +7,7 @@ interface ISlide {
 }
 
 let imgId = 0;
+
 export const slides: ISlide[] = [
   {
     id: imgId++,

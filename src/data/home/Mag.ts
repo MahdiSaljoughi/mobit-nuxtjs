@@ -7,6 +7,7 @@ export interface IMag {
 }
 
 let id = 0;
+
 export const mag: IMag[] = [
   {
     id: id++,

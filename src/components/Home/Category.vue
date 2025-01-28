@@ -19,7 +19,7 @@ import { homeCategory } from "~/data/home/Category";
         >
           <NuxtImg :src="category.srcImg" :alt="category.alt" class="w-full" />
         </div>
-        <span class="text-[10px] xl:text-[12.8px]">{{ category.title }}</span>
+        <span class="text-[10px] xl:text-sx">{{ category.title }}</span>
       </NuxtLink>
     </div>
   </div>

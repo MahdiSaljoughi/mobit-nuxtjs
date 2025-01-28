@@ -1,6 +1,12 @@
+<script setup lang="ts">
+definePageMeta({
+  middleware: ["auth"],
+});
+</script>
+
 <template>
-  <div>
-    <div class="flex items-center justify-center h-screen px-2 lg:px-0">
+  <div class="relative">
+    <div class="flex items-center h-screen">
       <AuthComponentsSection />
     </div>
     <div class="absolute bottom-0 inset-x-0">

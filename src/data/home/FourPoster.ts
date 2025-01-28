@@ -6,6 +6,7 @@ interface IFourPoster {
 }
 
 let id = 0;
+
 export const fourPoster: IFourPoster[] = [
   {
     id: id++,

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import useAuths from "~/features/auth/composables/useAuths";
-
 const { status } = useAuths();
 </script>
 

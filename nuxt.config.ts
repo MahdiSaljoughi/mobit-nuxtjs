@@ -39,9 +39,19 @@ export default defineNuxtConfig({
         lang: "fa-IR",
         dir: "rtl",
       },
+      meta: [
+        {
+          name: "theme-color",
+          content: "#377DFF",
+        },
+        {
+          name: "color-scheme",
+          content: "light",
+        },
+      ],
       link: [
         {
-          rel: "shortcut icon",
+          rel: "icon",
           type: "image/x-icon",
           href: "/images/logo/icon.png",
         },
@@ -50,6 +60,12 @@ export default defineNuxtConfig({
   },
 
   css: ["~/assets/css/main.css"],
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
 
   runtimeConfig: {
     apiSecret: "",

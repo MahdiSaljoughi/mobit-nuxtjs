@@ -14,13 +14,13 @@ const isShowDescription = ref<boolean>(false);
   <footer class="2xl:w-[93%] mx-3 2xl:mx-auto">
     <div class="flex items-center justify-center">
       <button
-        class="bg-zinc-100 dark:bg-zinc-800 h-[2.31rem] lg:h-10 w-32 lg:w-[9.25rem] text-xs lg:text-sm rounded-t-xl"
+        class="bg-zinc-100 dark:bg-zinc-800 h-[2.31rem] lg:h-10 w-32 lg:w-[9.25rem] text-xs lg:text-sx rounded-t-xl"
         @click="scrollToTop"
       >
         <div
-          class="flex items-center gap-x-2 justify-center hover:text-blue-500 duration-300"
+          class="flex items-center gap-x-2 justify-center hover:text-main duration-300"
         >
-          <p class="opacity-80">بازگشت به بالا</p>
+          <p class="opacity-70">بازگشت به بالا</p>
           <UIcon name="i-heroicons-chevron-up" size="16" />
         </div>
       </button>
@@ -32,8 +32,8 @@ const isShowDescription = ref<boolean>(false);
       <div class="hidden lg:flex flex-col gap-y-4 pt-6 text-xs">
         <p class="text-sm opacity-80">پشتیبانی</p>
         <div class="flex items-center gap-x-3">
-          <p class="font-[IRAN-R]">تلفنی :</p>
-          <a :href="`tel:${footer.phone}`" class="font-[IRAN-R]">
+          <p class="font-IRANr">تلفنی :</p>
+          <a :href="`tel:${footer.phone}`" class="font-IRANr">
             {{ footer.phone }}
           </a>
           <span class="block w-px bg-zinc-200 dark:bg-zinc-500 h-8" />
@@ -43,7 +43,7 @@ const isShowDescription = ref<boolean>(false);
         </div>
         <div class="flex items-center gap-x-3">
           <span class="opacity-80">ایمیل :</span>
-          <a :href="`mailto:${footer.email}`" class="font-[IRAN-R]">
+          <a :href="`mailto:${footer.email}`" class="font-IRANr">
             {{ footer.email }}</a
           >
         </div>
@@ -104,7 +104,7 @@ const isShowDescription = ref<boolean>(false);
             <NuxtLink
               v-for="(item, i) in items.child"
               :key="i"
-              class="text-xs opacity-60 hover:text-blue-500 duration-300"
+              class="text-xs opacity-60 hover:text-main duration-300"
               :to="item.href"
               target="_blank"
               >{{ item.name }}</NuxtLink
@@ -164,7 +164,7 @@ const isShowDescription = ref<boolean>(false);
     >
       <div class="flex items-center justify-center gap-x-4">
         <NuxtImg :src="footer.mobileApp.imgSrc" width="34" />
-        <p class="text-blue-500 lg:text-lg">
+        <p class="text-main lg:text-lg">
           {{ footer.mobileApp.title }}
         </p>
       </div>
@@ -193,18 +193,17 @@ const isShowDescription = ref<boolean>(false);
 
     <div class="flex flex-col lg:flex-row items-start justify-between mt-6">
       <div class="w-full lg:w-[55%]">
-        <h1 class="mb-3 text-[12.8px] lg:text-base leading-7">
+        <h1 class="mb-3 text-sx lg:text-base leading-7">
           {{ footer.about.title }}
         </h1>
         <p
-          :class="`text-justify text-xs opacity-70 transition-all leading-6 ${
-            isShowDescription === false && 'line-clamp-2'
-          }`"
+          class="text-justify text-xs opacity-70 leading-6"
+          :class="isShowDescription === false && 'line-clamp-2'"
         >
           {{ footer.about.description }}
         </p>
         <button
-          class="flex items-center gap-x-3 mb-2 mt-4 text-blue-500 text-xs"
+          class="flex items-center gap-x-3 mb-2 mt-4 text-main text-xs"
           @click="isShowDescription = !isShowDescription"
         >
           <span v-show="isShowDescription === false">مشاهده بیشتر</span>

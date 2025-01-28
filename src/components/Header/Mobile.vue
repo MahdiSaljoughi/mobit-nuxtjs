@@ -1,6 +1,6 @@
 <template>
   <header
-    class="block lg:hidden p-4 sticky top-0 z-30 border-b dark:border-none bg-white dark:bg-zinc-900 text-[12.8px]"
+    class="block lg:hidden p-4 sticky top-0 z-30 border-b dark:border-none bg-white dark:bg-zinc-900 text-sx"
   >
     <div class="w-full flex items-center gap-x-2">
       <div>

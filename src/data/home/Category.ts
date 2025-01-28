@@ -7,6 +7,7 @@ interface IHomeCategory {
 }
 
 let id = 0;
+
 export const homeCategory: IHomeCategory[] = [
   {
     id: id++,

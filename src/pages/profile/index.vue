@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import useAuths from "~/features/auth/composables/useAuths";
+definePageMeta({
+  middleware: ["auth"],
+});
 
 const { signOut } = useAuths();
 

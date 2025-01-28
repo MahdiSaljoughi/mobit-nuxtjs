@@ -5,6 +5,6 @@
 
   <NuxtRouteAnnouncer />
   <NuxtLoadingIndicator color="blue" />
+  <UNotifications />
   <NuxtPage />
-  <UNotifications :ui="{ position: 'fixed inset-x-0' }" />
 </template>

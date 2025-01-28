@@ -1,9 +1,13 @@
 <template>
   <div class="min-h-screen">
-    <Header />
+    <div class="hidden lg:inline">
+      <Header />
+    </div>
     <ThemSwitcher />
     <slot name="main" />
-    <Footer />
+    <div class="hidden lg:block">
+      <Footer />
+    </div>
     <MenuBottom />
   </div>
 </template>
