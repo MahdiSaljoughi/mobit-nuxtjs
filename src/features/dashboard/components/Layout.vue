@@ -3,10 +3,6 @@ import { menuList } from "@/data/dashboard/menuList";
 
 const fullScreen = ref<boolean>(false);
 const isShowMenu = ref<boolean>(true);
-
-const handleFullScreen = () => {
-  fullScreen.value = !fullScreen.value;
-};
 </script>
 
 <template>
@@ -18,21 +14,23 @@ const handleFullScreen = () => {
     <div
       :class="`w-full ${
         fullScreen === true && 'h-screen'
-      } flex gap-x-8 p-8 rounded-3xl bg-zinc-50 dark:bg-black/20`"
+      } flex p-8 rounded-3xl bg-zinc-50 dark:bg-black/20 shadow-lg`"
     >
       <div v-if="isShowMenu" className="min-w-52 flex flex-col gap-y-8">
-        <NuxtLink to="/" class="flex items-center gap-x-2 mt-2">
-          <LogoDarkAndLight width="{12}" />
-          <div className="text-xl">مبیت</div>
+        <NuxtLink to="/" class="mt-2">
+          <NuxtImg src="/images/logo/logo.svg" alt="logo" width="100" />
         </NuxtLink>
-        <div className="flex flex-col gap-y-4 -mr-4">
+        <div className="flex flex-col gap-y-4 -mr-4 mt-4">
           <NuxtLink
             v-for="item in menuList"
             :key="item.id"
             :to="item.href"
-            class="flex items-center gap-x-3 hover:scale-105 transition-transform p-4 rounded-2xl"
+            class="flex items-center gap-x-3 p-4 rounded-r-2xl border-r-4 border-main"
+            :class="
+              $route.path === item.href && 'bg-zinc-100 dark:bg-zinc-900/50'
+            "
           >
-            <span>{{ item.title }}</span>
+            <span class="text-sm">{{ item.title }}</span>
           </NuxtLink>
         </div>
       </div>
@@ -55,7 +53,7 @@ const handleFullScreen = () => {
                 />
               </svg>
             </button>
-            <button isIconOnly @click="handleFullScreen">
+            <button isIconOnly @click="fullScreen = !fullScreen">
               <svg
                 v-show="fullScreen"
                 xmlns="http://www.w3.org/2000/svg"
@@ -85,10 +83,13 @@ const handleFullScreen = () => {
             </button>
             <ThemSwitcher />
           </div>
-          <!-- <DesktopAvatar shopId={shopid} /> -->
+          <div class="flex items-center gap-x-4">
+            <span>خوش امدی</span>
+            <div class="size-14 rounded-full bg-zinc-200 dark:bg-zinc-800" />
+          </div>
         </div>
         <div
-          className="h-[700px] overflow-y-auto overflow-x-hidden bg-zinc-100 dark:bg-black/20 p-4 rounded-2xl scrollbar-custom"
+          className="h-[700px] overflow-y-auto overflow-x-hidden bg-zinc-100 dark:bg-zinc-900/50 p-4 rounded-2xl"
         >
           <slot />
         </div>

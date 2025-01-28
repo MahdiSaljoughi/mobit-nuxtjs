@@ -16,6 +16,12 @@ export const menuList: IMenuItem[] = [
   },
   {
     id: id++,
+    title: "محصولات",
+    icon: "",
+    href: "/dashboard/products",
+  },
+  {
+    id: id++,
     title: "",
     icon: "",
     href: "/",

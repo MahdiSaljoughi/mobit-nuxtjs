@@ -6,6 +6,6 @@ definePageMeta({
 
 <template>
   <DashboardComponentsLayout>
-    <div class="w-full h-full">Dashboard</div>
+    <div class="w-full h-full">Products</div>
   </DashboardComponentsLayout>
 </template>
