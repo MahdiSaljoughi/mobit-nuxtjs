@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { menuList } from "@/data/dashboard/menuList";
 
 const fullScreen = ref<boolean>(false);
@@ -7,17 +7,15 @@ const isShowMenu = ref<boolean>(true);
 
 <template>
   <div
-    :class="`h-screen hidden lg:flex items-center justify-center ${
-      fullScreen === false && 'lg:px-8 xl:px-16 2xl:px-24'
-    }`"
+    class="min-h-screen flex items-center justify-center"
+    :class="fullScreen === false && 'lg:px-8 xl:px-16 2xl:px-24'"
   >
     <div
-      :class="`w-full ${
-        fullScreen === true && 'h-screen'
-      } flex p-8 rounded-3xl bg-zinc-50 dark:bg-black/20 shadow-lg`"
+      class="w-full flex p-8 rounded-3xl bg-zinc-50 dark:bg-black/20 shadow-lg"
+      :class="fullScreen === true && 'min-h-screen'"
     >
-      <div v-if="isShowMenu" className="min-w-52 flex flex-col gap-y-8">
-        <NuxtLink to="/" class="mt-2">
+      <div v-if="isShowMenu" className="min-w-52 flex flex-col gap-y-10">
+        <NuxtLink to="/" class="mt-4">
           <NuxtImg src="/images/logo/logo.svg" alt="logo" width="100" />
         </NuxtLink>
         <div className="flex flex-col gap-y-4 -mr-4 mt-4">
@@ -34,7 +32,7 @@ const isShowMenu = ref<boolean>(true);
           </NuxtLink>
         </div>
       </div>
-      <div className="w-full flex flex-col gap-y-8">
+      <div className="w- full flex flex-col gap-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-3">
             <button isIconOnly @click="isShowMenu = !isShowMenu">
@@ -89,11 +87,22 @@ const isShowMenu = ref<boolean>(true);
           </div>
         </div>
         <div
-          className="h-[700px] overflow-y-auto overflow-x-hidden bg-zinc-100 dark:bg-zinc-900/50 p-4 rounded-2xl"
+          className="min-h-[700px] overflow-y-auto overflow-x-hidden bg-zinc-100 dark:bg-zinc-900/50 p-4 rounded-2xl"
         >
-          <slot />
+          <slot name="main" />
         </div>
       </div>
+    </div>
+  </div>
+</template> -->
+
+<script setup lang="ts"></script>
+
+<template>
+  <div class="flex items-center justify-center min-h-screen bg-main">
+    <div class="flex flex-col gap-y-8 items-center">
+      <div>Layout</div>
+      <slot name="main" />
     </div>
   </div>
 </template>

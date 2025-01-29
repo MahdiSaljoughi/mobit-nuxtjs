@@ -5,7 +5,9 @@ definePageMeta({
 </script>
 
 <template>
-  <DashboardComponentsLayout>
-    <div class="w-full h-full">Products</div>
-  </DashboardComponentsLayout>
+  <NuxtLayout name="dashboard">
+    <template #main>
+      <div>Products</div>
+    </template>
+  </NuxtLayout>
 </template>
