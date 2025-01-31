@@ -9,6 +9,7 @@ definePageMeta({
     <div class="flex items-center h-screen">
       <AuthComponentsSection />
     </div>
+
     <div class="absolute bottom-0 inset-x-0">
       <NuxtImg
         src="/images/auth/mobit-logo-footer.svg"

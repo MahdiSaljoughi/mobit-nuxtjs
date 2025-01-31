@@ -1,4 +1,4 @@
-<!-- <script setup lang="ts">
+<script setup lang="ts">
 import { menuList } from "@/data/dashboard/menuList";
 
 const fullScreen = ref<boolean>(false);
@@ -6,103 +6,138 @@ const isShowMenu = ref<boolean>(true);
 </script>
 
 <template>
-  <div
-    class="min-h-screen flex items-center justify-center"
-    :class="fullScreen === false && 'lg:px-8 xl:px-16 2xl:px-24'"
-  >
+  <div>
+    <!-- Desktop -->
     <div
-      class="w-full flex p-8 rounded-3xl bg-zinc-50 dark:bg-black/20 shadow-lg"
-      :class="fullScreen === true && 'min-h-screen'"
+      class="h-screen hidden xl:flex"
+      :class="fullScreen === false && 'p-10 2xl:p-20'"
     >
-      <div v-if="isShowMenu" className="min-w-52 flex flex-col gap-y-10">
-        <NuxtLink to="/" class="mt-4">
-          <NuxtImg src="/images/logo/logo.svg" alt="logo" width="100" />
-        </NuxtLink>
-        <div className="flex flex-col gap-y-4 -mr-4 mt-4">
-          <NuxtLink
-            v-for="item in menuList"
-            :key="item.id"
-            :to="item.href"
-            class="flex items-center gap-x-3 p-4 rounded-r-2xl border-r-4 border-main"
-            :class="
-              $route.path === item.href && 'bg-zinc-100 dark:bg-zinc-900/50'
-            "
+      <div
+        class="w-full flex p-8 rounded-3xl"
+        :class="fullScreen ? 'min-h-screen' : 'shadow-around'"
+      >
+        <transition name="menu">
+          <div v-if="isShowMenu" class="w-48 flex flex-col gap-y-10">
+            <NuxtLink to="/" class="mt-2.5">
+              <NuxtImg src="/images/logo/logo.svg" alt="logo" width="110" />
+            </NuxtLink>
+            <div class="flex flex-col gap-y-2 -mr-4">
+              <NuxtLink
+                v-for="item in menuList"
+                :key="item.id"
+                :to="item.href"
+                class="flex items-center gap-x-3 p-5 rounded-r-2xl hover:text-main"
+                :class="
+                  $route.path === item.href &&
+                  'bg-zinc-50 dark:bg-zinc-900 text-main rounded-l-custom relative'
+                "
+              >
+                <IconSvg :icon-id="item.icon" class="w-6" />
+                <span class="text-sm mt-0.5 duration-300">
+                  {{ item.title }}
+                </span>
+              </NuxtLink>
+            </div>
+          </div>
+        </transition>
+        <div class="w-full flex flex-col gap-y-6">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+              <button
+                class="flex items-center justify-center"
+                @click="isShowMenu = !isShowMenu"
+              >
+                <UIcon
+                  name="i-heroicons-solid-dots-vertical"
+                  class="text-main"
+                  size="22"
+                />
+              </button>
+              <button class="block" @click="fullScreen = !fullScreen">
+                <IconSvg
+                  v-show="fullScreen === false"
+                  icon-id="i-not-fullscreen"
+                  class="size-8 text-main"
+                />
+                <IconSvg
+                  v-show="fullScreen"
+                  icon-id="i-fullscreen"
+                  class="size-8 text-main"
+                />
+              </button>
+
+              <ThemSwitcher />
+            </div>
+
+            <UserComponentsUserInfo />
+          </div>
+          <div
+            class="h-full overflow-y-auto overflow-x-hidden bg-zinc-50 dark:bg-zinc-900 p-4 rounded-2xl"
           >
-            <span class="text-sm">{{ item.title }}</span>
-          </NuxtLink>
-        </div>
-      </div>
-      <div className="w- full flex flex-col gap-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
-            <button isIconOnly @click="isShowMenu = !isShowMenu">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="2em"
-                height="2em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  d="M20 7H4m16 5H4m16 5H4"
-                />
-              </svg>
-            </button>
-            <button isIconOnly @click="fullScreen = !fullScreen">
-              <svg
-                v-show="fullScreen"
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.4rem"
-                height="1.4rem"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  fillRule="evenodd"
-                  d="M14 1.25a.75.75 0 0 1 .75.75c0 1.907.002 3.261.14 4.29c.135 1.005.389 1.585.812 2.008s1.003.677 2.009.812c1.027.138 2.382.14 4.289.14a.75.75 0 0 1 0 1.5h-.056c-1.838 0-3.294 0-4.433-.153c-1.172-.158-2.121-.49-2.87-1.238c-.748-.749-1.08-1.698-1.238-2.87c-.153-1.14-.153-2.595-.153-4.433V2a.75.75 0 0 1 .75-.75m-4 0a.75.75 0 0 1 .75.75v.056c0 1.838 0 3.294-.153 4.433c-.158 1.172-.49 2.121-1.238 2.87c-.749.748-1.698 1.08-2.87 1.238c-1.14.153-2.595.153-4.433.153H2a.75.75 0 0 1 0-1.5c1.907 0 3.261-.002 4.29-.14c1.005-.135 1.585-.389 2.008-.812s.677-1.003.812-2.009c.138-1.028.14-2.382.14-4.289a.75.75 0 0 1 .75-.75M1.25 14a.75.75 0 0 1 .75-.75h.056c1.838 0 3.294 0 4.433.153c1.172.158 2.121.49 2.87 1.238c.748.749 1.08 1.698 1.238 2.87c.153 1.14.153 2.595.153 4.433V22a.75.75 0 0 1-1.5 0c0-1.907-.002-3.262-.14-4.29c-.135-1.005-.389-1.585-.812-2.008s-1.003-.677-2.009-.812c-1.028-.138-2.382-.14-4.289-.14a.75.75 0 0 1-.75-.75m20.694-.75H22a.75.75 0 0 1 0 1.5c-1.907 0-3.262.002-4.29.14c-1.005.135-1.585.389-2.008.812s-.677 1.003-.812 2.009c-.138 1.027-.14 2.382-.14 4.289a.75.75 0 0 1-1.5 0v-.056c0-1.838 0-3.294.153-4.433c.158-1.172.49-2.121 1.238-2.87c.749-.748 1.698-1.08 2.87-1.238c1.14-.153 2.595-.153 4.433-.153"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <svg
-                v-show="fullScreen === false"
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.8em"
-                height="1.8em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M5 6a1 1 0 0 1 1-1h2a1 1 0 0 0 0-2H6a3 3 0 0 0-3 3v2a1 1 0 0 0 2 0zm0 12a1 1 0 0 0 1 1h2a1 1 0 1 1 0 2H6a3 3 0 0 1-3-3v-2a1 1 0 1 1 2 0zM18 5a1 1 0 0 1 1 1v2a1 1 0 1 0 2 0V6a3 3 0 0 0-3-3h-2a1 1 0 1 0 0 2zm1 13a1 1 0 0 1-1 1h-2a1 1 0 1 0 0 2h2a3 3 0 0 0 3-3v-2a1 1 0 1 0-2 0z"
-                />
-              </svg>
-            </button>
-            <ThemSwitcher />
+            <slot />
           </div>
-          <div class="flex items-center gap-x-4">
-            <span>خوش امدی</span>
-            <div class="size-14 rounded-full bg-zinc-200 dark:bg-zinc-800" />
-          </div>
-        </div>
-        <div
-          className="min-h-[700px] overflow-y-auto overflow-x-hidden bg-zinc-100 dark:bg-zinc-900/50 p-4 rounded-2xl"
-        >
-          <slot name="main" />
         </div>
       </div>
     </div>
-  </div>
-</template> -->
 
-<script setup lang="ts"></script>
-
-<template>
-  <div class="flex items-center justify-center min-h-screen bg-main">
-    <div class="flex flex-col gap-y-8 items-center">
-      <div>Layout</div>
-      <slot name="main" />
+    <!-- Mobile -->
+    <div class="block xl:hidden bg-red-500 p-10">
+      <slot />
     </div>
   </div>
 </template>
+
+<style scoped>
+.menu-enter-active,
+.menu-leave-active {
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+.menu-enter-from {
+  transform: translateX(20%);
+  opacity: 0;
+}
+.menu-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+}
+.menu-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+.menu-leave-to {
+  transform: translateX(20%);
+  opacity: 0;
+}
+
+.rounded-l-custom::before,
+.rounded-l-custom::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  background: transparent;
+}
+
+.rounded-l-custom::before {
+  bottom: 60px;
+  border-bottom-left-radius: 50%;
+  box-shadow: 0 20px 0 0 #fafafa;
+  z-index: -1;
+}
+
+.rounded-l-custom::after {
+  top: 60px;
+  border-top-left-radius: 50%;
+  box-shadow: 0 -20px 0 0 #fafafa;
+  z-index: -1;
+}
+
+.dark .rounded-l-custom::before {
+  box-shadow: 0 20px 0 0 #18181b;
+}
+
+.dark .rounded-l-custom::after {
+  box-shadow: 0 -20px 0 0 #18181b;
+}
+</style>

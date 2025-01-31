@@ -159,7 +159,7 @@ const submitOtp = async () => {
         name="phone"
         type="text"
         placeholder="شماره موبایل خود را وارد کنید"
-        class="outline-none bg-zinc-100 dark:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-900 duration-300 focus:ring-2 ring-blue-500 px-2 py-2.5 rounded-xl w-full placeholder:text-sx"
+        class="outline-none bg-zinc-100 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 duration-300 focus:ring-2 ring-blue-500 px-2 py-2.5 rounded-xl w-full placeholder:text-sx"
         :class="errors.phone && 'ring-red-500'"
       />
       <p v-if="errors.phone" class="text-red-500 text-xs">
@@ -179,13 +179,13 @@ const submitOtp = async () => {
       آن را می‌پذیرید.
     </p>
 
-    <div class="w-full h-0.5 bg-zinc-200 dark:bg-zinc-700" />
+    <div class="w-full h-0.5 bg-zinc-200 dark:bg-zinc-800" />
 
     <button
       :class="`${
         isValidPhone
           ? 'bg-main text-white'
-          : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400'
+          : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-400'
       } w-full h-11 flex items-center justify-center ${
         isLoading ? 'p-1' : 'p-3'
       } rounded-xl text-sm duration-300`"
@@ -225,7 +225,7 @@ const submitOtp = async () => {
             maxlength="1"
             type="text"
             inputmode="numeric"
-            class="w-14 h-11 text-center text-sm rounded-xl outline-none bg-zinc-100 dark:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-900 focus:ring-2 ring-blue-500 duration-300"
+            class="w-14 h-11 text-center text-sm rounded-xl outline-none bg-zinc-100 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-950 focus:ring-2 ring-blue-500 duration-300"
             placeholder="-"
             @input="(e) => handleOtpInput(index, e)"
             @keydown="(e) => handleBackspace(index, e)"
@@ -247,7 +247,7 @@ const submitOtp = async () => {
       :class="`${
         isValidOtpCode
           ? 'bg-main text-white'
-          : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400'
+          : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-400'
       } w-full h-11 flex items-center justify-center ${
         isLoading ? 'p-1' : 'p-3'
       } rounded-xl text-sm duration-300`"

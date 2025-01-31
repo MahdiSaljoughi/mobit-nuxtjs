@@ -1,12 +1,14 @@
 <script setup lang="ts">
 definePageMeta({
   middleware: ["auth"],
+  layout: "main-lg",
 });
 
 const { signOut } = useAuths();
 
 const handleSignOut = async () => {
   await signOut();
+  navigateTo("/");
 };
 </script>
 

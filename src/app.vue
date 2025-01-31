@@ -4,7 +4,12 @@
   </Head>
 
   <NuxtRouteAnnouncer />
+
   <NuxtLoadingIndicator color="blue" />
+
   <UNotifications />
-  <NuxtPage />
+
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>

@@ -3,11 +3,15 @@
     <div class="hidden lg:inline">
       <Header />
     </div>
+
     <ThemSwitcher />
-    <slot name="main" />
+
+    <slot />
+
     <div class="hidden lg:block">
       <Footer />
     </div>
+
     <MenuBottom />
   </div>
 </template>

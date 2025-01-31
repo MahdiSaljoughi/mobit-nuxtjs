@@ -1,13 +1,10 @@
 <script setup lang="ts">
 definePageMeta({
   middleware: ["dashboard"],
+  layout: "dashboard",
 });
 </script>
 
 <template>
-  <NuxtLayout name="dashboard">
-    <template #main>
-      <div>Products</div>
-    </template>
-  </NuxtLayout>
+  <div>Products</div>
 </template>

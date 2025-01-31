@@ -6,7 +6,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  /* user-select: none; */
 }
 pre
 html {
@@ -35,9 +34,15 @@ body {
 }
 
 @layer utilities {
-  .shadow-auth {
+  .shadow-around {
     --shadow: 0px 2px 14px #0000001a;
     box-shadow: var(--ring-offset-shadow, 0 0 #0000),
       var(--ring-shadow, 0 0 #0000), var(--shadow);
+  }
+
+  .dark .shadow-around {
+    --shadowdark: 0px 2px 14px #377DFF3a;
+    box-shadow: var(--ring-offset-shadow, 0 0 #0000),
+      var(--ring-shadow, 0 0 #0000), var(--shadowdark);
   }
 }
