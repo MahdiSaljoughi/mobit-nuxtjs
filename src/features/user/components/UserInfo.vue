@@ -4,10 +4,10 @@ const { data, status } = useAuths();
 
 <template>
   <div class="flex items-center gap-x-2">
-    <p v-if="status === 'loading'" class="text-sm mt-1">درحال بارگذاری</p>
-    <p v-else class="text-sm mt-1">{{ data?.user.user_name }}</p>
     <div class="p-2 rounded-full bg-zinc-100 dark:bg-zinc-800">
       <IconSvg icon-id="i-profilefill" class="w-6 text-main" />
     </div>
+    <p v-if="status === 'loading'" class="text-sm mt-1">درحال بارگذاری</p>
+    <p v-else class="text-sm mt-1">{{ data?.user.user_name }}</p>
   </div>
 </template>

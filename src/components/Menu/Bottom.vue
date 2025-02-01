@@ -9,7 +9,7 @@ const userHref = ref<string>(
 <template>
   <div class="pt-16 block lg:hidden z-20">
     <div
-      class="fixed bottom-0 inset-x-0 flex items-center justify-between py-2 px-8 sm:px-20 bg-white dark:bg-zinc-900 text-[10px] text-zinc-400 shadow-black z-20"
+      class="fixed bottom-0 inset-x-0 flex items-center justify-between py-2 px-8 sm:px-20 bg-white dark:bg-zinc-900 text-[10px] text-zinc-400 shadow-around z-20"
     >
       <NuxtLink to="/" class="flex flex-col items-center gap-y-2">
         <IconSvg icon-id="i-homefill" class="w-6" />

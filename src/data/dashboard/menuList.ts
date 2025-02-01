@@ -38,10 +38,10 @@ export const menuList: IMenuItem[] = [
     icon: "i-categoryfill",
     href: "/dashboard/products",
   },
-  // {
-  //   id: id++,
-  //   title: "",
-  //   icon: "",
-  //   href: "/",
-  // },
+  {
+    id: id++,
+    title: "حساب کاربری",
+    icon: "i-profile",
+    href: "/profile",
+  },
 ];
