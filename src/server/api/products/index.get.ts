@@ -9,6 +9,7 @@ export default defineEventHandler(async () => {
   });
 
   return {
+    status_code: 200,
     products: products.map((product) => ({
       id: product.id,
       title: product.title,

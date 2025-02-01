@@ -1,4 +1,8 @@
 <script setup lang="ts">
+defineProps<{
+  classs?: string;
+}>();
+
 const colorMode = useColorMode();
 const isDark = computed({
   get() {
@@ -14,10 +18,13 @@ const isDark = computed({
   <ClientOnly>
     <UButton
       :icon="isDark ? 'i-heroicons-sun-20-solid' : 'i-heroicons-moon-20-solid'"
-      color="gray"
       variant="link"
       aria-label="Theme"
-      class="fixed bottom-8 lg:bottom-[unset] lg:top-1 left-0 z-50"
+      :class="
+        classs
+          ? classs
+          : 'text-black dark:text-white hover:text-black dark:hover:text-white'
+      "
       @click="isDark = !isDark"
     />
     <template #fallback>

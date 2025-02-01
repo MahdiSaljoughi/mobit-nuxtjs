@@ -10,7 +10,6 @@ datasource db {
 enum UserRole {
   CUSTOMER
   ADMIN
-  SELLER
 }
 
 model User {
@@ -26,6 +25,8 @@ model User {
   updated_at     DateTime  @updatedAt
   product        Product[]
   // orders         Order[]
+  access_token   String?
+  // refresh_token  String?
 }
 
 model Otp {

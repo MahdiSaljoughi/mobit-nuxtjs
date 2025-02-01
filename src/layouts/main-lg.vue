@@ -4,7 +4,9 @@
       <Header />
     </div>
 
-    <ThemSwitcher />
+    <div class="fixed bottom-8 lg:bottom-[unset] lg:top-1 left-0 z-50">
+      <ThemSwitcher />
+    </div>
 
     <slot />
 

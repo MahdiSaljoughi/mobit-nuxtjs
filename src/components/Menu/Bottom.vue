@@ -1,8 +1,9 @@
 <script setup lang="ts">
-const { data, status } = useAuths();
+const { user } = useUserInfo();
+const { status } = useAuths();
 
 const userHref = ref<string>(
-  data?.value?.user.role === "ADMIN" ? "/dashboard" : "/profile"
+  user?.role === "ADMIN" ? "/dashboard" : "/profile"
 );
 </script>
 

@@ -3,8 +3,7 @@ definePageMeta({
   layout: "main",
 });
 
-const { getAll } = useProduct();
-const { data, error } = getAll();
+const { data, error } = useProduct().getAll();
 </script>
 
 <template>

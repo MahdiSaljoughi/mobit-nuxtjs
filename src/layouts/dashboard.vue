@@ -20,15 +20,15 @@ const handleMenuClose = () => {
     <!-- Desktop -->
     <div
       class="h-screen hidden lg:flex"
-      :class="fullScreen === false && 'p-10 2xl:p-20'"
+      :class="fullScreen === false && 'p-10 2xl:py-20 2xl:px-28'"
     >
       <div
-        class="w-full flex p-8 rounded-3xl"
+        class="w-full flex p-6 pt-8 pr-8 rounded-[32px]"
         :class="fullScreen ? 'min-h-screen' : 'shadow-around'"
       >
         <transition name="menu">
-          <div v-if="isShowMenu" class="w-48 flex flex-col gap-y-10">
-            <NuxtLink to="/" class="mt-2.5">
+          <div v-if="isShowMenu" class="min-w-52 flex flex-col gap-y-10">
+            <NuxtLink to="/" class="mt-2">
               <NuxtImg src="/images/logo/logo.svg" alt="logo" width="110" />
             </NuxtLink>
             <div class="flex flex-col -mr-4">
@@ -39,7 +39,7 @@ const handleMenuClose = () => {
                 class="flex items-center gap-x-4 p-5 rounded-r-2xl hover:text-main"
                 :class="
                   $route.path === item.href &&
-                  'bg-zinc-50 dark:bg-zinc-900 text-main rounded-l-custom relative'
+                  'bg-zinc-50/80 dark:bg-black/20 text-main rounded-l-custom relative'
                 "
               >
                 <IconSvg :icon-id="item.icon" class="w-6" />
@@ -57,22 +57,25 @@ const handleMenuClose = () => {
                 class="flex items-center justify-center"
                 @click="isShowMenu = !isShowMenu"
               >
-                <IconSvg icon-id="i-menu" class="size-[35px] text-main" />
+                <IconSvg icon-id="i-menu" class="size-10 text-main" />
               </button>
-              <button class="block" @click="fullScreen = !fullScreen">
+              <div class="bg-main/10 rounded-xl">
+                <ThemSwitcher
+                  classs="text-main dark:text-main hover:text-main dark:hover:text-main size-9 flex items-center justify-center"
+                />
+              </div>
+              <button class="block text-main" @click="fullScreen = !fullScreen">
                 <IconSvg
                   v-show="fullScreen === false"
                   icon-id="i-not-fullscreen"
-                  class="size-8 text-main"
+                  class="size-9"
                 />
                 <IconSvg
                   v-show="fullScreen"
                   icon-id="i-fullscreen"
-                  class="size-8 text-main"
+                  class="size-9"
                 />
               </button>
-
-              <ThemSwitcher />
             </div>
 
             <div class="flex items-center gap-x-2">
@@ -83,7 +86,7 @@ const handleMenuClose = () => {
             </div>
           </div>
           <div
-            class="h-full overflow-y-auto overflow-x-hidden bg-zinc-50 dark:bg-zinc-900 p-4 rounded-2xl"
+            class="h-full overflow-y-auto overflow-x-hidden bg-zinc-50/80 dark:bg-black/20 p-4 rounded-3xl"
           >
             <slot />
           </div>
@@ -94,57 +97,60 @@ const handleMenuClose = () => {
     <!-- Mobile -->
     <div class="block lg:hidden min-h-screen">
       <header class="px-4 pb-10 sticky top-6 z-30">
-        <div class="bg-white dark:bg-zinc-900 shadow-around p-4 rounded-3xl">
+        <div
+          class="bg-white dark:bg-zinc-900 shadow-around py-4 px-5 rounded-3xl"
+        >
           <div class="flex items-center justify-between">
             <NuxtLink to="/" class="w-10 block">
               <NuxtImg src="/images/logo/mobit-logo.svg" alt="logo" />
             </NuxtLink>
 
-            <p class="text-sm text-main">مبیت</p>
-
-            <MenuMobile
-              ref="menuRef"
-              icon-name="i-heroicons-solid-dots-vertical"
-              icon-size="20"
-            >
-              <div class="pt-8 px-3 flex flex-col gap-y-8">
-                <NuxtLink
-                  to="/"
-                  class="w-24 block mx-auto"
-                  @click="handleMenuClose"
-                >
-                  <NuxtImg src="/images/logo/logo.svg" alt="logo" />
-                </NuxtLink>
-
-                <div class="flex flex-col gap-y-2">
+            <div class="flex items-center gap-x-3">
+              <ThemSwitcher />
+              <MenuMobile
+                ref="menuRef"
+                icon-name="i-heroicons-solid-dots-vertical"
+                icon-size="20"
+              >
+                <div class="pt-8 px-3 flex flex-col gap-y-8">
                   <NuxtLink
-                    v-for="item in menuList"
-                    :key="item.id"
-                    :to="item.href"
-                    class="flex items-center gap-x-4 p-4 rounded-2xl"
-                    :class="
-                      $route.path === item.href &&
-                      'bg-zinc-50 dark:bg-black/20 text-main'
-                    "
+                    to="/"
+                    class="w-24 block mx-auto"
                     @click="handleMenuClose"
                   >
-                    <IconSvg :icon-id="item.icon" class="w-6" />
-                    {{ item.title }}
+                    <NuxtImg src="/images/logo/logo.svg" alt="logo" />
                   </NuxtLink>
-                </div>
-              </div>
 
-              <div class="flex items-center gap-x-4 fixed bottom-6 right-3">
-                <UserComponentsUserInfo />
-                <button
-                  class="flex items-center gap-x-2 text-red-500"
-                  @click="signOut()"
-                >
-                  <p>خروج</p>
-                  <UIcon name="i-solar-logout-2-line-duotone" size="22" />
-                </button>
-              </div>
-            </MenuMobile>
+                  <div class="flex flex-col gap-y-2">
+                    <NuxtLink
+                      v-for="item in menuList"
+                      :key="item.id"
+                      :to="item.href"
+                      class="flex items-center gap-x-4 p-4 rounded-2xl"
+                      :class="
+                        $route.path === item.href &&
+                        'bg-zinc-50 dark:bg-black/20 text-main'
+                      "
+                      @click="handleMenuClose"
+                    >
+                      <IconSvg :icon-id="item.icon" class="w-6" />
+                      {{ item.title }}
+                    </NuxtLink>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-x-4 fixed bottom-6 right-3">
+                  <UserComponentsUserInfo />
+                  <button
+                    class="flex items-center gap-x-2 text-red-500"
+                    @click="signOut()"
+                  >
+                    <p>خروج</p>
+                    <UIcon name="i-solar-logout-2-line-duotone" size="22" />
+                  </button>
+                </div>
+              </MenuMobile>
+            </div>
           </div>
         </div>
       </header>
@@ -153,7 +159,6 @@ const handleMenuClose = () => {
         <slot />
       </div>
 
-      <ThemSwitcher />
       <MenuBottom />
     </div>
   </div>
@@ -194,22 +199,22 @@ const handleMenuClose = () => {
 .rounded-l-custom::before {
   bottom: 60px;
   border-bottom-left-radius: 50%;
-  box-shadow: 0 20px 0 0 #fafafa;
+  box-shadow: 0 20px 0 0 #fafafacc;
   z-index: -1;
 }
 
 .rounded-l-custom::after {
   top: 60px;
   border-top-left-radius: 50%;
-  box-shadow: 0 -20px 0 0 #fafafa;
+  box-shadow: 0 -20px 0 0 #fafafacc;
   z-index: -1;
 }
 
 .dark .rounded-l-custom::before {
-  box-shadow: 0 20px 0 0 #18181b;
+  box-shadow: 0 20px 0 0 #00000033;
 }
 
 .dark .rounded-l-custom::after {
-  box-shadow: 0 -20px 0 0 #18181b;
+  box-shadow: 0 -20px 0 0 #00000033;
 }
 </style>

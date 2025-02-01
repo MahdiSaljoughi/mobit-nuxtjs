@@ -1,8 +1,9 @@
 <script setup lang="ts">
-const { status, data } = useAuths();
+const { user } = useUserInfo();
+const { status } = useAuths();
 
 const userHref = ref<string>(
-  data?.value?.user.role === "ADMIN" ? "/dashboard" : "/profile"
+  user?.role === "ADMIN" ? "/dashboard" : "/profile"
 );
 </script>
 
@@ -53,9 +54,9 @@ const userHref = ref<string>(
               <span v-if="status === 'loading'">در حال بررسی</span>
               <span v-if="status === 'authenticated'" class="mt-0.5 block">
                 {{
-                  (data?.user?.user_name ?? "").length > 14
-                    ? (data?.user?.user_name ?? "").slice(0, 14) + "..."
-                    : data?.user?.user_name ?? ""
+                  (user?.user_name ?? "").length > 14
+                    ? (user?.user_name ?? "").slice(0, 14) + "..."
+                    : user?.user_name ?? ""
                 }}
               </span>
               <span v-else>ورود / ثبت نام</span>
