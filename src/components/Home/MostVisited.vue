@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { status, products, error } = await useProduct().getAll();
+const { products } = await useProduct().getAll();
 </script>
 
 <template>
@@ -20,6 +20,6 @@ const { status, products, error } = await useProduct().getAll();
         />
       </NuxtLink>
     </div>
-    <SliderProduct :products="products!" />
+    <SliderProduct :products="products" />
   </div>
 </template>

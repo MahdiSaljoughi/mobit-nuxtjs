@@ -5,5 +5,5 @@ definePageMeta({
 </script>
 
 <template>
-  <div>One Product Page</div>
+  <div>One Product Page {{ $route.params.slug }}</div>
 </template>

@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation } from "swiper/modules";
 import type { TProduct } from "~/types";
 
-defineProps<{ products: TProduct[] }>();
+defineProps<{ products?: TProduct[] }>();
 </script>
 
 <template>

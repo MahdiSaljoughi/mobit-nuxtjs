@@ -3,7 +3,7 @@ definePageMeta({
   layout: "main",
 });
 
-const { status, products, error } = await useProduct().getAll();
+const { products, error } = await useProduct().getAll();
 </script>
 
 <template>
