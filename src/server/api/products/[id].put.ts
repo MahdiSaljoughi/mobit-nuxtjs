@@ -1,7 +1,7 @@
-import { defineEventHandler } from "h3";
+import { defineEventHandler, readBody } from "h3";
 import type { H3Event } from "h3";
+import productDb from "../../../db/productDb";
 import gurd from "../../utils/gurd";
-import userDb from "../../../db/userDb";
 
 export default defineEventHandler(async (event: H3Event) => {
   const gurds = await gurd(event);
@@ -14,27 +14,28 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   const id = event.context.params?.id;
+  const body = await readBody(event);
 
   if (!id) {
     return {
       status_code: 400,
-      message: "شناسه کاربر الزامی است",
+      message: "شناسه محصول الزامی است",
     };
   }
 
   try {
-    const user = await userDb.getById(Number(id));
+    const product = await productDb.updateById(Number(id), body);
 
-    if (!user) {
+    if (!product) {
       return {
         status_code: 404,
-        message: "کاربر مورد نظر یافت نشد",
+        message: "محصول مورد نظر یافت نشد",
       };
     }
 
     return {
       status_code: 200,
-      user,
+      product,
     };
   } catch (error: unknown) {
     return {

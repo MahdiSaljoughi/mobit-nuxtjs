@@ -7,6 +7,6 @@ definePageMeta({
 
 <template>
   <div>
-    <div>Users</div>
+    <DashboardComponentsTablesUsers />
   </div>
 </template>

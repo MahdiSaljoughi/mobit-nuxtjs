@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { status } = useAuths();
-const { user } = useUserInfo();
+const { userInfo } = await useUserInfo();
 </script>
 
 <template>
@@ -9,6 +9,6 @@ const { user } = useUserInfo();
       <IconSvg icon-id="i-profilefill" class="w-6 text-main" />
     </div>
     <p v-if="status === 'loading'" class="text-sm mt-1">درحال بارگذاری</p>
-    <p v-else class="text-sm mt-1">{{ user?.user_name }}</p>
+    <p v-else class="text-sm mt-1">{{ userInfo?.user_name }}</p>
   </div>
 </template>

@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   typescript: {
-    typeCheck: false,
+    typeCheck: true,
   },
 
   modules: [

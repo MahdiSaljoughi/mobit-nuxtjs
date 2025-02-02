@@ -27,7 +27,10 @@ const handleMenuClose = () => {
         :class="fullScreen ? 'min-h-screen' : 'shadow-around'"
       >
         <transition name="menu">
-          <div v-if="isShowMenu" class="min-w-52 flex flex-col gap-y-10">
+          <div
+            v-if="isShowMenu"
+            class="min-w-52 max-w-full flex flex-col gap-y-10"
+          >
             <NuxtLink to="/" class="mt-2">
               <NuxtImg src="/images/logo/logo.svg" alt="logo" width="110" />
             </NuxtLink>
@@ -86,7 +89,7 @@ const handleMenuClose = () => {
             </div>
           </div>
           <div
-            class="h-full overflow-y-auto overflow-x-hidden bg-zinc-50/80 dark:bg-black/20 p-4 rounded-3xl"
+            class="h-full overflow-auto bg-zinc-50/80 dark:bg-black/20 p-4 rounded-3xl"
           >
             <slot />
           </div>

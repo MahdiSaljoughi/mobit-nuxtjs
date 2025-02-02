@@ -29,8 +29,8 @@ const validatePhone = async () => {
     await formAuthSchema.validate(state);
     isValidPhone.value = true;
     errors.phone = "";
-  } catch (err) {
-    errors.phone = err.message;
+  } catch (err: unknown | Error) {
+    errors.phone = (err as Error).message;
     isValidPhone.value = false;
   }
 };

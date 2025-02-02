@@ -1,7 +1,9 @@
-import prisma from "../../../../prisma/prisma";
-import gurd from "../../gurd";
+import userDb from "../../../db/userDb";
+import gurd from "../../utils/gurd";
+import type { H3Event } from "h3";
+import { defineEventHandler } from "h3";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event: H3Event) => {
   const gurds = await gurd(event);
 
   if (gurds.status_code !== 200 || gurds.is_admin !== true) {
@@ -11,7 +13,8 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  const users = await prisma.user.findMany();
+  const users = await userDb.getAll();
+
   return {
     status_code: 200,
     users,

@@ -1,6 +1,8 @@
+import { defineEventHandler, readBody } from "h3";
 import prisma from "../../../../prisma/prisma";
+import type { H3Event } from "h3";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event: H3Event) => {
   const body = await readBody(event);
 
   if (!body || !body.phone) {

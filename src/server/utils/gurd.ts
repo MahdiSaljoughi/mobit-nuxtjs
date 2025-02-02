@@ -1,18 +1,18 @@
-import { getToken } from "#auth";
-import prisma from "./../../prisma/prisma";
+import type { H3Event } from "h3";
+import { getHeaders } from "h3";
+import useAccessToken from "../../features/auth/composables/useAccessToken";
+import userDb from "../../db/userDb";
 
-export default async function gurd(event: unknown) {
-  const token: { id: string } = await getToken({ event });
+export default async function gurd(event: H3Event) {
+  const { data: token } = useAccessToken(
+    getHeaders(event)?.authorization || ""
+  );
 
   if (!token) {
     return { status_code: 401, message: "توکنی یافت نشد" };
   }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: Number(token.id),
-    },
-  });
+  const user = await userDb.getById(Number(token.id));
 
   if (!user) {
     return { status_code: 401, message: "کاربر یافت نشد" };

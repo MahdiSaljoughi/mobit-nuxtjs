@@ -2,10 +2,13 @@ import { NuxtAuthHandler } from "#auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../../prisma/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+// @ts-expect-error
 import jwt from "jsonwebtoken";
 
+const secret = useRuntimeConfig().authSecret;
+
 export default NuxtAuthHandler({
-  secret: process.env.NUXT_AUTH_SECRET,
+  secret,
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
@@ -14,6 +17,7 @@ export default NuxtAuthHandler({
     signIn: "/auth",
   },
   providers: [
+    // @ts-expect-error
     CredentialsProvider.default({
       name: "Credentials",
       credentials: {
@@ -74,20 +78,14 @@ export default NuxtAuthHandler({
             data: {
               phone: credentials.phone,
               user_name: credentials.phone,
-              email: "",
-              first_name: "",
-              last_name: "",
             },
           });
         }
 
-        const access_token = jwt.sign(
-          { id: userData.id },
-          process.env.NUXT_AUTH_SECRET,
-          { expiresIn: "1h" }
-        );
+        const access_token = jwt.sign({ id: userData.id }, secret, {
+          expiresIn: "30d",
+        });
 
-        // **آپدیت یوزر و ذخیره accessToken در دیتابیس**
         userData = await prisma.user.update({
           where: { id: userData.id },
           data: { access_token },
@@ -109,6 +107,7 @@ export default NuxtAuthHandler({
         return {
           ...token,
           id: user.id,
+          // @ts-expect-error
           access_token: user.access_token,
         };
       }
@@ -117,8 +116,8 @@ export default NuxtAuthHandler({
 
     async session({ session, token }) {
       session.user = {
-        id: token.id,
-        access_token: token.access_token,
+        id: token.id as string,
+        access_token: token.access_token as string,
       };
       return session;
     },

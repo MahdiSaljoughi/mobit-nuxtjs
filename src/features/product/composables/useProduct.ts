@@ -1,14 +1,18 @@
-export const useProduct = () => {
+import type { TProduct } from "~/types";
+
+const useProduct = () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/products`;
 
-  const getAll = () => {
-    const { data, error } = useFetch<{ products: TProduct[] }>(BASE_URL, {
+  const getAll = async () => {
+    const { status, data, error } = await useLazyFetch<{
+      products: TProduct[];
+    }>(BASE_URL, {
       key: "all-products",
-      // transform: (response) => response.products,
-      // watch: false,
     });
-    return { data, error };
+    return { status, products: data.value?.products, error };
   };
 
   return { getAll };
 };
+
+export default useProduct;

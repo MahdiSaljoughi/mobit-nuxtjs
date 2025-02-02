@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { TProduct } from "~/types";
+
 defineProps<{ product: TProduct }>();
 </script>
 
@@ -11,7 +13,7 @@ defineProps<{ product: TProduct }>();
       class="flex items-center justify-center lg:min-w-full lg:min-h-40 bg-zinc-100 dark:bg-zinc-800 rounded-2xl p-3 sm:p-6 lg:p-8"
     >
       <NuxtImg
-        :src="product.images[0].url"
+        :src="product.images[0]?.url"
         :alt="product.title"
         class="max-w-20 sm:max-w-32 lg:max-w-40 group-hover/product:scale-110 transition-transform duration-300"
       />
@@ -37,7 +39,7 @@ defineProps<{ product: TProduct }>();
       </div> -->
       <div>
         <span class="text-[12px] lg:text-sm block text-left">
-          {{ product.price.toLocaleString() }}
+          {{ product.price?.toLocaleString() }}
           <span class="text-xs text-zinc-400 mr-1">تومان</span>
         </span>
       </div>

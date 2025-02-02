@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { data } = useProduct().getAll();
+const { status, products, error } = await useProduct().getAll();
 </script>
 
 <template>
@@ -36,6 +36,6 @@ const { data } = useProduct().getAll();
       <HomePromotionTimer />
     </NuxtLink>
 
-    <SliderProduct :products="data!.products" />
+    <SliderProduct :products="products!" />
   </div>
 </template>

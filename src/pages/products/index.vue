@@ -3,7 +3,7 @@ definePageMeta({
   layout: "main",
 });
 
-const { data, error } = useProduct().getAll();
+const { status, products, error } = await useProduct().getAll();
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const { data, error } = useProduct().getAll();
         <div
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
-          <div v-for="product in data?.products" :key="product.id">
+          <div v-for="product in products" :key="product.id">
             <ProductComponentsSingle :product="product" />
           </div>
         </div>

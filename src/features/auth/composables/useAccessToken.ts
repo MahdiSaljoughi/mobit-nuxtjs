@@ -1,3 +1,4 @@
+// @ts-expect-error
 import jwt from "jsonwebtoken";
 
 export default function useAccessToken(token: string) {
@@ -12,7 +13,7 @@ export default function useAccessToken(token: string) {
   try {
     const decoded = jwt.verify(tokenNotBearer, secret);
     return { error: null, data: decoded };
-  } catch (err) {
+  } catch (err: unknown | Error) {
     return { error: "توکن نامعتبر است", data: null };
   }
 }
