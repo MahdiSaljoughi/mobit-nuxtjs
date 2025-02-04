@@ -1,7 +1,7 @@
 import { defineEventHandler } from "h3";
 import type { H3Event } from "h3";
 import gurd from "../../utils/gurd";
-import userDb from "../../../db/userDb";
+import UserRepository from "../../../repository/UserRepository";
 
 export default defineEventHandler(async (event: H3Event) => {
   const gurds = await gurd(event);
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   try {
-    const user = await userDb.getById(Number(id));
+    const user = await UserRepository.getById(Number(id));
 
     if (!user) {
       return {

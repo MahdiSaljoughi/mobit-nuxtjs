@@ -1,8 +1,8 @@
 import { defineEventHandler } from "h3";
-import productDb from "../../../db/productDb";
+import ProductRepository from "../../../repository/ProductRepository";
 
 export default defineEventHandler(async () => {
-  const products = await productDb.getAll();
+  const products = await ProductRepository.getAll();
 
   return {
     status_code: 200,

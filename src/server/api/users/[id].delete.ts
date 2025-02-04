@@ -1,7 +1,7 @@
-import { defineEventHandler, readBody } from "h3";
+import { defineEventHandler } from "h3";
 import type { H3Event } from "h3";
-import ProductRepository from "../../../repository/ProductRepository";
 import gurd from "../../utils/gurd";
+import UserRepository from "../../../repository/UserRepository";
 
 export default defineEventHandler(async (event: H3Event) => {
   const gurds = await gurd(event);
@@ -14,28 +14,27 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   const id = event.context.params?.id;
-  const body = await readBody(event);
 
   if (!id) {
     return {
       status_code: 400,
-      message: "شناسه محصول الزامی است",
+      message: "شناسه کاربر الزامی است",
     };
   }
 
   try {
-    const product = await ProductRepository.updateById(Number(id), body);
+    const user = await UserRepository.deleteById(Number(id));
 
-    if (!product) {
+    if (!user) {
       return {
         status_code: 404,
-        message: "محصول مورد نظر یافت نشد",
+        message: "کاربر مورد نظر یافت نشد",
       };
     }
 
     return {
       status_code: 200,
-      product,
+      user,
     };
   } catch (error: unknown) {
     return {

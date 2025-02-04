@@ -4,17 +4,20 @@ const useUserInfo = async () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/users/info`;
 
   try {
-    const { data, error } = await useFetch<{
+    const { data, error, status } = await useFetch<{
       status_code: number;
       user: TUser;
     }>(BASE_URL, {
       key: "user-info",
       headers: {
-        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+        Authorization: `Bearer ${
+          useAuths().data.value?.user.access_token &&
+          useAuths().data.value?.user.access_token
+        }`,
       },
     });
 
-    return { userInfo: data.value?.user, error };
+    return { userInfo: data.value?.user, error, status };
   } catch (error: unknown | Error) {
     return {
       status_code: 500,

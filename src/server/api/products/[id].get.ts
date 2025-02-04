@@ -1,6 +1,6 @@
 import { defineEventHandler } from "h3";
 import type { H3Event } from "h3";
-import productDb from "../../../db/productDb";
+import ProductRepository from "../../../repository/ProductRepository";
 
 export default defineEventHandler(async (event: H3Event) => {
   const id = event.context.params?.id;
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   try {
-    const product = await productDb.getById(Number(id));
+    const product = await ProductRepository.getById(Number(id));
 
     if (!product) {
       return {

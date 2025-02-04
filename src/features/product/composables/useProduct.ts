@@ -4,7 +4,7 @@ const useProduct = () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/products`;
 
   const getAll = async () => {
-    const { status, data, error } = await useLazyFetch<{
+    const { status, data, error } = await useFetch<{
       products: TProduct[];
     }>(BASE_URL, {
       key: "all-products",

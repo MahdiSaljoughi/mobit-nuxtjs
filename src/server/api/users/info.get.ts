@@ -1,4 +1,4 @@
-import userDb from "../../../db/userDb";
+import UserRepository from "../../../repository/UserRepository";
 import { getHeaders, defineEventHandler } from "h3";
 import type { H3Event } from "h3";
 import useAccessToken from "../../../features/auth/composables/useAccessToken";
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   try {
-    const user = await userDb.getById(Number(token.id));
+    const user = await UserRepository.getById(Number(token.id));
 
     if (!user) {
       return {

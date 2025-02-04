@@ -46,3 +46,43 @@ body {
       var(--ring-shadow, 0 0 #0000), var(--shadowdark);
   }
 }
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #888;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+html.dark .scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+html.dark .scrollbar-custom::-webkit-scrollbar-track {
+  background: #1f1f1f;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+html.dark .scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+html.dark .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #464646;
+}

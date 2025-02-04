@@ -68,7 +68,7 @@ const filteredRows = computed(() => {
     return products;
   }
 
-  return products!.filter((person: any) => {
+  return products?.filter((person: any) => {
     return Object.values(person).some((value: any) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });
@@ -98,7 +98,7 @@ const expand = ref({
 
 <template>
   <div>
-    <div v-show="status === 'pending'" class="my-6">
+    <div v-if="status === 'pending'" class="my-6">
       <Loadings />
     </div>
 
@@ -111,7 +111,7 @@ const expand = ref({
       />
     </div>
 
-    <div v-else class="flex flex-col gap-y-6 lg:gap-y-8">
+    <div class="flex flex-col gap-y-6 lg:gap-y-8">
       <div class="flex justify-between gap-x-8">
         <UInput
           v-model="search"

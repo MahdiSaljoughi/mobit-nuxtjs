@@ -1,6 +1,6 @@
 import { defineEventHandler, readBody } from "h3";
 import type { H3Event } from "h3";
-import productDb from "../../../db/productDb";
+import ProductRepository from "../../../repository/ProductRepository";
 import gurd from "../../utils/gurd";
 
 export default defineEventHandler(async (event: H3Event) => {
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
   const body = await readBody(event);
 
-  const product = await productDb.create(body);
+  const product = await ProductRepository.create(body);
 
   return {
     status_code: 201,

@@ -89,7 +89,7 @@ const handleMenuClose = () => {
             </div>
           </div>
           <div
-            class="h-full overflow-auto bg-zinc-50/80 dark:bg-black/20 p-4 rounded-3xl"
+            class="h-full overflow-auto scrollbar-custom bg-zinc-50/80 dark:bg-black/20 p-4 rounded-3xl"
           >
             <slot />
           </div>
@@ -158,7 +158,7 @@ const handleMenuClose = () => {
         </div>
       </header>
 
-      <div class="p-3 sm:p-6 md:p-8 lg:p-10">
+      <div class="p-4 sm:p-6 md:p-8 lg:p-10">
         <slot />
       </div>
 

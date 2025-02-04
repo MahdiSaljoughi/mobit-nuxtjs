@@ -2,7 +2,7 @@ import type { TProduct } from "~/types";
 import prisma from "~~/prisma/prisma";
 import type { Prisma } from "@prisma/client";
 
-export interface ITProductDb {
+export interface IProductRepository {
   getAll(): Promise<TProduct[]>;
   getById(id: number): Promise<TProduct | null>;
   create(data: Prisma.ProductCreateInput): Promise<TProduct>;
@@ -10,7 +10,7 @@ export interface ITProductDb {
   deleteById(id: number): Promise<TProduct>;
 }
 
-const productDb: ITProductDb = {
+const ProductRepository: IProductRepository = {
   async getAll() {
     return await prisma.product.findMany({
       include: {
@@ -62,4 +62,4 @@ const productDb: ITProductDb = {
   },
 };
 
-export default productDb;
+export default ProductRepository;

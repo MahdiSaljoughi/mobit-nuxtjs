@@ -1,4 +1,4 @@
-import userDb from "../../../db/userDb";
+import UserRepository from "../../../repository/UserRepository";
 import gurd from "../../utils/gurd";
 import type { H3Event } from "h3";
 import { defineEventHandler } from "h3";
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event: H3Event) => {
     };
   }
 
-  const users = await userDb.getAll();
+  const users = await UserRepository.getAll();
 
   return {
     status_code: 200,

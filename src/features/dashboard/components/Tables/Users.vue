@@ -3,6 +3,19 @@ import useUsers from "~/features/user/composables/useUser";
 
 const { status, users, error } = await useUsers().getAll();
 
+const search = ref<string>("");
+const page = ref<number>(1);
+const pageCount = ref<number>(20);
+const pageTotal = ref(users?.length);
+const isOpenDeleteModal = ref<boolean>(false);
+const isOpenEditModal = ref<boolean>(false);
+const userInfo = reactive({
+  id: "",
+  user_name: "",
+  role: "",
+  email: "",
+});
+
 const formatJalali = (isoDate?: string) => {
   if (!isoDate) return "نامشخص";
 
@@ -51,42 +64,38 @@ const sort = ref({
 const items = (row: any) => [
   [
     {
-      label: "مشاهده",
-      icon: "i-heroicons-eye-20-solid",
-      click: () => console.log("See", row.id),
-    },
-    {
       label: "ویرایش",
       icon: "i-heroicons-pencil-square-20-solid",
-      click: () => console.log("Edit", row.id),
+      click: () => {
+        isOpenEditModal.value = true;
+        userInfo.user_name = row.user_name;
+        userInfo.id = row.id;
+      },
     },
-  ],
-  [
     {
       label: "حذف",
       icon: "i-heroicons-trash-20-solid",
-      click: () => console.log("Delete", row.id),
+      click: () => {
+        isOpenDeleteModal.value = true;
+        userInfo.user_name = row.user_name;
+        userInfo.id = row.id;
+      },
     },
   ],
 ];
-
-const search = ref("");
 
 const filteredRows = computed(() => {
   if (!search.value) {
     return users;
   }
 
-  return users!.filter((person: any) => {
+  return users?.filter((person: any) => {
     return Object.values(person).some((value: any) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });
   });
 });
 
-const page = ref(1);
-const pageCount = ref(20);
-const pageTotal = ref(users?.length);
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1);
 const pageTo = computed(() =>
   Math.min(page.value * pageCount.value, pageTotal.value!)
@@ -103,6 +112,15 @@ const expand = ref({
   openedRows: [rows],
   row: {},
 });
+
+const removeUser = async () => {
+  await useUsers().remove(Number(userInfo.id));
+  isOpenDeleteModal.value = false;
+};
+
+const editUser = async () => {
+  isOpenEditModal.value = false;
+};
 </script>
 
 <template>
@@ -120,21 +138,14 @@ const expand = ref({
       />
     </div>
 
-    <div v-else class="flex flex-col gap-y-6 lg:gap-y-8">
-      <div class="flex justify-between gap-x-8">
-        <UInput
-          v-model="search"
-          placeholder="جستجو ..."
-          variant="none"
-          class="bg-zinc-100 dark:bg-zinc-900 rounded-xl p-2 w-full lg:w-1/3"
-          icon="i-heroicons-magnifying-glass-20-solid"
-        />
-
-        <UButton color="primary" variant="solid" class="rounded-xl">
-          <span class="text-sm">افزودن کاربر</span>
-          <UIcon name="i-heroicons-plus-20-solid" size="20" />
-        </UButton>
-      </div>
+    <div class="flex flex-col gap-y-6 lg:gap-y-8">
+      <UInput
+        v-model="search"
+        placeholder="جستجو ..."
+        variant="none"
+        class="bg-zinc-100 dark:bg-zinc-900 rounded-xl p-2 w-full lg:w-1/2 xl:w-1/3"
+        icon="i-heroicons-magnifying-glass-20-solid"
+      />
 
       <UTable
         v-model:expand="expand"
@@ -150,9 +161,6 @@ const expand = ref({
         :empty-state="{
           icon: 'i-heroicons-circle-stack-20-solid',
           label: 'چیزی یافت نشد',
-        }"
-        :ui="{
-          base: 'min-w-full',
         }"
       >
         <template #expand="{ row }">
@@ -229,5 +237,57 @@ const expand = ref({
         />
       </div>
     </div>
+
+    <!-- Modal -->
+    <UModal v-model="isOpenDeleteModal">
+      <div class="p-4 flex flex-col gap-y-8">
+        <p class="text-sm">
+          آیا از حذف کاربر
+          <span class="font-bold">{{ userInfo.user_name }}</span>
+          مطمئن هستید؟
+        </p>
+        <div class="flex items-center justify-end gap-x-3">
+          <UButton
+            label="انصراف"
+            variant="soft"
+            class="px-6 py-2 rounded-xl"
+            @click="isOpenDeleteModal = false"
+          />
+          <UButton
+            label="حذف"
+            color="red"
+            variant="soft"
+            class="px-6 py-2 rounded-xl"
+            @click="removeUser"
+          />
+        </div>
+      </div>
+    </UModal>
+
+    <UModal v-model="isOpenEditModal" fullscreen>
+      <div class="p-4 flex flex-col gap-y-8">
+        <p class="text-sm">
+          آیا از ویرایش کاربر
+          <span class="font-bold">{{ userInfo.user_name }}</span>
+          مطمئن هستید؟
+        </p>
+        <div class="flex items-center justify-end gap-x-3">
+          <UButton
+            label="انصراف"
+            color="red"
+            variant="soft"
+            class="px-6 py-2 rounded-xl"
+            @click="isOpenEditModal = false"
+          />
+          <UButton
+            label="ویرایش"
+            color="primary"
+            variant="soft"
+            class="px-6 py-2 rounded-xl"
+            @click="editUser"
+          />
+        </div>
+      </div>
+    </UModal>
   </div>
 </template>

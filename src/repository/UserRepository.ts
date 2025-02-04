@@ -1,7 +1,7 @@
 import type { TUser } from "~/types";
 import prisma from "~~/prisma/prisma";
 
-export interface IUserDb {
+export interface IUserRepository {
   getAll(): Promise<TUser[]>;
   getById(id: number): Promise<TUser | null>;
   create(data: Omit<TUser, "id">): Promise<TUser>;
@@ -9,7 +9,7 @@ export interface IUserDb {
   deleteById(id: number): Promise<TUser>;
 }
 
-const userDb: IUserDb = {
+const UserRepository: IUserRepository = {
   async getAll() {
     return await prisma.user.findMany();
   },
@@ -31,4 +31,4 @@ const userDb: IUserDb = {
   },
 };
 
-export default userDb;
+export default UserRepository;
