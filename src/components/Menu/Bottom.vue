@@ -1,10 +1,15 @@
 <script setup lang="ts">
-const { userInfo } = await useUserInfo();
+import { useCartStore } from "~/stores/cartStore";
+
+const { userInfo } = await useUser().info();
 const { status } = useAuths();
 
 const userHref = ref<string>(
   userInfo?.role === "ADMIN" ? "/dashboard" : "/profile"
 );
+
+const cartStore = useCartStore();
+const { items } = cartStore;
 </script>
 
 <template>
@@ -20,7 +25,13 @@ const userHref = ref<string>(
         <IconSvg icon-id="i-categoryfill" class="w-6" />
         دسته بندی
       </button>
-      <NuxtLink to="/cart" class="flex flex-col items-center gap-y-2">
+      <NuxtLink to="/cart" class="flex flex-col items-center gap-y-2 relative">
+        <p
+          v-if="items.length > 0"
+          class="flex items-center justify-center absolute -top-2 -right-0.5 text-xs font-IRANr bg-red-500 text-white size-4 rounded-full"
+        >
+          {{ items.reduce((acc, cur) => acc + cur.quantity, 0) }}
+        </p>
         <IconSvg icon-id="i-cart-fill-new" class="w-5" />
         سبدخرید
       </NuxtLink>

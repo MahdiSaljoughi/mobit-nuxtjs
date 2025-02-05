@@ -12,6 +12,8 @@ declare type TUser = {
   created_at: Date;
   updated_at: Date;
   access_token: string | null;
+  created_at: Date;
+  updated_at: Date;
 };
 
 declare type TProduct = {
@@ -33,4 +35,6 @@ declare type TProduct = {
   discount_percentage: number | null;
   description: string;
   created_by: number;
+  created_at: Date;
+  updated_at: Date;
 };

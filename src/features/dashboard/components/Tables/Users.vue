@@ -16,7 +16,7 @@ const userInfo = reactive({
   email: "",
 });
 
-const formatJalali = (isoDate?: string) => {
+const formatJalali = (isoDate: Date) => {
   if (!isoDate) return "نامشخص";
 
   const date = new Date(isoDate);
@@ -162,44 +162,53 @@ const editUser = async () => {
           icon: 'i-heroicons-circle-stack-20-solid',
           label: 'چیزی یافت نشد',
         }"
+        :ui="{
+          td: { size: 'text-xs', padding: 'p-2' },
+          th: { size: 'text-xs' },
+        }"
       >
         <template #expand="{ row }">
-          <div class="p-4 flex flex-col gap-y-4">
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">شماره تلفن:</span>
-              <span class="mr-2 inline-block">
+          <div
+            class="flex flex-col gap-y-6 px-2 py-4 text-xs text-zinc-500 dark:text-zinc-400 border-x dark:border-gray-800"
+          >
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">شماره تلفن:</span>
+              <span>
                 {{ row.phone }}
               </span>
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">نام:</span>
-              <span class="mr-2 inline-block">
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">نام:</span>
+              <span>
                 {{ row.first_name }}
               </span>
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">نام خانوادگی:</span>
-              <span class="mr-2 inline-block">
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">نام خانوادگی:</span>
+              <span>
                 {{ row.last_name }}
               </span>
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">ایمیل:</span>
-              <span class="mr-2 inline-block">
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">ایمیل:</span>
+              <span>
                 {{ row.email_verified }}
               </span>
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">تاریخ ثبت نام:</span>
-              <span class="mr-2 inline-block">
-                {{ formatJalali(row.created_at) }}
-              </span>
-            </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">تاریخ ویرایش:</span>
-              <span class="mr-2 inline-block">
-                {{ formatJalali(row.updated_at) }}
-              </span>
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-x-2">
+                <span class="opacity-80">تاریخ ثبت نام:</span>
+                <span>
+                  {{ formatJalali(row.created_at) }}
+                </span>
+              </div>
+              <div class="flex items-center gap-x-2">
+                <span class="opacity-80">تاریخ ویرایش:</span>
+                <span>
+                  {{ formatJalali(row.updated_at) }}
+                </span>
+              </div>
             </div>
           </div>
         </template>

@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import useProduct from "~/features/product/composables/useProduct";
+import type { TProduct } from "~/types";
 
 const { status, products, error } = await useProduct().getAll();
 
-const formatJalali = (isoDate?: string) => {
+const search = ref("");
+const page = ref(1);
+const pageCount = ref(20);
+const pageTotal = ref(products?.length);
+
+const formatJalali = (isoDate: Date) => {
   if (!isoDate) return "نامشخص";
 
   const date = new Date(isoDate);
@@ -24,9 +30,19 @@ const columns = [
     sortable: true,
   },
   {
+    key: "images",
+    label: "تصویر",
+    sortable: false,
+  },
+  {
     key: "title",
     label: "نام کالا",
     sortable: false,
+  },
+  {
+    key: "price",
+    label: "قیمت",
+    sortable: true,
   },
   {
     key: "actions",
@@ -61,8 +77,6 @@ const items = (row: any) => [
   ],
 ];
 
-const search = ref("");
-
 const filteredRows = computed(() => {
   if (!search.value) {
     return products;
@@ -75,9 +89,6 @@ const filteredRows = computed(() => {
   });
 });
 
-const page = ref(1);
-const pageCount = ref(20);
-const pageTotal = ref(products?.length);
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1);
 const pageTo = computed(() =>
   Math.min(page.value * pageCount.value, pageTotal.value!)
@@ -94,6 +105,12 @@ const expand = ref({
   openedRows: [rows],
   row: {},
 });
+
+const getUser = (id: number) => {
+  const { user } = useUser().getById(id);
+
+  return user?.user_name;
+};
 </script>
 
 <template>
@@ -122,7 +139,7 @@ const expand = ref({
         />
 
         <UButton color="primary" variant="solid" class="rounded-xl">
-          <span class="text-sm">افزودن کاربر</span>
+          <span class="text-sm">افزودن محصول</span>
           <UIcon name="i-heroicons-plus-20-solid" size="20" />
         </UButton>
       </div>
@@ -143,46 +160,79 @@ const expand = ref({
           label: 'چیزی یافت نشد',
         }"
         :ui="{
-          base: 'min-w-full',
+          td: { size: 'text-xs', padding: 'p-2' },
+          th: { size: 'text-xs' },
         }"
       >
-        <template #expand="{ row }">
-          <div class="p-4 flex flex-col gap-y-4">
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">شماره تلفن:</span>
-              <span class="mr-2 inline-block">
-                {{ row.phone }}
-              </span>
+        <template #images-data="{ row }">
+          <NuxtImg :src="row.images[0].url" :alt="row.title" class="w-10" />
+        </template>
+
+        <template #title-data="{ row }">
+          <p class="lg:text-wrap line-clamp-2 leading-6">
+            {{ row.title.slice(0, 60) + "..." }}
+          </p>
+        </template>
+
+        <template #expand="{ row }: { row: TProduct }">
+          <div
+            class="flex flex-col gap-y-6 px-2 py-4 text-xs text-zinc-500 dark:text-zinc-400 border-x dark:border-gray-800"
+          >
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">عنوان :</span>
+              <span>{{ row.title }}</span>
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">نام:</span>
-              <span class="mr-2 inline-block">
-                {{ row.first_name }}
-              </span>
+
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">عنوان انگلیسی :</span>
+              <span>{{ row.title_eng }}</span>
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">نام خانوادگی:</span>
-              <span class="mr-2 inline-block">
-                {{ row.last_name }}
-              </span>
+
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">اسلاگ :</span>
+              <span>{{ row.slug }}</span>
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">ایمیل:</span>
-              <span class="mr-2 inline-block">
-                {{ row.email_verified }}
-              </span>
+
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">تصاویر :</span>
+              <NuxtImg
+                v-for="image in row.images"
+                :key="image.id"
+                :src="image.url"
+                :alt="row.title"
+                class="w-10"
+              />
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">تاریخ ثبت نام:</span>
-              <span class="mr-2 inline-block">
-                {{ formatJalali(row.created_at) }}
-              </span>
+
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">قیمت :</span>
+              <span>{{ row.price }}</span>
             </div>
-            <div class="text-sm">
-              <span class="opacity-80 text-sx">تاریخ ویرایش:</span>
-              <span class="mr-2 inline-block">
-                {{ formatJalali(row.updated_at) }}
-              </span>
+
+            <p class="leading-6">
+              <span class="opacity-80 inline-block ml-2">توضیحات :</span>
+              {{ row.description }}
+            </p>
+
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">ایجاد شده توسط :</span>
+              <span>{{ getUser(row.created_by) }}</span>
+            </div>
+
+            <!-- Date -->
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-x-2">
+                <span class="opacity-80">تاریخ ایجاد:</span>
+                <span>
+                  {{ formatJalali(row.created_at) }}
+                </span>
+              </div>
+              <div class="flex items-center gap-x-2">
+                <span class="opacity-80">تاریخ ویرایش:</span>
+                <span>
+                  {{ formatJalali(row.updated_at) }}
+                </span>
+              </div>
             </div>
           </div>
         </template>

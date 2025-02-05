@@ -15,6 +15,8 @@ export default defineNuxtConfig({
     "nuxt-swiper",
   ],
 
+  plugins: ["~/plugins/pinia.ts"],
+
   auth: {
     baseURL: `${process.env.API_URL}/auth`,
     originEnvKey: `${process.env.API_URL}/auth`,

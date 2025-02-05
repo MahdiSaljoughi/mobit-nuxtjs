@@ -1,10 +1,15 @@
 <script setup lang="ts">
-const { userInfo } = await useUserInfo();
+import { useCartStore } from "~/stores/cartStore";
+
+const { userInfo } = await useUser().info();
 const { status } = useAuths();
 
 const userHref = ref<string>(
   userInfo?.role === "ADMIN" ? "/dashboard" : "/profile"
 );
+
+const cartStore = useCartStore();
+const { items } = cartStore;
 </script>
 
 <template>
@@ -62,8 +67,11 @@ const userHref = ref<string>(
               <span v-else>ورود / ثبت نام</span>
             </p>
           </NuxtLink>
-          <NuxtLink to="/cart" class="flex items-center">
+          <NuxtLink to="/cart" class="flex items-center gap-x-2">
             <IconSvg icon-id="i-cart-fill-new" class="w-5" />
+            <p v-if="items.length > 0" class="hidden 2xl:block">
+              {{ `${items.reduce((acc, cur) => acc + cur.quantity, 0)} کالا` }}
+            </p>
           </NuxtLink>
         </div>
       </div>

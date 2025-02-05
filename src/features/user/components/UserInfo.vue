@@ -1,6 +1,6 @@
 <script setup lang="ts">
+const { userInfo } = await useUser().info();
 const { status } = useAuths();
-const { userInfo } = await useUserInfo();
 </script>
 
 <template>
