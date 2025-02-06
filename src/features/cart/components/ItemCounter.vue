@@ -39,10 +39,10 @@ const removeFromCart = () => {
 </script>
 
 <template>
-  <div>
+  <div class="w-full">
     <div
       v-if="itemQuantity > 0"
-      class="flex items-center justify-between px-4 py-2 rounded-xl border-2 dark:border-zinc-800 min-w-40"
+      class="flex items-center justify-between px-4 py-2 rounded-xl border-2 dark:border-zinc-800 w-40 lg:mx-auto"
     >
       <button class="text-blue-500" @click="addToCart">
         <svg
@@ -94,7 +94,7 @@ const removeFromCart = () => {
 
     <button
       v-else
-      class="rounded-xl bg-blue-500 hover:bg-blue-600 transition-all hover:ring-4 ring-blue-500/50 text-white px-4 py-2.5 text-sm md:w-full"
+      class="rounded-xl bg-main hover:bg-blue-600 transition-all text-white px-4 py-3 text-sm lg:w-full"
       @click="addToCart"
     >
       افزودن به سبد خرید

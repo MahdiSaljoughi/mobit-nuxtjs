@@ -34,36 +34,26 @@ onMounted(() => {
 
 <template>
   <div class="flex items-center gap-x-2">
-    <!-- نمایش ثانیه -->
     <div
-      class="flex items-center justify-center bg-white size-8 lg:w-12 lg:h-11 text-sm lg:text-xl rounded-lg lg:rounded-xl text-black"
+      class="flex items-center justify-center bg-white size-8 text-sm rounded-lg text-black"
     >
       {{ formatTime(seconds) }}
     </div>
 
-    <span class="hidden lg:block text-2xl">:</span>
-
-    <!-- نمایش دقیقه -->
     <div
-      class="flex items-center justify-center bg-white size-8 lg:w-12 lg:h-11 text-sm lg:text-xl rounded-lg lg:rounded-xl text-black"
+      class="flex items-center justify-center bg-white size-8 text-sm rounded-lg text-black"
     >
       {{ formatTime(minutes) }}
     </div>
 
-    <span class="hidden lg:block text-2xl">:</span>
-
-    <!-- نمایش ساعت -->
     <div
-      class="flex items-center justify-center bg-white size-8 lg:w-12 lg:h-11 text-sm lg:text-xl rounded-lg lg:rounded-xl text-black"
+      class="flex items-center justify-center bg-white size-8 text-sm rounded-lg text-black"
     >
       {{ formatTime(hours) }}
     </div>
 
-    <span class="hidden lg:block text-2xl">:</span>
-
-    <!-- نمایش روز -->
     <div
-      class="flex items-center justify-center bg-white size-8 lg:w-12 lg:h-11 text-sm lg:text-xl rounded-lg lg:rounded-xl text-black"
+      class="flex items-center justify-center bg-white size-8 text-sm rounded-lg text-black"
     >
       {{ formatTime(days) }}
     </div>

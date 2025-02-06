@@ -7,14 +7,14 @@ const activeSubMenuIndex = ref<number>(0);
 </script>
 
 <template>
-  <div class="flex items-center gap-x-4 xl:gap-x-10">
+  <div class="flex items-center gap-x-4 xl:gap-x-8">
     <div
       class="relative cursor-pointer transition-colors z-40"
       @mouseenter="showMenu = true"
       @mouseleave="showMenu = false"
     >
       <div
-        :class="`menu-item flex items-center gap-x-2 xl:gap-x-4 ${
+        :class="`menu-item flex items-center gap-x-2 xl:gap-x-3 ${
           showMenu && 'text-main'
         }`"
       >
@@ -70,7 +70,7 @@ const activeSubMenuIndex = ref<number>(0);
       v-for="(menu_item, index) in menuData"
       :key="index"
       :to="menu_item.href"
-      class="menu-item relative hover:text-main transition-colors flex items-center gap-x-2 xl:gap-x-4"
+      class="menu-item relative hover:text-main transition-colors flex items-center gap-x-2 xl:gap-x-3"
     >
       <IconSvg :icon-id="menu_item.icon" class="w-6" />
       {{ menu_item.title }}
@@ -80,8 +80,8 @@ const activeSubMenuIndex = ref<number>(0);
 
 <style scoped>
 .menu-item {
-  padding-bottom: 24px;
-  padding-top: 24px;
+  padding-bottom: 21px;
+  padding-top: 21px;
 }
 
 .menu-item::after {

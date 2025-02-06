@@ -5,30 +5,28 @@ definePageMeta({
 
 const route = useRoute();
 const slug = route.params.slug;
-const { product } = await useProduct().getBySlug(String(slug));
+const { product, status } = await useProduct().getBySlug(String(slug));
 </script>
 
 <template>
   <div class="py-10 px-3 sm:px-8 md:px-10 lg:px-16">
-    <div class="lg:flex justify-between lg:gap-x-8">
+    <div v-if="status === 'pending'">
+      <Loadings />
+    </div>
+
+    <div v-else class="lg:flex justify-between lg:gap-x-8">
       <div class="w-full rounded-2xl">
         <div class="flex flex-col gap-y-4 md:gap-8">
           <div class="flex gap-4 flex-wrap lg:flex-nowrap">
-            <div
-              class="rounded-xl bg-zinc-100 dark:bg-zinc-900 w-full lg:max-w-96"
-            >
-              <div class="w-full max-w-96 mx-auto p-8">
-                <NuxtImg
-                  :src="product?.images[0]?.url"
-                  :alt="product?.title"
-                  class="rounded-2xl w-full"
-                  draggable="false"
-                />
-              </div>
-            </div>
+            <ProductComponentsImages
+              :images="product!.images"
+              :alt="product!.title"
+            />
             <div class="flex flex-col gap-y-6 md:gap-y-4 w-full">
-              <h1 class="text-sm md:text-base line-clamp-2 leading-7">
-                {{ product?.title }}
+              <h1
+                class="text-sm md:text-base lg:text-lg line-clamp-2 leading-7"
+              >
+                {{ product!.title }}
               </h1>
               <div
                 class="flex flex-col md:flex-row md:items-center gap-y-4 gap-x-2"
@@ -80,7 +78,7 @@ const { product } = await useProduct().getBySlug(String(slug));
 
       <div>
         <div
-          class="w-full lg:w-72 xl:w-96 shadow-md shadow-black lg:shadow-none bg-zinc-50 dark:bg-zinc-900 lg:rounded-2xl py-4 px-2 md:p-4 fixed bottom-0 inset-x-0 lg:sticky lg:top-10 z-10"
+          class="w-full lg:w-72 xl:w-96 shadow-md shadow-black lg:shadow-none bg-white lg:bg-zinc-50 dark:bg-zinc-900 lg:rounded-2xl py-4 px-2 md:p-4 fixed bottom-0 inset-x-0 lg:sticky lg:top-10 z-10"
         >
           <div
             v-if="true"
@@ -130,7 +128,7 @@ const { product } = await useProduct().getBySlug(String(slug));
               <span class="text-lg md:text-xl">
                 {{ product?.price?.toLocaleString() }}
               </span>
-              <span class="text-zinc-400 text-sm font-[iranr]"> تومان </span>
+              <span class="text-zinc-400 text-sm">تومان</span>
             </div>
             <CartComponentsItemCounter
               :id="product!.id"

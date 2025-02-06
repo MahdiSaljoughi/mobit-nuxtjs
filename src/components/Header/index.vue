@@ -15,7 +15,7 @@ const { items } = cartStore;
 <template>
   <!-- Desktop -->
   <header
-    class="hidden lg:block lg:px-4 xl:px-8 2xl:px-14 sticky top-0 z-30 border-b dark:border-none bg-white dark:bg-zinc-900 text-xs xl:text-sx"
+    class="hidden lg:block lg:px-4 xl:px-8 2xl:px-14 sticky top-0 z-30 border-b dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs xl:text-sx"
   >
     <div class="flex items-center">
       <!-- Logo -->
@@ -38,7 +38,7 @@ const { items } = cartStore;
           <input
             type="text"
             placeholder="جستجو در مبیت"
-            class="flex-grow outline-none h-11 pl-4 pr-2 rounded-xl bg-zinc-100 dark:bg-zinc-800"
+            class="flex-grow h-11 pl-4 pr-2 rounded-xl bg-zinc-100 dark:bg-zinc-800"
           />
         </div>
 

@@ -14,13 +14,13 @@ const isShowDescription = ref<boolean>(false);
   <footer class="2xl:w-[93%] mx-3 2xl:mx-auto">
     <div class="flex items-center justify-center">
       <button
-        class="bg-zinc-100 dark:bg-zinc-800 h-[2.31rem] lg:h-10 w-32 lg:w-[9.25rem] text-xs lg:text-sx rounded-t-xl"
+        class="bg-zinc-100 dark:bg-zinc-800 h-[2.31rem] lg:h-10 w-32 lg:w-[9.25rem] rounded-t-xl group"
         @click="scrollToTop"
       >
         <div
-          class="flex items-center gap-x-2 justify-center hover:text-main duration-300"
+          class="flex items-center gap-x-2 justify-center group-hover:text-main duration-300"
         >
-          <p class="opacity-70">بازگشت به بالا</p>
+          <p class="text-xs">بازگشت به بالا</p>
           <UIcon name="i-heroicons-chevron-up" size="16" />
         </div>
       </button>
@@ -104,7 +104,7 @@ const isShowDescription = ref<boolean>(false);
             <NuxtLink
               v-for="(item, i) in items.child"
               :key="i"
-              class="text-xs opacity-60 hover:text-main duration-300"
+              class="text-xs text-zinc-500 dark:text-zinc-400 hover:text-main dark:hover:text-main duration-300"
               :to="item.href"
               target="_blank"
               >{{ item.name }}</NuxtLink

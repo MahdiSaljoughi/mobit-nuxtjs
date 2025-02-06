@@ -7,15 +7,15 @@ defineProps<{ product: TProduct }>();
 <template>
   <NuxtLink
     :to="`/products/${product?.slug}`"
-    class="flex flex-row lg:flex-col gap-y-3 lg:w-80 hover:shadow-around rounded-xl p-2 duration-300 group"
+    class="flex flex-col gap-y-3 lg:w-72 group"
   >
     <div
-      class="flex items-center justify-center lg:h-52 bg-zinc-100 dark:bg-zinc-800 rounded-2xl relative"
+      class="flex items-center justify-center lg:h-48 bg-zinc-100 dark:bg-zinc-800 rounded-2xl relative"
     >
       <NuxtImg
         :src="product?.images[0]?.url"
         :alt="product?.title"
-        class="max-w-20 sm:max-w-32 lg:min-w-28 lg:group-hover:scale-110 duration-300"
+        class="max-w-20 sm:max-w-32 lg:min-w-28 group-hover:scale-110 duration-300"
       />
 
       <div class="absolute top-0 flex justify-between w-full px-3 pt-3">

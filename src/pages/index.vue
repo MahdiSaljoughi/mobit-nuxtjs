@@ -12,7 +12,10 @@ definePageMeta({
       <div class="flex flex-col gap-y-10 mb-10">
         <HomeCategory />
 
-        <HomePromotion />
+        <HomePromotion
+          title="واچ پارتی"
+          href="https://www.mobit.ir/promotion"
+        />
 
         <HomeMostVisited />
 

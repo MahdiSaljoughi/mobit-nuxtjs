@@ -6,10 +6,12 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  outline: none;
 }
-pre
-html {
+
+pre html {
   scroll-behavior: smooth;
+  outline: none;
 }
 
 body {
@@ -20,17 +22,13 @@ body {
 @font-face {
   font-family: "IRAN-B";
   src: url("assets/fonts/IRANSansXFaNum-Bold.woff2") format("woff2");
-  font-style: normal;
   text-rendering: optimizeLegibility;
-  font-display: auto;
 }
 
 @font-face {
   font-family: "IRAN-R";
   src: url("assets/fonts/IRANSansXFaNum-Regular.woff2") format("woff2");
-  font-style: normal;
   text-rendering: optimizeLegibility;
-  font-display: auto;
 }
 
 @layer utilities {
@@ -41,7 +39,7 @@ body {
   }
 
   .dark .shadow-around {
-    --shadowdark: 0px 2px 14px #377DFF3a;
+    --shadowdark: 0px 2px 14px #377dff3a;
     box-shadow: var(--ring-offset-shadow, 0 0 #0000),
       var(--ring-shadow, 0 0 #0000), var(--shadowdark);
   }
