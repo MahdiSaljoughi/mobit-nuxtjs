@@ -2,8 +2,6 @@ import { NuxtAuthHandler } from "#auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../../prisma/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-// @ts-expect-error
-import jwt from "jsonwebtoken";
 
 const secret = useRuntimeConfig().authSecret;
 
@@ -17,7 +15,7 @@ export default NuxtAuthHandler({
     signIn: "/auth",
   },
   providers: [
-    // @ts-expect-error
+    // @ts-ignore
     CredentialsProvider.default({
       name: "Credentials",
       credentials: {
@@ -37,7 +35,7 @@ export default NuxtAuthHandler({
             phone: credentials.phone,
           },
           orderBy: {
-            expiresAt: "desc",
+            expires_at: "desc",
           },
         });
 
@@ -48,7 +46,7 @@ export default NuxtAuthHandler({
           };
         }
 
-        if (new Date() > otpCode.expiresAt) {
+        if (new Date() > otpCode.expires_at) {
           await prisma.otp.delete({
             where: {
               id: otpCode.id,
@@ -82,21 +80,6 @@ export default NuxtAuthHandler({
           });
         }
 
-        const access_token = jwt.sign({ id: userData.id }, secret, {
-          expiresIn: "30d",
-        });
-
-        userData = await prisma.user.update({
-          where: { id: userData.id },
-          data: { access_token },
-        });
-
-        await prisma.otp.delete({
-          where: {
-            id: otpCode.id,
-          },
-        });
-
         return userData;
       },
     }),
@@ -104,12 +87,7 @@ export default NuxtAuthHandler({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        return {
-          ...token,
-          id: user.id,
-          // @ts-expect-error
-          access_token: user.access_token,
-        };
+        return { ...token, id: user.id };
       }
       return token;
     },
@@ -117,7 +95,6 @@ export default NuxtAuthHandler({
     async session({ session, token }) {
       session.user = {
         id: token.id as string,
-        access_token: token.access_token as string,
       };
       return session;
     },

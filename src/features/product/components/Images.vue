@@ -1,44 +1,3 @@
-<!-- <script setup lang="ts">
-defineProps<{
-  images: {
-    url: string;
-  }[];
-  alt: string;
-}>();
-
-const imagePreview = ref<number>(0);
-</script>
-
-<template>
-  <div class="flex flex-col gap-y-6 w-full lg:max-w-96 lg:min-w-96">
-    <div class="rounded-2xl bg-zinc-100 dark:bg-zinc-900">
-      <div class="w-full max-w-96 mx-auto p-8">
-        <NuxtImg
-          :src="images[imagePreview]?.url"
-          :alt="alt"
-          class="w-full"
-          draggable="false"
-        />
-      </div>
-    </div>
-    <div class="flex flex-wrap items-center gap-4">
-      <button
-        v-for="(image, index) in images"
-        :key="index"
-        class="w-16 rounded-xl bg-zinc-100 dark:bg-zinc-800 p-2"
-        @click="imagePreview = index"
-      >
-        <NuxtImg
-          :src="image.url"
-          :alt="alt"
-          class="rounded-2xl w-full"
-          draggable="false"
-        />
-      </button>
-    </div>
-  </div>
-</template> -->
-
 <script setup lang="ts">
 const props = defineProps<{
   images: { url: string }[];
@@ -102,7 +61,7 @@ const handleMouseUp = () => {
 
 <template>
   <div class="flex flex-col gap-y-4 w-full lg:max-w-96 lg:min-w-96">
-    <HomePromotionHeadersMobile
+    <HomeOfferHeadersMobile
       :is-title="false"
       href="https://www.mobit.ir/promotion"
     />

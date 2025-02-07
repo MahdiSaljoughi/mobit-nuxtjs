@@ -32,7 +32,10 @@ const { items } = cartStore;
           class="flex items-center flex-grow min-w-0 max-w-[520px] bg-zinc-100 dark:bg-zinc-800 rounded-xl pr-4 ml-4 2xl:ml-24"
         >
           <button class="flex items-center justify-center">
-            <UIcon name="i-solar-magnifer-linear" class="size-5 opacity-50" />
+            <UIcon
+              name="i-heroicons-magnifying-glass-20-solid"
+              class="size-5 opacity-50"
+            />
           </button>
           <div class="hidden xl:block h-6 w-px bg-slate-400 opacity-50 mr-2" />
           <input

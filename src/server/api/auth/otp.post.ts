@@ -20,13 +20,13 @@ export default defineEventHandler(async (event: H3Event) => {
     data: {
       code: String(otp),
       phone,
-      expiresAt: new Date(Date.now() + 2 * 60 * 1000),
+      expires_at: new Date(Date.now() + 2 * 60 * 1000),
     },
   });
 
   return {
     message: "کد تایید با موفقیت ارسال شد",
     otp,
-    expires_at: createdOtp.expiresAt,
+    expires_at: createdOtp.expires_at,
   };
 });

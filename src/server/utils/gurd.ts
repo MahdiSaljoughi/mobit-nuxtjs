@@ -1,12 +1,9 @@
+import { getToken } from "#auth";
 import type { H3Event } from "h3";
-import { getHeaders } from "h3";
-import useAccessToken from "../../features/auth/composables/useAccessToken";
 import userDb from "../../repository/UserRepository";
 
 export default async function gurd(event: H3Event) {
-  const { data: token } = useAccessToken(
-    getHeaders(event)?.authorization || ""
-  );
+  const token = await getToken({ event });
 
   if (!token) {
     return { status_code: 401, message: "توکنی یافت نشد" };

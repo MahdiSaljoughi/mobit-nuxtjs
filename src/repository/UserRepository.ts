@@ -1,5 +1,5 @@
-import type { TUser } from "~/types";
-import prisma from "~~/prisma/prisma";
+import prisma from "../../prisma/prisma";
+import type { TUser } from "../types";
 
 export interface IUserRepository {
   getAll(): Promise<TUser[]>;

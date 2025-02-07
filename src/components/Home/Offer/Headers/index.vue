@@ -15,7 +15,7 @@ defineProps<{
         <p>{{ title }}</p>
       </div>
 
-      <HomePromotionTimer />
+      <HomeOfferTimer />
 
       <NuxtLink :to="href" class="flex items-center gap-x-2 text-sm">
         <span>مشاهده همه</span>
@@ -28,11 +28,7 @@ defineProps<{
     </div>
 
     <div class="block lg:hidden">
-      <HomePromotionHeadersMobile
-        :is-title="false"
-        :title="title"
-        :href="href"
-      />
+      <HomeOfferHeadersMobile :is-title="false" :title="title" :href="href" />
     </div>
   </div>
 </template>

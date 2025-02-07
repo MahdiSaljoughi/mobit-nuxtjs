@@ -20,6 +20,6 @@ defineProps<{
       <p v-if="isTitle" class="text-xs">{{ title }}</p>
     </div>
 
-    <HomePromotionTimerMobile />
+    <HomeOfferTimerMobile />
   </NuxtLink>
 </template>

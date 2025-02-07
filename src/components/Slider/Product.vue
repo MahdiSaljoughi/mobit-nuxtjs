@@ -40,13 +40,13 @@ defineProps<{ products?: TProduct[] }>();
 
     <!-- navigations -->
     <button
-      class="swiper-button-prev absolute z-10 bottom-40 right-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
+      class="swiper-button-prev absolute z-10 bottom-12 right-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
     >
       <UIcon name="i-solar-alt-arrow-right-line-duotone" size="20" />
     </button>
 
     <button
-      class="swiper-button-next absolute z-10 bottom-40 left-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
+      class="swiper-button-next absolute z-10 bottom-12 left-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
     >
       <UIcon
         name="i-solar-alt-arrow-right-line-duotone"

@@ -3,9 +3,9 @@ import type { H3Event } from "h3";
 import ProductRepository from "../../../repository/ProductRepository";
 
 export default defineEventHandler(async (event: H3Event) => {
-  const id = event.context.params?.id;
+  const slug = event.context.params?.id;
 
-  if (!id) {
+  if (!slug) {
     return {
       status_code: 400,
       message: "شناسه محصول الزامی است",
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   try {
-    const product = await ProductRepository.getById(Number(id));
+    const product = await ProductRepository.getBySlug(String(slug));
 
     if (!product) {
       return {

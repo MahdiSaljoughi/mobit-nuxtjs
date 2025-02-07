@@ -1,10 +1,11 @@
-import type { TProduct } from "~/types";
-import prisma from "~~/prisma/prisma";
 import type { Prisma } from "@prisma/client";
+import prisma from "../../prisma/prisma";
+import type { TProduct } from "../types";
 
 export interface IProductRepository {
   getAll(): Promise<TProduct[]>;
   getById(id: number): Promise<TProduct | null>;
+  getBySlug(slug: string): Promise<TProduct | null>;
   create(data: Prisma.ProductCreateInput): Promise<TProduct>;
   updateById(id: number, data: Prisma.ProductUpdateInput): Promise<TProduct>;
   deleteById(id: number): Promise<TProduct>;
@@ -15,7 +16,11 @@ const ProductRepository: IProductRepository = {
     return await prisma.product.findMany({
       include: {
         images: true,
-        variants: true,
+        variants: {
+          orderBy: {
+            id: "asc",
+          },
+        },
       },
     });
   },
@@ -25,7 +30,25 @@ const ProductRepository: IProductRepository = {
       where: { id },
       include: {
         images: true,
-        variants: true,
+        variants: {
+          orderBy: {
+            id: "asc",
+          },
+        },
+      },
+    });
+  },
+
+  async getBySlug(slug: string) {
+    return await prisma.product.findUnique({
+      where: { slug },
+      include: {
+        images: true,
+        variants: {
+          orderBy: {
+            id: "asc",
+          },
+        },
       },
     });
   },

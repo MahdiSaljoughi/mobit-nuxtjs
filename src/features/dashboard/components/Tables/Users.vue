@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import useUsers from "~/features/user/composables/useUser";
+import type { TUser } from "~/types";
 
-const { status, users, error } = await useUsers().getAll();
+const { status, data, error, refresh } = await useUsers().getAll();
 
 const search = ref<string>("");
 const page = ref<number>(1);
 const pageCount = ref<number>(20);
-const pageTotal = ref(users?.length);
+const pageTotal = ref(data?.value?.users?.length);
 const isOpenDeleteModal = ref<boolean>(false);
 const isOpenEditModal = ref<boolean>(false);
 const userInfo = reactive({
@@ -86,10 +87,10 @@ const items = (row: any) => [
 
 const filteredRows = computed(() => {
   if (!search.value) {
-    return users;
+    return data?.value?.users;
   }
 
-  return users?.filter((person: any) => {
+  return data?.value?.users?.filter((person: TUser) => {
     return Object.values(person).some((value: any) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });
@@ -116,6 +117,8 @@ const expand = ref({
 const removeUser = async () => {
   await useUsers().remove(Number(userInfo.id));
   isOpenDeleteModal.value = false;
+  // @ts-expect-error
+  await refresh();
 };
 
 const editUser = async () => {
@@ -139,13 +142,26 @@ const editUser = async () => {
     </div>
 
     <div class="flex flex-col gap-y-6 lg:gap-y-8">
-      <UInput
-        v-model="search"
-        placeholder="جستجو ..."
-        variant="none"
-        class="bg-zinc-100 dark:bg-zinc-900 rounded-xl p-2 w-full lg:w-1/2 xl:w-1/3"
-        icon="i-heroicons-magnifying-glass-20-solid"
-      />
+      <div class="flex justify-between gap-x-8">
+        <UInput
+          v-model="search"
+          placeholder="جستجو ..."
+          variant="none"
+          class="bg-zinc-100 dark:bg-zinc-900 rounded-xl p-2 w-full lg:w-1/2 xl:w-1/3"
+          icon="i-heroicons-magnifying-glass-20-solid"
+        />
+
+        <div class="flex items-center gap-x-2">
+          <UButton
+            class="rounded-xl px-4 py-3"
+            :loading="status === 'pending'"
+            icon="i-heroicons-arrow-path-20-solid"
+            @click="refresh"
+          >
+            <span class="text-sm hidden sm:block">تازه سازی</span>
+          </UButton>
+        </div>
+      </div>
 
       <UTable
         v-model:expand="expand"

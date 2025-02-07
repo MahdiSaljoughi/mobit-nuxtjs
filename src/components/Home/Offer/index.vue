@@ -4,13 +4,13 @@ defineProps<{
   href: string;
 }>();
 
-const { products } = await useProduct().getAll();
+const { data } = await useProduct().getAll();
 </script>
 
 <template>
   <div class="flex flex-col gap-y-4">
-    <HomePromotionHeaders :title="title" :href="href" />
+    <HomeOfferHeaders :title="title" :href="href" />
 
-    <SliderProduct :products="products" />
+    <SliderProduct :products="data?.products" />
   </div>
 </template>

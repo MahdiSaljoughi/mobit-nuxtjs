@@ -2,12 +2,13 @@
 import useProduct from "~/features/product/composables/useProduct";
 import type { TProduct } from "~/types";
 
-const { status, products, error } = await useProduct().getAll();
+const { status, data, error, refresh } = await useProduct().getAll();
 
 const search = ref("");
 const page = ref(1);
 const pageCount = ref(20);
-const pageTotal = ref(products?.length);
+const pageTotal = ref(data?.value?.products.length);
+const userName = ref("");
 
 const formatJalali = (isoDate: Date) => {
   if (!isoDate) return "نامشخص";
@@ -79,10 +80,10 @@ const items = (row: any) => [
 
 const filteredRows = computed(() => {
   if (!search.value) {
-    return products;
+    return data?.value?.products;
   }
 
-  return products?.filter((person: any) => {
+  return data?.value?.products.filter((person: TProduct) => {
     return Object.values(person).some((value: any) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });
@@ -106,10 +107,14 @@ const expand = ref({
   row: {},
 });
 
-const getUser = (id: number) => {
-  const { user } = useUser().getById(id);
+const getUserName = (id: number) => {
+  useUser()
+    .getById(id)
+    .then((res) => {
+      userName.value = res?.user?.user_name || "-";
+    });
 
-  return user?.user_name;
+  return userName.value;
 };
 </script>
 
@@ -134,14 +139,24 @@ const getUser = (id: number) => {
           v-model="search"
           placeholder="جستجو ..."
           variant="none"
-          class="bg-zinc-100 dark:bg-zinc-900 rounded-xl p-2 w-full lg:w-1/3"
+          class="bg-zinc-100 dark:bg-zinc-900 rounded-xl p-2 w-full lg:w-1/2 xl:w-1/3"
           icon="i-heroicons-magnifying-glass-20-solid"
         />
 
-        <UButton color="primary" variant="solid" class="rounded-xl">
-          <span class="text-sm">افزودن محصول</span>
-          <UIcon name="i-heroicons-plus-20-solid" size="20" />
-        </UButton>
+        <div class="flex items-center gap-x-2">
+          <UButton
+            class="rounded-xl px-4 py-3"
+            :loading="status === 'pending'"
+            icon="i-heroicons-arrow-path-20-solid"
+            @click="refresh"
+          >
+            <span class="text-sm hidden sm:block">تازه سازی</span>
+          </UButton>
+          <UButton color="primary" variant="solid" class="rounded-xl px-4 py-3">
+            <UIcon name="i-heroicons-plus-20-solid" size="20" />
+            <span class="text-sm hidden sm:block">افزودن محصول</span>
+          </UButton>
+        </div>
       </div>
 
       <UTable
@@ -165,7 +180,7 @@ const getUser = (id: number) => {
         }"
       >
         <template #images-data="{ row }">
-          <NuxtImg :src="row.images[0].url" :alt="row.title" class="w-10" />
+          <NuxtImg :src="row.images[0]?.url" :alt="row.title" class="w-10" />
         </template>
 
         <template #title-data="{ row }">
@@ -198,7 +213,7 @@ const getUser = (id: number) => {
               <NuxtImg
                 v-for="image in row.images"
                 :key="image.id"
-                :src="image.url"
+                :src="image?.url"
                 :alt="row.title"
                 class="w-10"
               />
@@ -216,7 +231,7 @@ const getUser = (id: number) => {
 
             <div class="flex items-center gap-x-2">
               <span class="opacity-80">ایجاد شده توسط :</span>
-              <span>{{ getUser(row.created_by) }}</span>
+              <span>{{ getUserName(row.created_by) }}</span>
             </div>
 
             <!-- Date -->

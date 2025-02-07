@@ -11,9 +11,6 @@ declare type TUser = {
   email_verified: boolean;
   created_at: Date;
   updated_at: Date;
-  access_token: string | null;
-  created_at: Date;
-  updated_at: Date;
 };
 
 declare type TProduct = {
@@ -22,19 +19,26 @@ declare type TProduct = {
   title_eng: string;
   slug: string;
   price: number | null;
-  images: { id: number; url: string; productId: number }[];
-  variants: {
-    id: number;
-    price: number;
-    discount_percentage: number | null;
-    productId: number;
-    attributes: unknown;
-    quantity: number;
-    price_after_discount: number;
-  }[];
-  discount_percentage: number | null;
+  discount: number | null;
   description: string;
   created_by: number;
+  is_fast_delivery: boolean;
+  is_offer: boolean;
   created_at: Date;
   updated_at: Date;
+  images: TProductImage[];
+  variants: TProductVariant[];
 };
+
+declare type TProductVariant = {
+  id: number;
+  product_id: number;
+  quantity: number;
+  name: string;
+  value: string;
+  price: number;
+  discount: number | null;
+  price_after_discount: number | null;
+};
+
+declare type TProductImage = { id: number; url: string; product_id: number };

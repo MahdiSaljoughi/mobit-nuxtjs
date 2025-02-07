@@ -1,12 +1,10 @@
+import { getToken } from "#auth";
 import UserRepository from "../../../repository/UserRepository";
-import { getHeaders, defineEventHandler } from "h3";
+import { defineEventHandler } from "h3";
 import type { H3Event } from "h3";
-import useAccessToken from "../../../features/auth/composables/useAccessToken";
 
 export default defineEventHandler(async (event: H3Event) => {
-  const { data: token } = useAccessToken(
-    getHeaders(event)?.authorization || ""
-  );
+  const token = await getToken({ event });
 
   if (!token) {
     return { status_code: 401, message: "توکنی یافت نشد" };

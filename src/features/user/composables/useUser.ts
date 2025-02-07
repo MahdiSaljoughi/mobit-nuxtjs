@@ -5,20 +5,17 @@ const useUser = () => {
 
   const info = async () => {
     try {
-      const { data, error, status } = await useFetch<{
-        status_code: number;
-        user: TUser;
-      }>(`${BASE_URL}/info`, {
-        key: "info-user",
-        headers: {
-          Authorization: `Bearer ${
-            useAuths().data.value?.user.access_token &&
-            useAuths().data.value?.user.access_token
-          }`,
-        },
-      });
+      const { data } = await useLazyAsyncData<{ user: TUser }>(
+        "user-info",
+        async () =>
+          await $fetch(`${BASE_URL}/info`, {
+            headers: {
+              Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+            },
+          })
+      );
 
-      return { userInfo: data.value?.user, error, status };
+      return { userInfo: data.value?.user };
     } catch (error: unknown | Error) {
       return {
         status_code: 500,
@@ -29,16 +26,19 @@ const useUser = () => {
 
   const getAll = async () => {
     try {
-      const { status, data, error, refresh } = await useFetch<{
+      const { data, status, error, refresh } = await useLazyAsyncData<{
         users: TUser[];
-      }>(BASE_URL, {
-        key: "all-users",
-        headers: {
-          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-        },
-      });
+      }>(
+        "all-users",
+        async () =>
+          await $fetch(BASE_URL, {
+            headers: {
+              Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+            },
+          })
+      );
 
-      return { status, users: data.value?.users, error, refresh };
+      return { status, data, error, refresh };
     } catch (error: unknown | Error) {
       return {
         status_code: 500,
@@ -47,18 +47,21 @@ const useUser = () => {
     }
   };
 
-  const getById = (id: number) => {
+  const getById = async (id: number) => {
     try {
-      const { status, data, error } = useFetch<{
+      const { status, data } = await useAsyncData<{
         user: TUser;
-      }>(`${BASE_URL}/${id}`, {
-        key: "user-by-id",
-        headers: {
-          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-        },
-      });
+      }>(
+        `user-${id}`,
+        async () =>
+          await $fetch(`${BASE_URL}/${id}`, {
+            headers: {
+              Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+            },
+          })
+      );
 
-      return { status, user: data.value?.user, error };
+      return { status, user: data.value?.user };
     } catch (error: unknown | Error) {
       return {
         status_code: 500,
@@ -73,7 +76,7 @@ const useUser = () => {
         method: "DELETE",
         key: "remove-user",
         headers: {
-          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+          Authorization: `Bearer ${await useAuths().getAccessToken()}`,
         },
       });
 
