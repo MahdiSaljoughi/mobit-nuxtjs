@@ -36,6 +36,18 @@ const validatePhone = async () => {
 };
 
 const handlePhone = async () => {
+  const expireTime = parseInt(localStorage.getItem("resendExpireTime") || "0");
+  const remaining = Math.floor((expireTime - Date.now()) / 1000);
+
+  if (remaining > 0) {
+    toast.add({
+      id: "1",
+      title: `لطفا ${remaining} ثانیه دیگر صبر کنید`,
+      timeout: 3000,
+    });
+    return;
+  }
+
   if (isValidPhone.value) {
     isLoading.value = true;
 
@@ -50,10 +62,18 @@ const handlePhone = async () => {
     );
 
     isLoading.value = false;
-
     toast.add({ id: "1", title: sendOtp.message, timeout: 3000 });
 
     isPhoneStep.value = false;
+
+    startResendTimer();
+
+    nextTick(() => {
+      const firstOtpInput = document.getElementById(
+        "otpCode-0"
+      ) as HTMLInputElement;
+      firstOtpInput?.focus();
+    });
 
     toast.add({ id: "2", title: `کد تایید: ${sendOtp.otp}`, timeout: 12000 });
   } else {
@@ -64,6 +84,47 @@ const handlePhone = async () => {
     });
   }
 };
+
+// Otp
+const resendTimer = ref<number | null>(null);
+let timerInterval: NodeJS.Timeout | null = null;
+const startResendTimer = (remainingTime: number | null = null) => {
+  let expireTime = parseInt(localStorage.getItem("resendExpireTime") || "0");
+
+  if (!remainingTime && expireTime > Date.now()) return;
+
+  expireTime = Date.now() + (remainingTime ?? 120) * 1000;
+  localStorage.setItem("resendExpireTime", expireTime.toString());
+
+  updateResendTimer();
+};
+const updateResendTimer = () => {
+  if (timerInterval) clearInterval(timerInterval);
+
+  timerInterval = setInterval(() => {
+    const expireTime = parseInt(
+      localStorage.getItem("resendExpireTime") || "0"
+    );
+
+    const remaining = Math.floor((expireTime - Date.now()) / 1000);
+    resendTimer.value = remaining > 0 ? remaining : null;
+
+    if (remaining <= 0) {
+      clearInterval(timerInterval as NodeJS.Timeout);
+      localStorage.removeItem("resendExpireTime");
+    }
+  }, 1000);
+};
+onMounted(() => {
+  const expireTime = parseInt(localStorage.getItem("resendExpireTime") || "0");
+  const remainingTime = Math.floor((expireTime - Date.now()) / 1000);
+
+  if (remainingTime > 0) {
+    startResendTimer(remainingTime);
+  } else {
+    localStorage.removeItem("resendExpireTime");
+  }
+});
 
 const handleOtpInput = (index: number, event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -158,6 +219,7 @@ const submitOtp = async () => {
         v-model="state.phone"
         name="phone"
         type="text"
+        inputmode="numeric"
         placeholder="شماره موبایل خود را وارد کنید"
         class="outline-none bg-zinc-100 dark:bg-zinc-900 focus:bg-white dark:focus:bg-zinc-900 duration-300 focus:ring-2 ring-blue-500 px-2 py-2.5 rounded-xl w-full placeholder:text-sx"
         :class="errors.phone && 'ring-red-500'"
@@ -236,9 +298,20 @@ const submitOtp = async () => {
         </p>
       </div>
 
-      <div class="flex flex-col gap-y-2 text-xs">
-        <p class="font-IRANr">1:57</p>
-        <button class="text-main" @click="handlePhone">ارسال مجدد</button>
+      <div class="flex flex-col gap-y-2 text-sx">
+        <p v-if="resendTimer !== null" class="font-IRANr">
+          {{ Math.floor(resendTimer / 60) }}:{{
+            (resendTimer % 60).toString().padStart(2, "0")
+          }}
+        </p>
+        <button
+          class="duration-300"
+          :class="resendTimer !== null ? 'opacity-40' : 'text-main'"
+          :disabled="resendTimer !== null"
+          @click="handlePhone"
+        >
+          ارسال مجدد
+        </button>
       </div>
     </div>
 

@@ -15,12 +15,17 @@ const ProductRepository: IProductRepository = {
   async getAll() {
     return await prisma.product.findMany({
       include: {
-        images: true,
+        images: {
+          orderBy: {
+            id: "asc",
+          },
+        },
         variants: {
           orderBy: {
             id: "asc",
           },
         },
+        category: true,
       },
     });
   },
@@ -29,12 +34,17 @@ const ProductRepository: IProductRepository = {
     return await prisma.product.findUnique({
       where: { id },
       include: {
-        images: true,
+        images: {
+          orderBy: {
+            id: "asc",
+          },
+        },
         variants: {
           orderBy: {
             id: "asc",
           },
         },
+        category: true,
       },
     });
   },
@@ -43,12 +53,17 @@ const ProductRepository: IProductRepository = {
     return await prisma.product.findUnique({
       where: { slug },
       include: {
-        images: true,
+        images: {
+          orderBy: {
+            id: "asc",
+          },
+        },
         variants: {
           orderBy: {
             id: "asc",
           },
         },
+        category: true,
       },
     });
   },
@@ -59,6 +74,7 @@ const ProductRepository: IProductRepository = {
       include: {
         images: true,
         variants: true,
+        category: true,
       },
     });
   },
@@ -70,6 +86,7 @@ const ProductRepository: IProductRepository = {
       include: {
         images: true,
         variants: true,
+        category: true,
       },
     });
   },
@@ -80,6 +97,7 @@ const ProductRepository: IProductRepository = {
       include: {
         images: true,
         variants: true,
+        category: true,
       },
     });
   },

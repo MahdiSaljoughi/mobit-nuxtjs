@@ -4,71 +4,169 @@ definePageMeta({
 });
 
 const route = useRoute();
+
 const slug = route.params.slug;
+
 const { product, status } = await useProduct().getBySlug(String(slug));
+
+const variantIndex = ref<number>(0);
+
+const isAvailableProduct = computed(() => {
+  return (
+    product?.variants[variantIndex.value]?.quantity != undefined &&
+    product?.variants[variantIndex.value]?.quantity > 0
+  );
+});
+
+const links = [
+  {
+    label: "",
+    icon: "i-solar-home-smile-linear",
+    to: "/",
+  },
+  {
+    label: "کالای دیجیتال",
+    to: "/products",
+  },
+  {
+    label: "موبایل",
+  },
+];
 </script>
 
 <template>
-  <div class="py-10 px-3 sm:px-8 md:px-10 lg:px-16">
+  <div class="py-6 px-3 sm:px-8 md:px-10 lg:px-16">
+    <div class="flex items-center gap-x-4">
+      <p class="text-xs text-zinc-600 dark:text-zinc-300">شما اینجا هستید :</p>
+      <UBreadcrumb
+        :links="links"
+        :ui="{
+          base: 'text-xs',
+        }"
+      />
+    </div>
+
     <div v-if="status === 'pending'">
       <Loadings />
     </div>
 
-    <div v-else class="lg:flex justify-between lg:gap-x-8">
+    <div v-else class="lg:flex justify-between lg:gap-x-8 pt-4">
       <div class="w-full rounded-2xl">
-        <div class="flex flex-col gap-y-4 md:gap-8">
+        <div class="flex flex-col gap-y-4 lg:gap-8">
           <div class="flex gap-4 flex-wrap lg:flex-nowrap">
             <ProductComponentsImages
               :images="product?.images ?? []"
               :alt="product?.title ?? ''"
             />
-            <div class="flex flex-col gap-y-6 md:gap-y-4 w-full">
+
+            <div class="flex flex-col gap-y-4 lg:gap-y-6 w-full">
               <h1
                 class="text-sm md:text-base lg:text-lg line-clamp-2 leading-7"
               >
                 {{ product?.title }}
               </h1>
+
               <div
-                class="flex flex-col md:flex-row md:items-center gap-y-4 gap-x-2"
+                class="flex flex-col lg:flex-row lg:items-center gap-y-4 gap-x-2"
               >
                 <span
-                  class="md:text-nowrap text-left md:text-right block text-xs text-zinc-400"
+                  class="lg:text-nowrap text-left lg:text-right block text-xs text-zinc-400"
                 >
                   {{ product?.title_eng }}
                 </span>
-                <span class="w-full h-0.5 bg-zinc-200 dark:bg-zinc-800" />
+
+                <p
+                  class="hidden lg:block w-full h-0.5 bg-zinc-100 dark:bg-zinc-800"
+                />
+
+                <p class="hidden lg:block text-xs text-zinc-400 text-nowrap">
+                  {{ `Mbt - ${product?.id}` }}
+                </p>
+
+                <div class="flex lg:hidden items-center gap-x-3">
+                  <p class="w-full h-0.5 bg-zinc-100 dark:bg-zinc-800" />
+                  <p class="text-xs text-zinc-400 text-nowrap">
+                    {{ `Mbt - ${product?.id}` }}
+                  </p>
+                  <p class="w-full h-0.5 bg-zinc-100 dark:bg-zinc-800" />
+                </div>
               </div>
-              <span class="text-xs text-zinc-600">{{
-                `دسته بندی : ${"موبایل"}`
-              }}</span>
+
+              <div
+                class="flex flex-col gap-y-6 lg:flex-row gap-x-4 pb-4 lg:pb-0 border-b-2 border-zinc-100 dark:border-zinc-800 lg:border-none"
+              >
+                <div
+                  class="flex items-center justify-between lg:justify-normal gap-x-2 group w-full"
+                >
+                  <p class="text-xs text-zinc-600 dark:text-zinc-300">برند :</p>
+                  <NuxtLink
+                    :to="`https://www.mobit.ir/brand/${product?.brand_eng}`"
+                    class="text-main lg:text-black lg:dark:text-white group-hover:text-main group-hover:mr-3 duration-200 text-sx"
+                  >
+                    {{ product?.brand }}
+                  </NuxtLink>
+                </div>
+                <div
+                  class="flex items-center justify-between lg:justify-normal gap-x-2 group w-full"
+                >
+                  <p class="text-xs text-zinc-600 dark:text-zinc-300">
+                    دسته بندی :
+                  </p>
+                  <NuxtLink
+                    :to="product?.category.url"
+                    class="text-main lg:text-black lg:dark:text-white group-hover:text-main group-hover:mr-3 duration-200 text-sx"
+                  >
+                    {{ product?.category.title }}
+                  </NuxtLink>
+                </div>
+              </div>
+
+              <div class="mt-2 lg:mt-4">
+                <div
+                  v-if="isAvailableProduct"
+                  class="flex items-center gap-x-2"
+                >
+                  <p class="text-xs text-zinc-600 dark:text-zinc-300">رنگ :</p>
+                  <p class="text-sx">
+                    {{ product?.variants[variantIndex]?.color_name }}
+                  </p>
+                  <div
+                    v-for="(variant, index) in product?.variants"
+                    :key="variant.id"
+                    class="relative flex items-center justify-center"
+                  >
+                    <button
+                      :style="{ backgroundColor: variant.hex_code }"
+                      class="size-8 lg:size-12 rounded-full border-4 border-zinc-200 dark:border-zinc-600"
+                      @click="variantIndex = index"
+                    />
+                    <UIcon
+                      v-if="variantIndex === index"
+                      name="i-solar-check-circle-line-duotone"
+                      class="absolute inset-0 m-auto size-6 lg:size-9"
+                      :class="
+                        variant.hex_code === '#ffffff' ||
+                        variant.hex_code === '#fff'
+                          ? 'text-black'
+                          : 'text-white'
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div
             class="flex flex-col lg:flex-row justify-between w-full gap-x-10"
           >
             <div
-              class="lg:sticky top-24 flex items-center gap-x-2 mb-4 bg-gradient-to-r from-transparent to-green-500/40 py-2 pr-4 rounded-lg h-10 lg:w-72"
+              class="lg:sticky top-10 flex items-center gap-x-2 mb-4 bg-gradient-to-r from-transparent to-green-500/40 py-2 pr-4 rounded-lg h-10 lg:w-72"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.6em"
-                height="1.6em"
-                viewBox="0 0 24 24"
-                class="text-green-600/80"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="3"
-                  d="M2.75 16.401a1.15 1.15 0 0 0 1.16 1.15a16.7 16.7 0 0 1 3.535.333c1.64.204 3.204.81 4.555 1.761V6.442A10.24 10.24 0 0 0 7.445 4.68a16.6 16.6 0 0 0-3.6-.322a1.15 1.15 0 0 0-1.074 1.15zm18.5 0a1.15 1.15 0 0 1-1.16 1.15a16.7 16.7 0 0 0-3.535.333c-1.64.204-3.204.81-4.555 1.761V6.442a10.24 10.24 0 0 1 4.555-1.762a16.6 16.6 0 0 1 3.6-.322a1.15 1.15 0 0 1 1.073 1.15z"
-                />
-              </svg>
-              <span class="text-sm md:text-base">معرفی کالا</span>
+              svg
+              <span class="text-sm lg:text-base">معرفی کالا</span>
             </div>
             <div class="w-full">
-              <p class="w-full leading-8 font-IRANr text-sm">
+              <p class="w-full leading-8 font-IRANr text-sm line-clamp-6">
                 {{ product?.description }}
               </p>
             </div>
@@ -76,67 +174,117 @@ const { product, status } = await useProduct().getBySlug(String(slug));
         </div>
       </div>
 
-      <div>
+      <div class="pt-20 lg:pt-0">
         <div
-          class="w-full lg:w-72 xl:w-96 shadow-md shadow-black lg:shadow-none bg-white lg:bg-zinc-50 dark:bg-zinc-900 lg:rounded-2xl py-4 px-2 md:p-4 fixed bottom-0 inset-x-0 lg:sticky lg:top-10 z-10"
+          class="w-full lg:w-72 xl:w-96 shadow-lg shadow-black lg:shadow-none bg-white lg:bg-zinc-50 dark:bg-zinc-900 lg:rounded-2xl py-4 px-2 lg:p-4 fixed lg:sticky bottom-0 inset-x-0 lg:top-10 z-10"
         >
           <div
-            v-if="product?.variants[0]?.quantity! > 0"
-            class="flex flex-row-reverse md:flex-col gap-3 gap-y-4 items-center justify-between"
+            v-if="isAvailableProduct"
+            class="flex flex-row-reverse lg:flex-col gap-x-3 gap-y-4 items-center justify-between"
           >
             <div
-              class="hidden w-full text-[13px] lg:flex flex-col gap-y-4 mb-2"
+              class="hidden lg:flex flex-col gap-y-4 border dark:border-zinc-800 w-full p-3 rounded-2xl"
             >
-              <div class="flex items-center gap-x-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="2.4em"
-                  height="2.4em"
-                  viewBox="0 0 128 128"
-                >
-                  <path fill="#005c8a" d="M21.48 13.03h86.74V128H21.48z" />
-                  <path fill="#005c8a" d="M19.3 17.3h91.21v79.87H19.3z" />
-                  <path
-                    fill="#7792ac"
-                    d="M105.83 2.78H22.16c-5.08 0-9.24 4.15-9.24 9.24V128h35.6v-13.36c0-2.83 2.31-5.15 5.14-5.15h20.66c2.84 0 5.16 2.32 5.16 5.15V128h35.6V12.02c-.01-5.08-4.16-9.24-9.25-9.24m-67.68 85.4h-13v-15.7h13zm0-24.96h-13v-15.7h13zm0-24.95h-13v-15.7h13zm21.79 49.91H46.93v-15.7h13.01zm0-24.96H46.93v-15.7h13.01zm0-24.95H46.93v-15.7h13.01zm21.78 49.91h-13v-15.7h13zm0-24.96h-13v-15.7h13zm0-24.95h-13v-15.7h13zm21.79 49.91H90.5v-15.7h13.01zm0-24.96H90.5v-15.7h13.01zm0-24.95H90.5v-15.7h13.01z"
+              <div class="flex items-center justify-between">
+                <button class="flex items-center gap-x-2">
+                  <UIcon
+                    name="i-solar-shop-bold-duotone"
+                    class="text-red-400"
+                    size="36"
                   />
-                </svg>
-                <span>موجود در انبار مبیت</span>
+                  <p class="font-IRANr">عصر ارتباط</p>
+                </button>
+                <button
+                  class="bg-main/20 dark:bg-main/10 py-2 px-4 rounded-full text-sx text-slate-700 dark:text-slate-300"
+                >
+                  خرید حضوری
+                </button>
               </div>
-              <div class="flex items-center gap-x-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="2.4em"
-                  height="2.4em"
-                  viewBox="0 0 24 24"
-                  class="text-emerald-400"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082"
-                    opacity="0.5"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M15.06 10.5a.75.75 0 0 0-1.12-1l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z"
-                  />
-                </svg>
-                <span>گارانتی اصالت کالا و سلامت فیزیکی</span>
+              <div class="flex items-center gap-x-2 text-sx">
+                <div class="flex items-center gap-x-2">
+                  <p class="font-IRANr opacity-80">امتیاز :</p>
+                  <div class="flex items-center gap-x-1 text-orange-400">
+                    <p>3.43</p>
+                    <IconSvg icon-id="i-star" class="size-6 mb-1" />
+                  </div>
+                </div>
+
+                <div class="w-0.5 h-7 bg-zinc-200 dark:bg-zinc-800" />
+
+                <div class="flex items-center gap-x-2">
+                  <p class="font-IRANr opacity-80">عملکرد :</p>
+                  <p>عالی</p>
+                </div>
               </div>
             </div>
-            <div class="flex items-center gap-x-1 lg:w-full justify-end">
-              <span class="text-lg md:text-xl">
-                {{ product?.variants[0].price.toLocaleString() }}
-              </span>
-              <span class="text-zinc-400 text-sm">تومان</span>
+
+            <div class="hidden lg:flex flex-col gap-y-4 w-full">
+              <div class="flex items-center gap-x-2">
+                <IconSvg
+                  icon-id="i-zemanat-product"
+                  class="size-8 text-emerald-400"
+                />
+                <p class="font-IRANr text-sm">
+                  گارانتی اصالت کالا و سلامت فیزیکی
+                </p>
+              </div>
             </div>
-            <CartComponentsItemCounter
-              :id="product!.id"
-              :title="product!.title"
-              :price="product?.price ?? 0"
-              :slug="product?.slug ?? ''"
-              :image="product?.images[0]?.url ?? ''"
-            />
+
+            <div class="flex flex-col items-end lg:w-full lg:h-16">
+              <div
+                v-if="
+                  isAvailableProduct && product?.variants[variantIndex].discount
+                "
+                class="flex flex-col lg:gap-y-2 items-end lg:w-full"
+              >
+                <div
+                  class="flex flex-row-reverse lg:flex-row items-center justify-end gap-x-3"
+                >
+                  <p class="line-through opacity-70 mt-1 text-xs lg:text-base">
+                    {{
+                      product?.variants[variantIndex]?.price.toLocaleString()
+                    }}
+                  </p>
+                  <div
+                    class="flex items-center gap-x-0.5 bg-red-400 dark:bg-red-500 rounded-lg pl-0.5 pr-1.5 py-0.5 lg:py-1 lg:pl-1 lg:pr-2 text-white text-xs"
+                  >
+                    <span>{{ product?.variants[variantIndex]?.discount }}</span>
+                    <IconSvg icon-id="i-percent" class="size-4" />
+                  </div>
+                </div>
+                <div class="flex items-center justify-end gap-x-2">
+                  <p class="lg:text-xl">
+                    {{
+                      product?.variants[
+                        variantIndex
+                      ]?.price_after_discount?.toLocaleString()
+                    }}
+                  </p>
+                  <p class="opacity-90 text-xs lg:text-sm font-IRANr">تومان</p>
+                </div>
+              </div>
+              <div v-else class="flex items-center gap-x-1 mt-auto">
+                <p class="lg:text-xl">
+                  {{ product?.variants[variantIndex]?.price.toLocaleString() }}
+                </p>
+                <p class="opacity-90 text-xs lg:text-sm font-IRANr">تومان</p>
+              </div>
+            </div>
+
+            <div class="lg:w-full">
+              <CartComponentsItemCounter
+                :id="product!.variants[variantIndex].id"
+                :title="product!.title"
+                :price="product!.variants[variantIndex].discount! ? product!.variants[variantIndex].price_after_discount! : product!.variants[variantIndex].price!"
+                :slug="product?.slug!"
+                :image="product?.images[variantIndex]?.url!"
+              />
+            </div>
+            <button
+              class="hidden lg:block w-full border border-zinc-800 dark:border-zinc-600 p-2.5 text-sm rounded-xl font-IRANr"
+            >
+              رزور حضوری
+            </button>
           </div>
 
           <div v-else class="flex items-center justify-center">

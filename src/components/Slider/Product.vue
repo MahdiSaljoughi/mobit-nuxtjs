@@ -17,11 +17,31 @@ defineProps<{ products?: TProduct[] }>();
     }"
     :breakpoints="{
       0: {
-        slidesPerView: 1.5,
+        slidesPerView: 1.2,
+        spaceBetween: 20,
+      },
+      360: {
+        slidesPerView: 1.4,
+        spaceBetween: 20,
+      },
+      480: {
+        slidesPerView: 1.7,
+        spaceBetween: 20,
+      },
+      640: {
+        slidesPerView: 2.2,
+        spaceBetween: 20,
+      },
+      840: {
+        slidesPerView: 2.8,
         spaceBetween: 20,
       },
       1000: {
-        slidesPerView: 2.5,
+        slidesPerView: 3.1,
+        spaceBetween: 20,
+      },
+      1200: {
+        slidesPerView: 4.1,
         spaceBetween: 20,
       },
       1500: {
@@ -40,13 +60,13 @@ defineProps<{ products?: TProduct[] }>();
 
     <!-- navigations -->
     <button
-      class="swiper-button-prev absolute z-10 bottom-12 right-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
+      class="swiper-button-prev absolute z-10 bottom-40 right-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
     >
       <UIcon name="i-solar-alt-arrow-right-line-duotone" size="20" />
     </button>
 
     <button
-      class="swiper-button-next absolute z-10 bottom-12 left-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
+      class="swiper-button-next absolute z-10 bottom-40 left-1 hidden lg:flex items-center justify-center p-2.5 bg-white dark:bg-zinc-700 rounded-xl shadow"
     >
       <UIcon
         name="i-solar-alt-arrow-right-line-duotone"

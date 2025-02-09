@@ -8,13 +8,13 @@ const imagePreview = ref<number>(0);
 const isActive = (index: number) => imagePreview.value === index;
 const direction = ref<"left" | "right">("right");
 
-const nextImage = () => {
-  direction.value = "left";
+const prevImage = () => {
+  direction.value = "right";
   imagePreview.value = (imagePreview.value + 1) % props.images.length;
 };
 
-const prevImage = () => {
-  direction.value = "right";
+const nextImage = () => {
+  direction.value = "left";
   imagePreview.value =
     (imagePreview.value - 1 + props.images.length) % props.images.length;
 };
@@ -62,7 +62,8 @@ const handleMouseUp = () => {
 <template>
   <div class="flex flex-col gap-y-4 w-full lg:max-w-96 lg:min-w-96">
     <HomeOfferHeadersMobile
-      :is-title="false"
+      :is-title="true"
+      title="پیشنهاد ویژه مبیت"
       href="https://www.mobit.ir/promotion"
     />
 
@@ -89,9 +90,30 @@ const handleMouseUp = () => {
           />
         </transition>
       </div>
+
       <div
-        class="flex items-center justify-center bg-zinc-200 dark:bg-zinc-800 absolute top-3 right-3 lg:top-auto lg:right-auto lg:bottom-3 w-12 h-28 lg:w-52 lg:h-12 rounded-xl"
-      />
+        class="flex flex-col gap-4 lg:flex-row-reverse items-center justify-center bg-white dark:bg-zinc-800 p-2.5 absolute top-3 right-3 lg:top-auto lg:right-auto lg:bottom-3 rounded-xl"
+      >
+        <button>
+          <IconSvg icon-id="i-share" class="w-6 text-slate-300" />
+        </button>
+        <button>
+          <IconSvg icon-id="i-price-chart" class="w-6 text-slate-300" />
+        </button>
+        <button>
+          <IconSvg icon-id="i-compare" class="w-6 text-slate-300" />
+        </button>
+        <button>
+          <IconSvg
+            icon-id="i-changeprice-deactive"
+            class="w-6 text-slate-300"
+          />
+        </button>
+        <button>
+          <IconSvg icon-id="i-favorite" class="w-6 text-slate-300" />
+        </button>
+      </div>
+
       <div class="flex lg:hidden items-center gap-x-1 absolute bottom-3">
         <button
           v-for="(image, index) in images"

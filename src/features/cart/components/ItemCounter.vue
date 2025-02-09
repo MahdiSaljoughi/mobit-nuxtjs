@@ -39,7 +39,7 @@ const removeFromCart = () => {
 </script>
 
 <template>
-  <div class="w-full">
+  <div>
     <div
       v-if="itemQuantity > 0"
       class="flex items-center justify-between px-4 py-2 rounded-xl border-2 dark:border-zinc-800 w-40 lg:mx-auto"

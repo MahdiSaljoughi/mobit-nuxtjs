@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const inputDays = ref(2);
+const inputDays = ref(1);
 const totalSeconds = ref(inputDays.value * 24 * 60 * 60);
 const interval = ref<ReturnType<typeof setInterval> | null>(null);
 

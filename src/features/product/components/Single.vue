@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import type { TProduct } from "~/types";
 
-defineProps<{ product: TProduct }>();
+const props = defineProps<{ product: TProduct }>();
+
+const isAvailableProduct = computed(() => {
+  return (
+    props.product.variants[0]?.quantity != undefined &&
+    props.product.variants[0].quantity > 0
+  );
+});
 </script>
 
 <template>
@@ -21,21 +28,21 @@ defineProps<{ product: TProduct }>();
       <div class="absolute top-0 flex justify-between w-full px-3 pt-3">
         <div class="flex flex-col items-start gap-y-3 text-xs text-white">
           <div
-            v-if="product?.variants[0]?.quantity! > 0 && product?.variants[0]?.discount"
-            class="flex items-center gap-x-1 bg-red-400 dark:bg-red-500 rounded-lg px-1.5 py-1"
+            v-if="isAvailableProduct && product?.variants[0]?.discount"
+            class="flex items-center gap-x-0.5 bg-red-400 dark:bg-red-500 rounded-md pl-1 pr-1.5 py-1"
           >
             <span>{{ product?.variants[0]?.discount }}</span>
             <IconSvg icon-id="i-percent" class="size-4" />
           </div>
           <div
-            v-if="product?.variants[0]?.quantity! > 0 && product?.is_fast_delivery"
-            class="flex items-center gap-x-1 bg-orange-400 rounded-lg px-1.5 py-0.5"
+            v-if="isAvailableProduct && product?.is_fast_delivery"
+            class="flex items-center gap-x-1 bg-orange-400 rounded-md px-1 py-0.5"
           >
             <IconSvg icon-id="i-fast" class="size-5" />
             <span>سریع</span>
           </div>
         </div>
-        <div v-if="product?.variants[0]?.quantity! > 0 && product?.is_offer">
+        <div v-if="isAvailableProduct && product?.is_offer">
           <IconSvg
             icon-id="i-promotion-percent"
             class="size-7 text-red-400 dark:text-red-500"
@@ -44,18 +51,18 @@ defineProps<{ product: TProduct }>();
       </div>
 
       <div
-        v-if="product?.variants[0]?.quantity! > 0"
+        v-if="isAvailableProduct"
         class="flex items-center gap-x-1 absolute bottom-3 right-3 bg-black/10 dark:bg-white/10 p-2 rounded-lg"
       >
         <p
           v-for="variant in product.variants"
           :key="variant.id"
-          :style="{ backgroundColor: variant.value }"
+          :style="{ backgroundColor: variant.hex_code }"
           class="size-1.5 rounded-full"
         />
       </div>
 
-      <div v-if="product?.variants[0]?.quantity! <= 0">
+      <div v-if="!isAvailableProduct">
         <p
           class="absolute bottom-3 left-3 text-xs text-white bg-slate-500/60 dark:bg-slate-600/50 py-1 px-1.5 rounded-lg z-10"
         >
@@ -74,7 +81,7 @@ defineProps<{ product: TProduct }>();
       </h2>
 
       <div
-        v-if="product?.variants[0]?.quantity! > 0 && product?.variants[0]?.discount"
+        v-if="isAvailableProduct && product?.variants[0]?.discount"
         class="flex items-center justify-end gap-x-2"
       >
         <p class="line-through opacity-70 text-sx mt-1">
@@ -89,10 +96,7 @@ defineProps<{ product: TProduct }>();
           </span>
         </p>
       </div>
-      <div
-        v-else-if="product?.variants[0]?.quantity! > 0"
-        class="flex items-center justify-end"
-      >
+      <div v-else-if="isAvailableProduct" class="flex items-center justify-end">
         <p class="text-xs lg:text-base">
           {{ product?.variants[0]?.price?.toLocaleString() }}
           <span
@@ -104,7 +108,7 @@ defineProps<{ product: TProduct }>();
       </div>
 
       <button
-        v-if="product?.variants[0]?.quantity! <= 0"
+        v-if="!isAvailableProduct"
         class="flex items-center gap-x-1 text-main"
       >
         <IconSvg icon-id="i-notification" class="size-6" />
@@ -143,22 +147,22 @@ defineProps<{ product: TProduct }>();
         <NuxtImg
           :src="product?.images[0]?.url"
           :alt="product?.title"
-          class="w-full max-w- 24 sm:max-w- 28"
+          class="w-full"
         />
 
         <div
-          v-if="product?.variants[0]?.quantity! > 0"
+          v-if="isAvailableProduct"
           class="flex items-center gap-x-1 absolute bottom-2 right-2 bg-zinc-200 dark:bg-zinc-600 p-2 rounded-md"
         >
           <p
             v-for="variant in product.variants"
             :key="variant.id"
-            :style="{ backgroundColor: variant.value }"
+            :style="{ backgroundColor: variant.hex_code }"
             class="size-1.5 rounded-full"
           />
         </div>
 
-        <div v-if="product?.variants[0]?.quantity! <= 0">
+        <div v-if="!isAvailableProduct">
           <p
             class="absolute bottom-1.5 left-1.5 text-xs text-white bg-slate-400 dark:bg-slate-700 py-0.5 px-1 rounded-md z-10"
           >
@@ -171,7 +175,7 @@ defineProps<{ product: TProduct }>();
       </div>
       <div
         :class="`flex flex-col w-full ${
-          product.variants[0].discount ? 'gap-y-2' : 'gap-y-6'
+          product?.variants[0]?.discount ? 'gap-y-2' : 'gap-y-6'
         }`"
       >
         <h2
@@ -181,7 +185,7 @@ defineProps<{ product: TProduct }>();
         </h2>
 
         <div
-          v-if="product?.variants[0]?.quantity! <= 0"
+          v-if="!isAvailableProduct"
           class="flex items-center gap-x-1 text-main"
         >
           <IconSvg icon-id="i-notification" class="size-5" />
@@ -200,7 +204,7 @@ defineProps<{ product: TProduct }>();
                 {{ product?.variants[0]?.price.toLocaleString() }}
               </p>
               <div
-                class="flex items-center gap-x-1 bg-red-400 dark:bg-red-500 rounded-md px-1 py-0.5 text-white text-xs"
+                class="flex items-center gap-x-0.5 bg-red-400 dark:bg-red-500 rounded-md pl-0.5 pr-1.5 py-0.5 text-white text-xs"
               >
                 <span>{{ product?.variants[0]?.discount }}</span>
                 <IconSvg icon-id="i-percent" class="size-4" />
@@ -233,15 +237,15 @@ defineProps<{ product: TProduct }>();
       <div>
         <div class="flex items-start gap-x-2 text-xs">
           <div
-            v-if="product?.variants[0]?.quantity! > 0 && product?.is_fast_delivery"
-            class="flex items-center gap-x-1 bg-orange-400 rounded-lg px-1 py-0.5 text-white"
+            v-if="isAvailableProduct && product?.is_fast_delivery"
+            class="flex items-center bg-orange-400 rounded-lg px-1 py-0.5 text-white mt-0.5"
           >
             <IconSvg icon-id="i-fast" class="size-6" />
           </div>
-          <div v-if="product?.variants[0]?.quantity! > 0 && product?.is_offer">
+          <div v-if="isAvailableProduct && product?.is_offer">
             <IconSvg
               icon-id="i-promotion-percent"
-              class="size-7 text-red-400 dark:text-red-500"
+              class="size-8 text-red-400 dark:text-red-500"
             />
           </div>
         </div>

@@ -5,7 +5,7 @@ const useUser = () => {
 
   const info = async () => {
     try {
-      const { data } = await useLazyAsyncData<{ user: TUser }>(
+      const { data } = await useAsyncData<{ user: TUser }>(
         "user-info",
         async () =>
           await $fetch(`${BASE_URL}/info`, {
