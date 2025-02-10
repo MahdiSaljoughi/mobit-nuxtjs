@@ -4,7 +4,7 @@ import { useCartStore } from "~/stores/cartStore";
 const { userInfo } = await useUser().info();
 const { status } = useAuths();
 
-const userHref = ref<string>(
+const userHref = computed(() =>
   userInfo?.role === "ADMIN" ? "/dashboard" : "/profile"
 );
 

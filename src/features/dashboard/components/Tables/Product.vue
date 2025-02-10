@@ -8,7 +8,6 @@ const search = ref("");
 const page = ref(1);
 const pageCount = ref(20);
 const pageTotal = ref(data?.value?.products.length);
-const userName = ref("");
 
 const formatJalali = (isoDate: Date) => {
   if (!isoDate) return "نامشخص";
@@ -41,8 +40,8 @@ const columns = [
     sortable: false,
   },
   {
-    key: "price",
-    label: "قیمت",
+    key: "created_at",
+    label: "تاریخ ایجاد",
     sortable: true,
   },
   {
@@ -106,24 +105,10 @@ const expand = ref({
   openedRows: [rows],
   row: {},
 });
-
-const getUserName = (id: number) => {
-  useUser()
-    .getById(id)
-    .then((res) => {
-      userName.value = res?.user?.user_name || "-";
-    });
-
-  return userName.value;
-};
 </script>
 
 <template>
   <div>
-    <div v-if="status === 'pending'" class="my-6">
-      <Loadings />
-    </div>
-
     <div v-if="error" class="my-6">
       <UAlert
         color="red"
@@ -159,6 +144,10 @@ const getUserName = (id: number) => {
         </div>
       </div>
 
+      <div v-if="status === 'pending'" class="my-6">
+        <Loadings />
+      </div>
+
       <UTable
         v-model:expand="expand"
         :rows="rows"
@@ -180,7 +169,15 @@ const getUserName = (id: number) => {
         }"
       >
         <template #images-data="{ row }">
-          <NuxtImg :src="row.images[0]?.url" :alt="row.title" class="w-10" />
+          <div
+            class="p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 inline-block w-16"
+          >
+            <NuxtImg
+              :src="row.images[0]?.url"
+              :alt="row.title"
+              class="w-full"
+            />
+          </div>
         </template>
 
         <template #title-data="{ row }">
@@ -189,13 +186,17 @@ const getUserName = (id: number) => {
           </p>
         </template>
 
+        <template #created_at-data="{ row }">
+          {{ formatJalali(row.created_at) }}
+        </template>
+
         <template #expand="{ row }: { row: TProduct }">
           <div
             class="flex flex-col gap-y-6 px-2 py-4 text-xs text-zinc-500 dark:text-zinc-400 border-x dark:border-gray-800"
           >
             <div class="flex items-center gap-x-2">
               <span class="opacity-80">عنوان :</span>
-              <span>{{ row.title }}</span>
+              <span class="text-main">{{ row.title }}</span>
             </div>
 
             <div class="flex items-center gap-x-2">
@@ -205,44 +206,88 @@ const getUserName = (id: number) => {
 
             <div class="flex items-center gap-x-2">
               <span class="opacity-80">اسلاگ :</span>
-              <span>{{ row.slug }}</span>
+              <span class="text-orange-400">{{ row.slug }}</span>
             </div>
 
             <div class="flex items-center gap-x-2">
               <span class="opacity-80">تصاویر :</span>
-              <NuxtImg
+              <div
                 v-for="image in row.images"
                 :key="image.id"
-                :src="image?.url"
-                :alt="row.title"
-                class="w-10"
-              />
+                class="p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 w-20 mx-1"
+              >
+                <NuxtImg :src="image?.url" :alt="row.title" class="w-full" />
+              </div>
+            </div>
+
+            <div>
+              <p class="opacity-80 my-4">ویژگی ها :</p>
+              <ul
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4"
+              >
+                <li
+                  v-for="variant in row.variants"
+                  :key="variant.id"
+                  class="border dark:border-slate-800 rounded-xl p-3 flex flex-col gap-y-2 w-max xl:w-full max-w-72"
+                >
+                  <div class="flex items-center gap-x-2">
+                    <p class="opacity-70">رنگ :</p>
+                    <p>{{ variant.color_name }}</p>
+                    -
+                    <p>{{ variant.hex_code }}</p>
+                    -
+                    <p
+                      :style="{ backgroundColor: variant.hex_code }"
+                      class="size-4 rounded-full ring-2 ring-zinc-200 dark:ring-zinc-600"
+                    />
+                  </div>
+                  <div class="flex items-center gap-x-2">
+                    <p class="opacity-70">تعداد :</p>
+                    <p>{{ variant.quantity + " عدد " }}</p>
+                  </div>
+                  <div class="flex items-center gap-x-2">
+                    <p class="opacity-70">قیمت :</p>
+                    <p>{{ variant.price.toLocaleString() }}</p>
+                  </div>
+                  <div v-if="variant.discount" class="flex flex-col gap-y-2">
+                    <div class="flex items-center gap-x-2 text-red-400">
+                      <p class="opacity-70">تخفیف :</p>
+                      <p>{{ variant.discount + " ٪ " }}</p>
+                    </div>
+                    <div class="flex items-center gap-x-2 text-emerald-400">
+                      <p class="opacity-70">قیمت با تخفیف :</p>
+                      <p>
+                        {{ variant.price_after_discount?.toLocaleString() }}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
 
             <div class="flex items-center gap-x-2">
-              <span class="opacity-80">قیمت :</span>
-              <span>{{ row.price }}</span>
+              <span class="opacity-80">ایجاد شده توسط :</span>
+              <span class="text-indigo-500">{{ row.author.user_name }}</span>
             </div>
 
             <p class="leading-6">
               <span class="opacity-80 inline-block ml-2">توضیحات :</span>
-              {{ row.description }}
+              <span
+                class="font-IRANr text-black dark:text-zinc-300 line-clamp-6"
+              >
+                {{ row.description }}
+              </span>
             </p>
-
-            <div class="flex items-center gap-x-2">
-              <span class="opacity-80">ایجاد شده توسط :</span>
-              <span>{{ getUserName(row.created_by) }}</span>
-            </div>
 
             <!-- Date -->
             <div class="flex items-start justify-between">
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2 text-emerald-400">
                 <span class="opacity-80">تاریخ ایجاد:</span>
                 <span>
                   {{ formatJalali(row.created_at) }}
                 </span>
               </div>
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2 text-orange-400">
                 <span class="opacity-80">تاریخ ویرایش:</span>
                 <span>
                   {{ formatJalali(row.updated_at) }}

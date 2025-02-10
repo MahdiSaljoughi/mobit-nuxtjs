@@ -3,7 +3,7 @@ import { menuList } from "@/data/dashboard/menuList";
 
 const { signOut } = useAuths();
 
-const fullScreen = ref<boolean>(false);
+const fullScreen = ref<boolean>(true);
 const isShowMenu = ref<boolean>(true);
 
 const menuRef = ref();

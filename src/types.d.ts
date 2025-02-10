@@ -33,6 +33,7 @@ declare type TProduct = {
   images: TProductImage[];
   variants: TProductVariant[];
   category: TCategory;
+  author: { user_name: string | null };
 };
 
 declare type TProductImage = { id: number; url: string; product_id: number };

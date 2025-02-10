@@ -28,7 +28,7 @@ defineProps<{
     </div>
 
     <div class="block lg:hidden">
-      <HomeOfferHeadersMobile :is-title="false" :title="title" :href="href" />
+      <HomeOfferHeadersMobile :is-title="true" :title="title" :href="href" />
     </div>
   </div>
 </template>

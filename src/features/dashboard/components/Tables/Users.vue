@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { UserRole } from "@prisma/client";
 import useUsers from "~/features/user/composables/useUser";
 import type { TUser } from "~/types";
 
@@ -7,15 +8,25 @@ const { status, data, error, refresh } = await useUsers().getAll();
 const search = ref<string>("");
 const page = ref<number>(1);
 const pageCount = ref<number>(20);
-const pageTotal = ref(data?.value?.users?.length);
-const isOpenDeleteModal = ref<boolean>(false);
-const isOpenEditModal = ref<boolean>(false);
-const userInfo = reactive({
+const pageTotal = computed(() => {
+  if (status?.value != "pending") {
+    return data?.value?.users.length;
+  } else return 0;
+});
+
+const userData = reactive({
   id: "",
   user_name: "",
-  role: "",
+  first_name: "",
+  last_name: "",
   email: "",
+  phone: "",
+  role: "",
+  email_verified: false,
 });
+
+const isOpenDeleteModal = ref<boolean>(false);
+const isOpenEditModal = ref<boolean>(false);
 
 const formatJalali = (isoDate: Date) => {
   if (!isoDate) return "نامشخص";
@@ -62,15 +73,14 @@ const sort = ref({
   direction: "asc" as const,
 });
 
-const items = (row: any) => [
+const items = (row: TUser) => [
   [
     {
       label: "ویرایش",
       icon: "i-heroicons-pencil-square-20-solid",
       click: () => {
         isOpenEditModal.value = true;
-        userInfo.user_name = row.user_name;
-        userInfo.id = row.id;
+        Object.assign(userData, row);
       },
     },
     {
@@ -78,8 +88,7 @@ const items = (row: any) => [
       icon: "i-heroicons-trash-20-solid",
       click: () => {
         isOpenDeleteModal.value = true;
-        userInfo.user_name = row.user_name;
-        userInfo.id = row.id;
+        Object.assign(userData, row);
       },
     },
   ],
@@ -115,23 +124,28 @@ const expand = ref({
 });
 
 const removeUser = async () => {
-  await useUsers().remove(Number(userInfo.id));
+  await useUsers().remove(Number(userData.id));
+
   isOpenDeleteModal.value = false;
-  // @ts-expect-error
-  await refresh();
+
+  await refresh?.();
 };
 
-const editUser = async () => {
+const updateUser = async () => {
+  await useUsers().update({
+    ...userData,
+    id: Number(userData.id),
+    role: userData.role as UserRole,
+  });
+
   isOpenEditModal.value = false;
+
+  await refresh?.();
 };
 </script>
 
 <template>
   <div>
-    <div v-show="status === 'pending'" class="my-6">
-      <Loadings />
-    </div>
-
     <div v-if="error" class="my-6">
       <UAlert
         color="red"
@@ -161,6 +175,10 @@ const editUser = async () => {
             <span class="text-sm hidden sm:block">تازه سازی</span>
           </UButton>
         </div>
+      </div>
+
+      <div v-show="status === 'pending'" class="my-6">
+        <Loadings />
       </div>
 
       <UTable
@@ -213,13 +231,13 @@ const editUser = async () => {
             </div>
 
             <div class="flex items-center justify-between">
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2 text-emerald-400">
                 <span class="opacity-80">تاریخ ثبت نام:</span>
                 <span>
                   {{ formatJalali(row.created_at) }}
                 </span>
               </div>
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2 text-orange-400">
                 <span class="opacity-80">تاریخ ویرایش:</span>
                 <span>
                   {{ formatJalali(row.updated_at) }}
@@ -268,7 +286,7 @@ const editUser = async () => {
       <div class="p-4 flex flex-col gap-y-8">
         <p class="text-sm">
           آیا از حذف کاربر
-          <span class="font-bold">{{ userInfo.user_name }}</span>
+          <span class="font-bold">{{ userData.user_name }}</span>
           مطمئن هستید؟
         </p>
         <div class="flex items-center justify-end gap-x-3">
@@ -289,28 +307,94 @@ const editUser = async () => {
       </div>
     </UModal>
 
-    <UModal v-model="isOpenEditModal" fullscreen>
-      <div class="p-4 flex flex-col gap-y-8">
-        <p class="text-sm">
-          آیا از ویرایش کاربر
-          <span class="font-bold">{{ userInfo.user_name }}</span>
-          مطمئن هستید؟
-        </p>
-        <div class="flex items-center justify-end gap-x-3">
+    <UModal v-model="isOpenEditModal">
+      <div class="p-4 flex flex-col gap-y-4">
+        <p>ویرایش کاربر {{ userData.user_name }}</p>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">نام کاربری</p>
+          <UInput
+            v-model="userData.user_name"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">نام</p>
+          <UInput
+            v-model="userData.first_name"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">نام خانوادگی</p>
+          <UInput
+            v-model="userData.last_name"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">ایمیل</p>
+          <UInput
+            v-model="userData.email"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">شماره تلفن</p>
+          <UInput
+            v-model="userData.phone"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">نقش</p>
+          <USelect
+            v-model="userData.role"
+            :options="['CUSTOMER', 'ADMIN']"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+
+        <UCheckbox v-model="userData.email_verified" label="تایید ایمیل" />
+
+        <div class="flex justify-end gap-2">
           <UButton
-            label="انصراف"
             color="red"
             variant="soft"
             class="px-6 py-2 rounded-xl"
             @click="isOpenEditModal = false"
-          />
+            >انصراف</UButton
+          >
           <UButton
-            label="ویرایش"
             color="primary"
             variant="soft"
-            class="px-6 py-2 rounded-xl"
-            @click="editUser"
-          />
+            class="px-10 py-2 rounded-xl"
+            @click="updateUser"
+            >ذخیره</UButton
+          >
         </div>
       </div>
     </UModal>

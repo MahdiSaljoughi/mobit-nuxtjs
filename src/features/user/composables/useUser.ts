@@ -70,6 +70,26 @@ const useUser = () => {
     }
   };
 
+  const update = async (dataUser: Partial<TUser>) => {
+    try {
+      const { data, error } = await useFetch(`${BASE_URL}/${dataUser.id}`, {
+        method: "PUT",
+        key: "update-user",
+        headers: {
+          Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+        },
+        body: dataUser,
+      });
+
+      return { data, error };
+    } catch (error: unknown | Error) {
+      return {
+        status_code: 500,
+        message: error instanceof Error ? error.message : "خطای ناشناخته",
+      };
+    }
+  };
+
   const remove = async (id: number) => {
     try {
       const { data, error } = await useFetch(`${BASE_URL}/${id}`, {
@@ -89,7 +109,7 @@ const useUser = () => {
     }
   };
 
-  return { info, getAll, getById, remove };
+  return { info, getAll, getById, update, remove };
 };
 
 export default useUser;

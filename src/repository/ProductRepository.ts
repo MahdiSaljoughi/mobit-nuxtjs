@@ -15,6 +15,7 @@ const ProductRepository: IProductRepository = {
   async getAll() {
     return await prisma.product.findMany({
       include: {
+        author: { select: { user_name: true } },
         images: {
           orderBy: {
             id: "asc",
@@ -34,6 +35,7 @@ const ProductRepository: IProductRepository = {
     return await prisma.product.findUnique({
       where: { id },
       include: {
+        author: { select: { user_name: true } },
         images: {
           orderBy: {
             id: "asc",
@@ -53,6 +55,7 @@ const ProductRepository: IProductRepository = {
     return await prisma.product.findUnique({
       where: { slug },
       include: {
+        author: { select: { user_name: true } },
         images: {
           orderBy: {
             id: "asc",
@@ -72,6 +75,7 @@ const ProductRepository: IProductRepository = {
     return await prisma.product.create({
       data,
       include: {
+        author: { select: { user_name: true } },
         images: true,
         variants: true,
         category: true,
@@ -84,6 +88,7 @@ const ProductRepository: IProductRepository = {
       where: { id },
       data,
       include: {
+        author: true,
         images: true,
         variants: true,
         category: true,
@@ -95,6 +100,7 @@ const ProductRepository: IProductRepository = {
     return await prisma.product.delete({
       where: { id },
       include: {
+        author: true,
         images: true,
         variants: true,
         category: true,

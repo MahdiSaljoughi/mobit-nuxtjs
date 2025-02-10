@@ -5,7 +5,7 @@ export interface IUserRepository {
   getAll(): Promise<TUser[]>;
   getById(id: number): Promise<TUser | null>;
   create(data: Omit<TUser, "id">): Promise<TUser>;
-  updateById(id: number, data: Partial<TUser>): Promise<TUser>;
+  update(id: number, data: Partial<TUser>): Promise<TUser>;
   deleteById(id: number): Promise<TUser>;
 }
 
@@ -22,7 +22,7 @@ const UserRepository: IUserRepository = {
     return await prisma.user.create({ data });
   },
 
-  async updateById(id: number, data: Partial<TUser>) {
+  async update(id: number, data: Partial<TUser>) {
     return await prisma.user.update({ where: { id }, data });
   },
 
