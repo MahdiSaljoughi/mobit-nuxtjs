@@ -22,13 +22,3 @@ export default defineEventHandler(async (event: H3Event) => {
     product,
   };
 });
-
-// {
-//     "title": "Test2",
-// "title_eng": "15",
-// "slug": "16",
-// "price": 7600000,
-// "discount_percentage": 5,
-// "description": "",
-// "created_by": 1
-// }

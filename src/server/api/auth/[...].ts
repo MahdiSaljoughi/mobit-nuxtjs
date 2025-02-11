@@ -2,6 +2,7 @@ import { NuxtAuthHandler } from "#auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../../prisma/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { createToken } from "../../utils/token";
 
 const secret = useRuntimeConfig().authSecret;
 
@@ -94,7 +95,7 @@ export default NuxtAuthHandler({
 
     async session({ session, token }) {
       session.user = {
-        id: token.id as string,
+        access_token: createToken({ id: token.id }),
       };
       return session;
     },

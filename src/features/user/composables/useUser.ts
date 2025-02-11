@@ -2,7 +2,6 @@ import type { TUser } from "~/types";
 
 const useUser = () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/users`;
-
   const info = async () => {
     try {
       const { data } = await useAsyncData<{ user: TUser }>(
@@ -10,7 +9,9 @@ const useUser = () => {
         async () =>
           await $fetch(`${BASE_URL}/info`, {
             headers: {
-              Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+              // Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+              Authorization: `Bearer ${await useAuths().data.value?.user
+                .access_token}`,
             },
           })
       );
@@ -33,7 +34,9 @@ const useUser = () => {
         async () =>
           await $fetch(BASE_URL, {
             headers: {
-              Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+              Authorization: `Bearer ${
+                useAuths().data.value?.user.access_token
+              }`,
             },
           })
       );
@@ -56,7 +59,9 @@ const useUser = () => {
         async () =>
           await $fetch(`${BASE_URL}/${id}`, {
             headers: {
-              Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+              Authorization: `Bearer ${
+                useAuths().data.value?.user.access_token
+              }`,
             },
           })
       );
@@ -76,7 +81,7 @@ const useUser = () => {
         method: "PUT",
         key: "update-user",
         headers: {
-          Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
         },
         body: dataUser,
       });
@@ -96,7 +101,7 @@ const useUser = () => {
         method: "DELETE",
         key: "remove-user",
         headers: {
-          Authorization: `Bearer ${await useAuths().getAccessToken()}`,
+          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
         },
       });
 
