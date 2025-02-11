@@ -18,8 +18,7 @@ declare type TProduct = {
   title: string;
   title_eng: string;
   slug: string;
-  price: number | null;
-  discount: number | null;
+  is_show: boolean;
   description: string;
   created_by: number;
   is_fast_delivery: boolean;

@@ -22,12 +22,6 @@ export const menuList: IMenuItem[] = [
   },
   {
     id: id++,
-    title: "کاربران",
-    icon: "i-profilefill",
-    href: "/dashboard/users",
-  },
-  {
-    id: id++,
     title: "سفارشات",
     icon: "i-order",
     href: "/dashboard/orders",
@@ -37,6 +31,18 @@ export const menuList: IMenuItem[] = [
     title: "محصولات",
     icon: "i-categoryfill",
     href: "/dashboard/products",
+  },
+  {
+    id: id++,
+    title: "کاربران",
+    icon: "i-profilefill",
+    href: "/dashboard/users",
+  },
+  {
+    id: id++,
+    title: "دسته بندی ها",
+    icon: "i-categoryfill",
+    href: "/dashboard/categories",
   },
   {
     id: id++,

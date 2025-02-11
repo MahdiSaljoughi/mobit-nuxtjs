@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import useProduct from "~/features/product/composables/useProduct";
 import type { TProduct } from "~/types";
 
+const router = useRouter();
+
 const { status, data, error, refresh } = await useProduct().getAll();
+
+const productData = reactive({
+  id: 0,
+  title: "",
+  slug: "",
+  is_show: "",
+});
 
 const search = ref("");
 const page = ref(1);
 const pageCount = ref(20);
 const pageTotal = ref(data?.value?.products.length);
+const isOpenDeleteModal = ref(false);
+const isOpenEditIsShowModal = ref(false);
 
 const formatJalali = (isoDate: Date) => {
   if (!isoDate) return "نامشخص";
@@ -40,9 +50,8 @@ const columns = [
     sortable: false,
   },
   {
-    key: "created_at",
-    label: "تاریخ ایجاد",
-    sortable: true,
+    key: "is_show",
+    label: "نمایش",
   },
   {
     key: "actions",
@@ -55,24 +64,35 @@ const sort = ref({
   direction: "asc" as const,
 });
 
-const items = (row: any) => [
+const items = (row: TProduct) => [
   [
     {
       label: "مشاهده",
       icon: "i-heroicons-eye-20-solid",
-      click: () => console.log("See", row.id),
+      click: () => router.push(`/products/${row.slug}`),
+    },
+    {
+      label: "تغیر نمایش",
+      icon: "i-heroicons-eye",
+      click: () => {
+        Object.assign(productData, row);
+        isOpenEditIsShowModal.value = true;
+      },
     },
     {
       label: "ویرایش",
       icon: "i-heroicons-pencil-square-20-solid",
-      click: () => console.log("Edit", row.id),
+      click: () => router.push(`/dashboard/products/${row.slug}`),
     },
   ],
   [
     {
       label: "حذف",
       icon: "i-heroicons-trash-20-solid",
-      click: () => console.log("Delete", row.id),
+      click: () => {
+        Object.assign(productData, row);
+        isOpenDeleteModal.value = true;
+      },
     },
   ],
 ];
@@ -83,7 +103,7 @@ const filteredRows = computed(() => {
   }
 
   return data?.value?.products.filter((person: TProduct) => {
-    return Object.values(person).some((value: any) => {
+    return Object.values(person).some((value: unknown) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });
   });
@@ -105,6 +125,24 @@ const expand = ref({
   openedRows: [rows],
   row: {},
 });
+
+const removeProduct = async () => {
+  await useProduct().remove(Number(productData.id));
+
+  isOpenDeleteModal.value = false;
+
+  await refresh?.();
+};
+
+const updateProduct = async () => {
+  await useProduct().update(productData.slug, {
+    is_show: productData.is_show === "true" ? true : false,
+  });
+
+  isOpenEditIsShowModal.value = false;
+
+  await refresh?.();
+};
 </script>
 
 <template>
@@ -137,7 +175,12 @@ const expand = ref({
           >
             <span class="text-sm hidden sm:block">تازه سازی</span>
           </UButton>
-          <UButton color="primary" variant="solid" class="rounded-xl px-4 py-3">
+          <UButton
+            color="primary"
+            variant="solid"
+            class="rounded-xl px-4 py-3"
+            to="/dashboard/products/create"
+          >
             <UIcon name="i-heroicons-plus-20-solid" size="20" />
             <span class="text-sm hidden sm:block">افزودن محصول</span>
           </UButton>
@@ -184,10 +227,6 @@ const expand = ref({
           <p class="lg:text-wrap line-clamp-2 leading-6">
             {{ row.title.slice(0, 60) + "..." }}
           </p>
-        </template>
-
-        <template #created_at-data="{ row }">
-          {{ formatJalali(row.created_at) }}
         </template>
 
         <template #expand="{ row }: { row: TProduct }">
@@ -331,4 +370,71 @@ const expand = ref({
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <UModal v-model="isOpenDeleteModal">
+    <div class="p-4 flex flex-col gap-y-8">
+      <p class="text-sm leading-7">
+        آیا از حذف
+        <span>{{ productData.title }}</span>
+        مطمئن هستید؟
+      </p>
+      <div class="flex items-center justify-end gap-x-3">
+        <UButton
+          label="انصراف"
+          variant="soft"
+          class="px-6 py-3 rounded-xl"
+          @click="isOpenDeleteModal = false"
+        />
+        <UButton
+          label="حذف"
+          color="red"
+          variant="soft"
+          class="px-10 py-3 rounded-xl"
+          @click="removeProduct"
+        />
+      </div>
+    </div>
+  </UModal>
+
+  <UModal v-model="isOpenEditIsShowModal">
+    <div class="p-4 flex flex-col gap-y-8">
+      <p class="text-sm leading-7">
+        آیا از تغیر نمایش
+        <span>{{ productData.title }}</span>
+        مطمئن هستید؟
+      </p>
+
+      <div>
+        <p class="opacity-80 text-sm mb-2">نمایش</p>
+        <USelect
+          v-model="productData.is_show"
+          :options="[
+            { value: 'true', label: 'نمایش' },
+            { value: 'false', label: 'عدم نمایش' },
+          ]"
+          size="xl"
+          :ui="{
+            rounded: 'rounded-xl',
+          }"
+        />
+      </div>
+
+      <div class="flex items-center justify-end gap-x-3">
+        <UButton
+          label="انصراف"
+          variant="soft"
+          class="px-6 py-3 rounded-xl"
+          @click="isOpenEditIsShowModal = false"
+        />
+        <UButton
+          label="تایید"
+          color="green"
+          variant="soft"
+          class="px-10 py-3 rounded-xl"
+          @click="updateProduct"
+        />
+      </div>
+    </div>
+  </UModal>
 </template>

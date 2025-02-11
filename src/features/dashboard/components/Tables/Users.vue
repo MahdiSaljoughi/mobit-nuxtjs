@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { UserRole } from "@prisma/client";
-import useUsers from "~/features/user/composables/useUser";
 import type { TUser } from "~/types";
 
-const { status, data, error, refresh } = await useUsers().getAll();
+const { status, data, error, refresh } = await useUser().getAll();
 
 const search = ref<string>("");
 const page = ref<number>(1);
@@ -100,7 +99,7 @@ const filteredRows = computed(() => {
   }
 
   return data?.value?.users?.filter((person: TUser) => {
-    return Object.values(person).some((value: any) => {
+    return Object.values(person).some((value: unknown) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });
   });
@@ -124,7 +123,7 @@ const expand = ref({
 });
 
 const removeUser = async () => {
-  await useUsers().remove(Number(userData.id));
+  await useUser().remove(Number(userData.id));
 
   isOpenDeleteModal.value = false;
 
@@ -132,7 +131,7 @@ const removeUser = async () => {
 };
 
 const updateUser = async () => {
-  await useUsers().update({
+  await useUser().update({
     ...userData,
     id: Number(userData.id),
     role: userData.role as UserRole,
@@ -293,14 +292,14 @@ const updateUser = async () => {
           <UButton
             label="انصراف"
             variant="soft"
-            class="px-6 py-2 rounded-xl"
+            class="px-6 py-3 rounded-xl"
             @click="isOpenDeleteModal = false"
           />
           <UButton
             label="حذف"
             color="red"
             variant="soft"
-            class="px-6 py-2 rounded-xl"
+            class="px-6 py-3 rounded-xl"
             @click="removeUser"
           />
         </div>
@@ -382,16 +381,15 @@ const updateUser = async () => {
 
         <div class="flex justify-end gap-2">
           <UButton
-            color="red"
             variant="soft"
-            class="px-6 py-2 rounded-xl"
+            class="px-6 py-3 rounded-xl"
             @click="isOpenEditModal = false"
             >انصراف</UButton
           >
           <UButton
-            color="primary"
+            color="green"
             variant="soft"
-            class="px-10 py-2 rounded-xl"
+            class="px-10 py-3 rounded-xl"
             @click="updateUser"
             >ذخیره</UButton
           >

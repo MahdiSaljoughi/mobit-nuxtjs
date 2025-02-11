@@ -13,6 +13,7 @@ const isAvailableProduct = computed(() => {
 
 <template>
   <NuxtLink
+    v-if="product.is_show"
     :to="`/products/${product?.slug}`"
     class="flex flex-col gap-y-3 lg:w-72 group"
   >

@@ -35,7 +35,25 @@ const links = [
 </script>
 
 <template>
-  <div class="py-6 px-3 sm:px-8 md:px-10 lg:px-16">
+  <div
+    v-if="product?.is_show === false"
+    class="flex flex-col gap-y-8 items-center justify-center p-20 fixed inset-0 lg:static"
+  >
+    <p class="text-sm">محصول یافت نشد!</p>
+
+    <p class="text-sx opacity-70 text-center leading-6">
+      مبیت کالاهای زیادی دارد که شما دوست خواهید داشت
+    </p>
+
+    <NuxtLink
+      to="/"
+      class="inline-block bg-main text-white px-12 py-3 text-sx rounded-xl"
+    >
+      شروع خرید
+    </NuxtLink>
+  </div>
+
+  <div v-else class="py-6 px-3 sm:px-8 md:px-10 lg:px-16">
     <div class="flex items-center gap-x-4">
       <p class="text-xs text-zinc-600 dark:text-zinc-300">شما اینجا هستید :</p>
       <UBreadcrumb

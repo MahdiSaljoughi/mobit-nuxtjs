@@ -12,7 +12,9 @@ const isAvailableProduct = computed(() => {
 </script>
 
 <template>
+  <!-- Desktop -->
   <NuxtLink
+    v-if="product.is_show"
     :to="`/products/${product?.slug}`"
     class="hidden lg:flex flex-row lg:flex-col gap-y-3 lg:w-80 hover:shadow-around rounded-xl p-2 duration-300 group"
   >
@@ -136,7 +138,9 @@ const isAvailableProduct = computed(() => {
     </div>
   </NuxtLink>
 
+  <!-- Mobile -->
   <NuxtLink
+    v-if="product.is_show"
     :to="`/products/${product?.slug}`"
     class="flex lg:hidden flex-col gap-y-4 border-b dark:border-zinc-700 pb-3"
   >

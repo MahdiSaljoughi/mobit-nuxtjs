@@ -31,7 +31,46 @@ const useProduct = () => {
     }
   };
 
-  return { getAll, getBySlug };
+  const update = async (slug: string, dataProduct: Partial<TProduct>) => {
+    try {
+      const { data, error } = await useFetch(`${BASE_URL}/${slug}`, {
+        method: "PUT",
+        key: "update-product",
+        headers: {
+          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+        },
+        body: dataProduct,
+      });
+      console.log(dataProduct);
+      return { data, error };
+    } catch (error: unknown | Error) {
+      return {
+        status_code: 500,
+        message: error instanceof Error ? error.message : "خطای ناشناخته",
+      };
+    }
+  };
+
+  const remove = async (id: number) => {
+    try {
+      const { data, error } = await useFetch(`${BASE_URL}/${id}`, {
+        method: "DELETE",
+        key: "remove-product",
+        headers: {
+          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+        },
+      });
+
+      return { data: data.value, error };
+    } catch (error: unknown | Error) {
+      return {
+        status_code: 500,
+        message: error instanceof Error ? error.message : "خطای ناشناخته",
+      };
+    }
+  };
+
+  return { getAll, getBySlug, update, remove };
 };
 
 export default useProduct;

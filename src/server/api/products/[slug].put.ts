@@ -13,10 +13,11 @@ export default defineEventHandler(async (event: H3Event) => {
     };
   }
 
-  const id = event.context.params?.id;
+  const slug = event.context.params?.id;
+
   const body = await readBody(event);
 
-  if (!id) {
+  if (!slug) {
     return {
       status_code: 400,
       message: "شناسه محصول الزامی است",
@@ -24,7 +25,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   try {
-    const product = await ProductRepository.updateById(Number(id), body);
+    const product = await ProductRepository.updateBySlug(String(slug), body);
 
     if (!product) {
       return {

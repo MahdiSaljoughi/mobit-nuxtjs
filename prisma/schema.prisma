@@ -39,9 +39,8 @@ model Product {
   title            String
   title_eng        String
   slug             String           @unique
-  price            Int?
-  discount         Float?
   description      String
+  is_show          Boolean          @default(false)
   is_fast_delivery Boolean          @default(false)
   is_offer         Boolean          @default(false)
   is_fake          Boolean          @default(false)

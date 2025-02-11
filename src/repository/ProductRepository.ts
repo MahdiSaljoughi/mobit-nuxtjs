@@ -7,8 +7,12 @@ export interface IProductRepository {
   getById(id: number): Promise<TProduct | null>;
   getBySlug(slug: string): Promise<TProduct | null>;
   create(data: Prisma.ProductCreateInput): Promise<TProduct>;
+  updateBySlug(
+    slug: string,
+    data: Prisma.ProductUpdateInput
+  ): Promise<TProduct>;
   updateById(id: number, data: Prisma.ProductUpdateInput): Promise<TProduct>;
-  deleteById(id: number): Promise<TProduct>;
+  remove(id: number): Promise<TProduct>;
 }
 
 const ProductRepository: IProductRepository = {
@@ -27,6 +31,9 @@ const ProductRepository: IProductRepository = {
           },
         },
         category: true,
+      },
+      orderBy: {
+        created_by: "asc",
       },
     });
   },
@@ -83,6 +90,19 @@ const ProductRepository: IProductRepository = {
     });
   },
 
+  async updateBySlug(slug: string, data: Prisma.ProductUpdateInput) {
+    return await prisma.product.update({
+      where: { slug },
+      data,
+      include: {
+        author: true,
+        images: true,
+        variants: true,
+        category: true,
+      },
+    });
+  },
+
   async updateById(id: number, data: Prisma.ProductUpdateInput) {
     return await prisma.product.update({
       where: { id },
@@ -96,7 +116,15 @@ const ProductRepository: IProductRepository = {
     });
   },
 
-  async deleteById(id: number) {
+  async remove(id: number) {
+    await prisma.productVariant.deleteMany({
+      where: { product_id: id },
+    });
+
+    await prisma.productImage.deleteMany({
+      where: { product_id: id },
+    });
+
     return await prisma.product.delete({
       where: { id },
       include: {
