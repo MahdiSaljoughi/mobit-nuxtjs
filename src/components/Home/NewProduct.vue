@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { data } = await useProduct().getAll();
+const { data } = useProduct().getAll();
 </script>
 
 <template>

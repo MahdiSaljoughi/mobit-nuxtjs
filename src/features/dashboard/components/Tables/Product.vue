@@ -3,7 +3,7 @@ import type { TProduct } from "~/types";
 
 const router = useRouter();
 
-const { status, data, error, refresh } = await useProduct().getAll();
+const { status, data, error, refresh } = useProduct().getAll();
 
 const productData = reactive({
   id: 0,
@@ -15,7 +15,6 @@ const productData = reactive({
 const search = ref("");
 const page = ref(1);
 const pageCount = ref(20);
-const pageTotal = ref(data?.value?.products.length);
 const isOpenDeleteModal = ref(false);
 const isOpenEditIsShowModal = ref(false);
 
@@ -97,6 +96,8 @@ const items = (row: TProduct) => [
   ],
 ];
 
+const pageTotal = computed(() => data.value?.products?.length || 0);
+
 const filteredRows = computed(() => {
   if (!search.value) {
     return data?.value?.products;
@@ -122,7 +123,7 @@ const rows = computed(() => {
 });
 
 const expand = ref({
-  openedRows: [rows],
+  openedRows: [],
   row: {},
 });
 

@@ -7,7 +7,9 @@ const route = useRoute();
 
 const slug = route.params.slug;
 
-const { product, status } = await useProduct().getBySlug(String(slug));
+const { data, status, error } = await useProduct().getBySlug(String(slug));
+
+const product = data.value?.product;
 
 const variantIndex = ref<number>(0);
 
@@ -35,8 +37,16 @@ const links = [
 </script>
 
 <template>
+  <div v-if="status == 'pending'">
+    <Loadings />
+  </div>
+
+  <div v-else-if="error" class="bg-red-500 text-white p-10 rounded-3xl">
+    {{ error }}
+  </div>
+
   <div
-    v-if="product?.is_show === false"
+    v-else-if="product?.is_show === false"
     class="flex flex-col gap-y-8 items-center justify-center p-20 fixed inset-0 lg:static"
   >
     <p class="text-sm">محصول یافت نشد!</p>
@@ -64,11 +74,7 @@ const links = [
       />
     </div>
 
-    <div v-if="status === 'pending'">
-      <Loadings />
-    </div>
-
-    <div v-else class="lg:flex justify-between lg:gap-x-8 pt-4">
+    <div class="lg:flex justify-between lg:gap-x-8 pt-4">
       <div class="w-full rounded-2xl">
         <div class="flex flex-col gap-y-4 lg:gap-8">
           <div class="flex gap-4 flex-wrap lg:flex-nowrap">

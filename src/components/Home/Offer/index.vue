@@ -4,7 +4,7 @@ defineProps<{
   href: string;
 }>();
 
-const { data } = await useProduct().getAll();
+const { data } = useProduct().getAll();
 </script>
 
 <template>
