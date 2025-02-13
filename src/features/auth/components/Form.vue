@@ -75,7 +75,11 @@ const handlePhone = async () => {
       firstOtpInput?.focus();
     });
 
-    toast.add({ id: "2", title: `کد تایید: ${sendOtp.otp}`, timeout: 12000 });
+    toast.add({
+      id: "5",
+      title: `کد تایید: ${sendOtp.otp}`,
+      timeout: 120000,
+    });
   } else {
     toast.add({
       id: "1",
@@ -192,6 +196,8 @@ const submitOtp = async () => {
         title: "با موفقیت وارد شدید",
         timeout: 3000,
       });
+
+      toast.remove("5");
 
       isLoading.value = false;
 

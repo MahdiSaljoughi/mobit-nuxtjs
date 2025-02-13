@@ -1,21 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import prisma from "../../prisma/prisma";
-import type { TProduct } from "../types";
 
-export interface IProductRepository {
-  getAll(): Promise<TProduct[]>;
-  getById(id: number): Promise<TProduct | null>;
-  getBySlug(slug: string): Promise<TProduct | null>;
-  create(data: Prisma.ProductCreateInput): Promise<TProduct>;
-  updateBySlug(
-    slug: string,
-    data: Prisma.ProductUpdateInput
-  ): Promise<TProduct>;
-  updateById(id: number, data: Prisma.ProductUpdateInput): Promise<TProduct>;
-  remove(id: number): Promise<TProduct>;
-}
-
-const ProductRepository: IProductRepository = {
+const ProductRepository = {
   async getAll() {
     return await prisma.product.findMany({
       include: {
@@ -78,9 +64,12 @@ const ProductRepository: IProductRepository = {
     });
   },
 
-  async create(data: Prisma.ProductCreateInput) {
+  async create(data: any, created_by: number) {
     return await prisma.product.create({
-      data,
+      data: {
+        created_by,
+        ...data,
+      },
       include: {
         author: { select: { user_name: true } },
         images: true,

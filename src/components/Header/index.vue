@@ -47,7 +47,7 @@ const { items } = cartStore;
 
         <!-- Login And Cart -->
         <div class="flex items-center gap-x-4 xl:gap-x-6 2xl:gap-x-10 text-xs">
-          <NuxtLink
+          <!-- <NuxtLink
             :to="status === 'authenticated' ? userHref : '/auth'"
             class="flex items-center gap-x-2"
           >
@@ -69,13 +69,55 @@ const { items } = cartStore;
               </span>
               <span v-else>ورود / ثبت نام</span>
             </p>
+          </NuxtLink> -->
+
+          <NuxtLink
+            v-if="status !== 'authenticated'"
+            to="/auth"
+            class="flex items-center gap-x-2"
+          >
+            <IconSvg icon-id="i-profilefill" class="w-6" />
+
+            <p class="hidden xl:block">ورود / ثبت نام</p>
           </NuxtLink>
-          <NuxtLink to="/cart" class="flex items-center gap-x-2">
-            <IconSvg icon-id="i-cart-fill-new" class="w-5" />
-            <p v-if="items.length > 0" class="hidden 2xl:block">
-              {{ `${items.reduce((acc, cur) => acc + cur.quantity, 0)} کالا` }}
-            </p>
-          </NuxtLink>
+
+          <UPopover v-else mode="hover">
+            <NuxtLink :to="userHref" class="flex items-center gap-x-2">
+              <div class="relative">
+                <IconSvg icon-id="i-profilefill" class="w-6" />
+                <div
+                  v-if="status === 'authenticated'"
+                  class="bg-main size-1.5 rounded-full absolute bottom-0.5 right-1"
+                />
+              </div>
+              <p class="hidden xl:block">
+                {{
+                  (userInfo?.user_name ?? "").length > 14
+                    ? (userInfo?.user_name ?? "").slice(0, 14) + "..."
+                    : userInfo?.user_name ?? ""
+                }}
+              </p>
+            </NuxtLink>
+
+            <template #panel>
+              <div class="p-20" />
+            </template>
+          </UPopover>
+
+          <UPopover mode="hover">
+            <NuxtLink to="/cart" class="flex items-center gap-x-2">
+              <IconSvg icon-id="i-cart-fill-new" class="w-5" />
+              <p v-if="items.length > 0" class="hidden 2xl:block">
+                {{
+                  `${items.reduce((acc, cur) => acc + cur.quantity, 0)} کالا`
+                }}
+              </p>
+            </NuxtLink>
+
+            <template #panel>
+              <div class="p-20" />
+            </template>
+          </UPopover>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TCategory, TProductImage, TProductVariant } from "~/types";
+import type { TCategory } from "~/types";
 
 definePageMeta({
   middleware: ["dashboard"],
@@ -10,6 +10,8 @@ interface IInputs {
   label: string;
   name: string;
 }
+
+const router = useRouter();
 
 const inputs: IInputs[] = [
   {
@@ -40,22 +42,22 @@ const productData = reactive<Record<string, any>>({
   slug: "",
   brand: "",
   brand_eng: "",
-  category_id: 0,
+  category_id: null,
   description: "",
-  is_fake: "false",
-  is_fast_delivery: "false",
-  is_offer: "false",
-  is_show: "false",
-  images: [] as TProductImage[],
-  variants: [] as TProductVariant[],
+  is_fake: null,
+  is_fast_delivery: null,
+  is_offer: null,
+  is_show: false,
 });
 
 const categories = ref<{ value: number; label: string }[]>([]);
 
 onMounted(async () => {
   try {
-    const categoriesFetch = await $fetch("/api/categories");
-    categories.value = categoriesFetch.category.map((category: TCategory) => ({
+    const categoriesFetch = await $fetch<{ category: TCategory[] }>(
+      `${useRuntimeConfig().public.apiBase}/categories`
+    );
+    categories.value = categoriesFetch.category.map((category) => ({
       value: category.id,
       label: category.title,
     }));
@@ -63,15 +65,31 @@ onMounted(async () => {
     console.error("Error fetching categories:", error);
   }
 });
+
+const createProduct = async (data: any) => {
+  try {
+    await $fetch(`${useRuntimeConfig().public.apiBase}/products`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+      },
+      body: data,
+    });
+
+    router.push("/dashboard/products");
+  } catch (err) {
+    console.log(err);
+  }
+};
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-8">
+  <div class="flex flex-col gap-y-10">
     <div>
       <p>ایجاد محصول</p>
     </div>
 
-    <div class="flex flex-col gap-y-4 lg:px-4">
+    <div class="flex flex-col gap-y-8 lg:px-4">
       <div
         v-for="(input, index) in inputs"
         :key="index"
@@ -96,43 +114,92 @@ onMounted(async () => {
         />
       </div>
 
-      <div>
-        <p class="opacity-80 text-sm mb-2">دسته بندی</p>
-        <USelect
-          v-model="productData.category_id"
-          :options="categories"
-          size="xl"
-          :ui="{
-            rounded: 'rounded-xl',
-          }"
-        />
-      </div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div>
+          <p class="opacity-80 text-sm mb-2">دسته بندی</p>
+          <USelect
+            v-model="productData.category_id"
+            :options="categories"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+            @update:model-value="
+              (val) => (productData.category_id = Number(val))
+            "
+          />
+        </div>
 
-      <div>
-        <p class="opacity-80 text-sm mb-2">نمایش</p>
-        <USelect
-          v-model="productData.is_show"
-          :options="[
-            { value: 'true', label: 'نمایش' },
-            { value: 'false', label: 'عدم نمایش' },
-          ]"
-          size="xl"
-          :ui="{
-            rounded: 'rounded-xl',
-          }"
-        />
+        <div>
+          <p class="opacity-80 text-sm mb-2">اصل / فیک</p>
+          <USelect
+            v-model="productData.is_fake"
+            :options="[
+              { label: 'فیک', value: true },
+              { label: 'اصل', value: false },
+            ]"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+            @update:model-value="
+              (val) => (productData.is_fake = val === 'true')
+            "
+          />
+        </div>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">سریع / معمولی</p>
+          <USelect
+            v-model="productData.is_fast_delivery"
+            :options="[
+              { label: 'سریع', value: true },
+              { label: 'معمولی', value: false },
+            ]"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+            @update:model-value="
+              (val) => (productData.is_fast_delivery = val === 'true')
+            "
+          />
+        </div>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">پیشنهاد / معمولی</p>
+          <USelect
+            v-model="productData.is_offer"
+            :options="[
+              { label: 'پیشنهاد', value: true },
+              { label: 'معمولی', value: false },
+            ]"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+            @update:model-value="
+              (val) => (productData.is_offer = val === 'true')
+            "
+          />
+        </div>
       </div>
     </div>
 
     <div class="flex items-center justify-end gap-x-3">
-      <UButton label="انصراف" variant="soft" class="px-6 py-3 rounded-xl" />
+      <UButton
+        label="انصراف"
+        variant="soft"
+        class="px-6 py-3 rounded-xl"
+        to="/dashboard/products"
+      />
       <UButton
         label="تایید"
         color="green"
         variant="soft"
-        class="px-10 py-3 rounded-xl"
+        class="px-16 py-3 rounded-xl"
+        @click="createProduct(productData)"
       />
     </div>
-    <!--  -->
   </div>
 </template>
