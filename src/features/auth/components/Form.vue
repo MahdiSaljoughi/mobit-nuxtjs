@@ -52,7 +52,8 @@ const handlePhone = async () => {
     isLoading.value = true;
 
     const sendOtp: { message: string; otp: string } = await $fetch(
-      `${useRuntimeConfig().public.apiBase}/auth/otp`,
+      // `${useRuntimeConfig().public.apiBase}/auth/otp`,
+      "https://api-moobit.vercel.app/auth/otp",
       {
         method: "POST",
         body: {
@@ -182,7 +183,7 @@ const submitOtp = async () => {
       redirect: false,
       callbackUrl: "",
       phone: state.phone,
-      code: state.otpCode.join(""),
+      otp: state.otpCode.join(""),
     });
 
     if (signin?.error) {
