@@ -6,22 +6,20 @@ const props = defineProps<{
   productImages?: TProductImage[];
 }>();
 
+const emit = defineEmits(["refresh"]);
+
 const toast = useToast();
 
 const images = ref<FileList | null>(null);
-const selectedFileName = ref("");
+const loading = reactive({
+  isUploading: false,
+  isDeleting: false,
+});
 
 const fileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
+  if (target.files?.length) {
     images.value = target.files;
-    selectedFileName.value =
-      target.files.length > 1
-        ? `${target.files.length} فایل انتخاب شد`
-        : target.files[0].name;
-  } else {
-    images.value = null;
-    selectedFileName.value = "انتخاب فایل";
   }
 };
 
@@ -30,86 +28,107 @@ const submit = async () => {
     return;
   }
 
+  loading.isUploading = true;
+
   const formData = new FormData();
   Array.from(images.value).forEach((file) => {
-    formData.append("image", file);
+    formData.append("files", file);
   });
-  formData.append("product_id", props.productId.toString());
 
-  try {
-    await $fetch(`${useRuntimeConfig().public.apiBase}/products/images`, {
+  const { error } = await useFetch(
+    `https://api-moobit.vercel.app/upload/products/${props.productId}`,
+    {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-      },
+      key: "post-image-product",
+      // headers: {
+      //   Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+      // },
       body: formData,
-    });
+    }
+  );
 
+  if (error.value) {
     toast.add({
-      title: "تصویر با موفقیت اضافه شد",
+      title: "خطا در بارگذاری تصاویر",
+      color: "red",
     });
-
-    images.value = null;
-    selectedFileName.value = "انتخاب فایل";
-  } catch (error) {
-    console.log("خطا در بارگذاری تصاویر:", error);
+    loading.isUploading = false;
+    throw new Error(error.value.message);
   }
+
+  images.value = null;
+
+  emit("refresh");
+
+  toast.add({
+    title: "تصویر با موفقیت اضافه شد",
+  });
+  loading.isUploading = false;
 };
 
 const deleteImage = async (id: number) => {
-  try {
-    await $fetch(`${useRuntimeConfig().public.apiBase}/products/images/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-      },
-    });
+  loading.isDeleting = true;
 
+  const { error } = await useFetch(
+    `https://api-moobit.vercel.app/upload/${id}`,
+    {
+      method: "DELETE",
+      // headers: {
+      //   Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+      // },
+      key: "delete image product",
+    }
+  );
+
+  if (error.value) {
     toast.add({
-      title: "تصویر با موفقیت حذف شد",
+      title: "خطا در حذف تصویر!",
+      color: "red",
     });
-  } catch (error) {
-    console.log("خطا در حذف تصویر:", error);
+    loading.isDeleting = false;
+    throw new Error(error.value.message);
   }
+
+  emit("refresh");
+
+  toast.add({
+    title: "تصویر با موفقیت حذف شد",
+  });
+  loading.isDeleting = false;
 };
 </script>
 
 <template>
+  <Loadings v-if="loading.isUploading || loading.isDeleting" class="m-2" />
+
   <div class="flex flex-col lg:flex-row gap-4">
     <div>
       <div class="border dark:border-zinc-800 p-4 rounded-2xl w-full lg:w-80">
-        <form @submit.prevent="submit">
-          <div class="flex flex-col gap-y-4">
-            <div>
-              <label for="images" class="text-sm mb-4 block text-center"
-                >انتخاب تصاویر</label
-              >
-              <label
-                for="images"
-                class="cursor-pointer text-main bg-main/10 hover:bg-main/30 py-3 rounded-xl text-center transition-all block text-sm"
-              >
-                {{ selectedFileName || "انتخاب" }}
-              </label>
-              <input
-                id="images"
-                type="file"
-                multiple
-                accept="image/*"
-                class="hidden"
-                required
-                @change="fileChange"
-              />
-            </div>
-            <UButton
-              type="submit"
-              variant="soft"
-              color="green"
-              class="block w-full py-3 rounded-xl"
+        <div class="flex flex-col gap-y-4">
+          <div>
+            <label for="images" class="text-sm mb-4 block text-center"
+              >انتخاب تصاویر</label
             >
-              بارگذاری
-            </UButton>
+            <input
+              id="images"
+              type="file"
+              multiple
+              accept="image/*"
+              required
+              @change="fileChange"
+            />
           </div>
-        </form>
+          <UButton
+            variant="soft"
+            color="green"
+            class="flex items-center justify-center w-full py-3 rounded-xl"
+            :loading="loading.isUploading"
+            :disabled="loading.isUploading"
+            @click="submit"
+          >
+            {{ loading.isUploading ? "در حال بارگذاری" : "بارگذاری" }}
+          </UButton>
+        </div>
       </div>
     </div>
 

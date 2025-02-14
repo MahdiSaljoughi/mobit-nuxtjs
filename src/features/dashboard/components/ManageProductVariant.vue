@@ -6,6 +6,8 @@ const props = defineProps<{
   productVariants?: TProductVariant[];
 }>();
 
+const emit = defineEmits(["refresh"]);
+
 const toast = useToast();
 
 const variantData = reactive({
@@ -17,8 +19,11 @@ const variantData = reactive({
   discount: 0,
   price_after_discount: 0,
 });
+const isLoading = ref<boolean>(false);
 
 const addVariant = async () => {
+  isLoading.value = true;
+
   try {
     await $fetch(`${useRuntimeConfig().public.apiBase}/products/variants`, {
       method: "POST",
@@ -28,30 +33,57 @@ const addVariant = async () => {
       body: variantData,
     });
 
+    emit("refresh");
+
     toast.add({
       title: "ویژگی با موفقیت اضافه شد",
     });
+    isLoading.value = false;
   } catch (err) {
+    isLoading.value = false;
+    toast.add({
+      title: "خطا در افزودن ویژگی",
+      color: "red",
+    });
     console.log(err);
   }
 };
 
 const deleteVariant = async (id: number) => {
-  await $fetch(`${useRuntimeConfig().public.apiBase}/products/variants/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-    },
-  });
+  isLoading.value = true;
 
-  toast.add({
-    title: "ویژگی با موفقیت حذف شد",
-  });
+  try {
+    await $fetch(
+      `${useRuntimeConfig().public.apiBase}/products/variants/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+        },
+      }
+    );
+
+    emit("refresh");
+
+    toast.add({
+      title: "ویژگی با موفقیت حذف شد",
+    });
+    isLoading.value = false;
+  } catch (err) {
+    isLoading.value = false;
+    toast.add({
+      title: "خطا در حذف ویژگی",
+      color: "red",
+    });
+    console.log(err);
+  }
 };
 </script>
 
 <template>
   <div class="flex flex-col gap-y-4">
+    <Loadings v-if="isLoading" class="m-2" />
+
     <p class="text-sm">ویژگی ها</p>
     <div class="flex flex-col gap-y-2">
       <p class="opacity-80 text-sm">انتخاب رنگ</p>
@@ -137,7 +169,9 @@ const deleteVariant = async (id: number) => {
 
     <UButton
       variant="soft"
-      class="w-full block py-3 rounded-xl"
+      class="w-full flex items-center justify-center py-3 rounded-xl"
+      :loading="isLoading"
+      :disabled="isLoading"
       @click="addVariant"
     >
       افزودن

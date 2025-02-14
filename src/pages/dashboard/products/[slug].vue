@@ -46,6 +46,7 @@ const productData = reactive<IProduct>({
   is_offer: data.value?.product.is_offer,
   is_show: data.value?.product.is_show,
 });
+const isLoading = ref<boolean>(false);
 
 const inputs: IInputs[] = [
   {
@@ -87,6 +88,8 @@ onMounted(async () => {
 });
 
 const updateProduct = async (productData: IProduct) => {
+  isLoading.value = true;
+
   try {
     await $fetch(
       `${useRuntimeConfig().public.apiBase}/products/${
@@ -101,14 +104,20 @@ const updateProduct = async (productData: IProduct) => {
       }
     );
 
+    refresh?.();
+
     toast.add({
       title: "محصول با موفقیت ویرایش شد",
-      color: "green",
     });
 
-    refresh?.();
+    isLoading.value = false;
   } catch (err) {
     console.log(err);
+    toast.add({
+      title: "خطا در ویرایش محصول",
+      color: "red",
+    });
+    isLoading.value = false;
   }
 };
 </script>
@@ -116,6 +125,8 @@ const updateProduct = async (productData: IProduct) => {
 <template>
   <ClientOnly>
     <div class="flex flex-col gap-y-10">
+      <Loadings v-if="isLoading" class="m-2" />
+
       <div class="flex flex-col xl:flex-row gap-8">
         <div class="w-full flex flex-col gap-y-4 lg:gap-y-8">
           <div class="flex flex-col lg:flex-row gap-2 text-sm lg:text-base">
@@ -128,6 +139,7 @@ const updateProduct = async (productData: IProduct) => {
           <DashboardComponentsManageProductImages
             :product-id="data?.product.id!"
             :product-images="data?.product.images"
+            @refresh="refresh"
           />
 
           <div
@@ -183,6 +195,7 @@ const updateProduct = async (productData: IProduct) => {
           <DashboardComponentsManageProductVariant
             :product-id="data?.product.id!"
             :product-variants="data?.product.variants"
+            @refresh="refresh"
           />
         </div>
       </div>
@@ -195,7 +208,9 @@ const updateProduct = async (productData: IProduct) => {
           to="/dashboard/products"
         />
         <UButton
-          label="تایید"
+          :loading="isLoading"
+          :disabled="isLoading"
+          :label="isLoading ? 'در حال ویرایش ...' : 'تایید'"
           color="green"
           variant="soft"
           class="px-16 py-3 rounded-xl"
