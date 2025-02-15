@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { UserRole } from "@prisma/client";
 import type { TUser } from "~/types";
 
 const { status, data, error, refresh } = useUser().getAll();
@@ -134,7 +133,7 @@ const updateUser = async () => {
   await useUser().update({
     ...userData,
     id: Number(userData.id),
-    role: userData.role as UserRole,
+    role: userData.role,
   });
 
   isOpenEditModal.value = false;

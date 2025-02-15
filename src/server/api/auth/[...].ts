@@ -13,7 +13,8 @@ export default NuxtAuthHandler({
     signIn: "/auth",
   },
   providers: [
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     CredentialsProvider.default({
       name: "Credentials",
       credentials: {

@@ -69,11 +69,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    apiSecret: "",
     authSecret: process.env.NUXT_AUTH_SECRET,
     public: {
       apiBase: process.env.API_URL,
-      dataBaseUrl: process.env.DATABASE_URL,
     },
   },
 });
