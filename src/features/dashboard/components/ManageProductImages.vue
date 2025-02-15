@@ -36,13 +36,13 @@ const submit = async () => {
   });
 
   const { error } = await useFetch(
-    `https://api-moobit.vercel.app/upload/products/${props.productId}`,
+    `${useRuntimeConfig().public.apiBase}/upload/products/${props.productId}`,
     {
       method: "POST",
       key: "post-image-product",
-      // headers: {
-      //   Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-      // },
+      headers: {
+        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+      },
       body: formData,
     }
   );
@@ -70,12 +70,12 @@ const deleteImage = async (id: number) => {
   loading.isDeleting = true;
 
   const { error } = await useFetch(
-    `https://api-moobit.vercel.app/upload/${id}`,
+    `${useRuntimeConfig().public.apiBase}/upload/${id}`,
     {
       method: "DELETE",
-      // headers: {
-      //   Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-      // },
+      headers: {
+        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+      },
       key: "delete image product",
     }
   );

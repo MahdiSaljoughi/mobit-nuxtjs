@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { UserRole } from "@prisma/client";
-import type { TUser } from "~/types";
+import type { TCategory } from "~/types";
 
-const { status, data, error, refresh } = useUser().getAll();
+const { status, data, error, refresh } = useCategory().getAll();
 
 const search = ref<string>("");
 const page = ref<number>(1);
@@ -13,19 +12,18 @@ const pageTotal = computed(() => {
   } else return 0;
 });
 
-const userData = reactive({
-  id: "",
-  user_name: "",
-  first_name: "",
-  last_name: "",
-  email: "",
-  phone: "",
-  role: "",
-  email_verified: false,
+const categoryId = ref<number>(0);
+const categoryData = ref({
+  url: "",
+  title: "",
+  title_eng: "",
 });
 
-const isOpenDeleteModal = ref<boolean>(false);
-const isOpenEditModal = ref<boolean>(false);
+const modal = reactive({
+  isOpenCreate: false,
+  isOpenDelete: false,
+  isOpenEdit: false,
+});
 
 const formatJalali = (isoDate: Date) => {
   if (!isoDate) return "نامشخص";
@@ -48,18 +46,17 @@ const columns = [
     sortable: true,
   },
   {
-    key: "user_name",
-    label: "نام کاربری",
+    key: "title",
+    label: "عنوان",
     sortable: false,
   },
   {
-    key: "role",
-    label: "نقش",
-    sortable: true,
+    key: "title_eng",
+    label: "عنوان انگلیسی",
   },
   {
-    key: "email",
-    label: "ایمیل",
+    key: "created_at",
+    label: "تاریخ ایجاد",
   },
   {
     key: "actions",
@@ -72,22 +69,27 @@ const sort = ref({
   direction: "asc" as const,
 });
 
-const items = (row: TUser) => [
+const items = (row: TCategory) => [
   [
     {
       label: "ویرایش",
       icon: "i-heroicons-pencil-square-20-solid",
       click: () => {
-        isOpenEditModal.value = true;
-        Object.assign(userData, row);
+        modal.isOpenEdit = true;
+
+        categoryId.value = row.id;
+
+        categoryData.value.title = row.title;
+        categoryData.value.title_eng = row.title_eng;
+        categoryData.value.url = row.url;
       },
     },
     {
       label: "حذف",
       icon: "i-heroicons-trash-20-solid",
       click: () => {
-        isOpenDeleteModal.value = true;
-        Object.assign(userData, row);
+        modal.isOpenDelete = true;
+        categoryId.value = row.id;
       },
     },
   ],
@@ -98,7 +100,7 @@ const filteredRows = computed(() => {
     return data?.value;
   }
 
-  return data?.value?.filter((person: TUser) => {
+  return data.value?.filter((person: TCategory) => {
     return Object.values(person).some((value: unknown) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });
@@ -122,22 +124,29 @@ const expand = ref({
   row: {},
 });
 
-const removeUser = async () => {
-  await useUser().remove(Number(userData.id));
+const createCategory = async () => {
+  await useCategory().create(categoryData.value);
 
-  isOpenDeleteModal.value = false;
+  modal.isOpenCreate = false;
 
   await refresh?.();
 };
 
-const updateUser = async () => {
-  await useUser().update({
-    ...userData,
-    id: Number(userData.id),
-    role: userData.role as UserRole,
+const removeCategory = async () => {
+  await useCategory().remove(categoryId.value);
+
+  modal.isOpenDelete = false;
+
+  await refresh?.();
+};
+
+const updateCategory = async () => {
+  await useCategory().update({
+    ...categoryData,
+    id: categoryId.value,
   });
 
-  isOpenEditModal.value = false;
+  modal.isOpenEdit = false;
 
   await refresh?.();
 };
@@ -173,6 +182,15 @@ const updateUser = async () => {
           >
             <span class="text-sm hidden sm:block">تازه سازی</span>
           </UButton>
+          <UButton
+            color="primary"
+            variant="solid"
+            class="rounded-xl px-4 py-3"
+            @click="modal.isOpenCreate = true"
+          >
+            <UIcon name="i-heroicons-plus-20-solid" size="20" />
+            <span class="text-sm hidden sm:block">افزودن دسته بندی</span>
+          </UButton>
         </div>
       </div>
 
@@ -200,33 +218,26 @@ const updateUser = async () => {
           th: { size: 'text-xs' },
         }"
       >
+        <template #created_at-data="{ row }">
+          <div>
+            {{ formatJalali(row.created_at) }}
+          </div>
+        </template>
+
         <template #expand="{ row }">
           <div
             class="flex flex-col gap-y-6 px-2 py-4 text-xs text-zinc-500 dark:text-zinc-400 border-x dark:border-gray-800"
           >
             <div class="flex items-center gap-x-2">
-              <span class="opacity-80">شماره تلفن:</span>
+              <span class="opacity-80">آدرس :</span>
               <span>
-                {{ row.phone }}
+                {{ row.url }}
               </span>
             </div>
+
             <div class="flex items-center gap-x-2">
-              <span class="opacity-80">نام:</span>
-              <span>
-                {{ row.first_name }}
-              </span>
-            </div>
-            <div class="flex items-center gap-x-2">
-              <span class="opacity-80">نام خانوادگی:</span>
-              <span>
-                {{ row.last_name }}
-              </span>
-            </div>
-            <div class="flex items-center gap-x-2">
-              <span class="opacity-80">ایمیل:</span>
-              <span>
-                {{ row.email_verified }}
-              </span>
+              <span class="opacity-80">ایجاد شده توسط :</span>
+              <span class="text-indigo-500">{{ row.author.user_name }}</span>
             </div>
 
             <div class="flex items-center justify-between">
@@ -281,11 +292,66 @@ const updateUser = async () => {
     </div>
 
     <!-- Modal -->
-    <UModal v-model="isOpenDeleteModal">
+    <UModal v-model="modal.isOpenCreate">
+      <div class="p-4 flex flex-col gap-y-4">
+        <p>ایجاد دسته بندی</p>
+
+        <div>
+          <p class="opacity-80 text-sm mb-2">عنوان</p>
+          <UInput
+            v-model="categoryData.title"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+        <div>
+          <p class="opacity-80 text-sm mb-2">عنوان انگلیسی</p>
+          <UInput
+            v-model="categoryData.title_eng"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+        <div>
+          <p class="opacity-80 text-sm mb-2">آدرس</p>
+          <UInput
+            v-model="categoryData.url"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+
+        <div class="flex justify-end gap-2">
+          <UButton
+            variant="soft"
+            class="px-6 py-3 rounded-xl"
+            @click="modal.isOpenCreate = false"
+            >انصراف</UButton
+          >
+          <UButton
+            color="green"
+            variant="soft"
+            class="px-10 py-3 rounded-xl"
+            :loading="status === 'pending'"
+            :disabled="status === 'pending'"
+            @click="createCategory"
+            >ذخیره</UButton
+          >
+        </div>
+      </div>
+    </UModal>
+
+    <UModal v-model="modal.isOpenDelete">
       <div class="p-4 flex flex-col gap-y-8">
         <p class="text-sm">
-          آیا از حذف کاربر
-          <span class="font-bold">{{ userData.user_name }}</span>
+          آیا از حذف دسته بندی
+          <span class="font-bold">{{ categoryData.title }}</span>
           مطمئن هستید؟
         </p>
         <div class="flex items-center justify-end gap-x-3">
@@ -293,104 +359,66 @@ const updateUser = async () => {
             label="انصراف"
             variant="soft"
             class="px-6 py-3 rounded-xl"
-            @click="isOpenDeleteModal = false"
+            @click="modal.isOpenDelete = false"
           />
           <UButton
             label="حذف"
             color="red"
             variant="soft"
             class="px-6 py-3 rounded-xl"
-            @click="removeUser"
+            @click="removeCategory"
           />
         </div>
       </div>
     </UModal>
 
-    <UModal v-model="isOpenEditModal">
+    <UModal v-model="modal.isOpenEdit">
       <div class="p-4 flex flex-col gap-y-4">
-        <p>ویرایش کاربر {{ userData.user_name }}</p>
+        <p>ویرایش دسته بندی {{ categoryData.title }}</p>
 
         <div>
-          <p class="opacity-80 text-sm mb-2">نام کاربری</p>
+          <p class="opacity-80 text-sm mb-2">عنوان</p>
           <UInput
-            v-model="userData.user_name"
+            v-model="categoryData.title"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
             }"
           />
         </div>
-
         <div>
-          <p class="opacity-80 text-sm mb-2">نام</p>
+          <p class="opacity-80 text-sm mb-2">عنوان انگلیسی</p>
           <UInput
-            v-model="userData.first_name"
+            v-model="categoryData.title_eng"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
             }"
           />
         </div>
-
         <div>
-          <p class="opacity-80 text-sm mb-2">نام خانوادگی</p>
+          <p class="opacity-80 text-sm mb-2">آدرس</p>
           <UInput
-            v-model="userData.last_name"
+            v-model="categoryData.url"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
             }"
           />
         </div>
-
-        <div>
-          <p class="opacity-80 text-sm mb-2">ایمیل</p>
-          <UInput
-            v-model="userData.email"
-            size="xl"
-            :ui="{
-              rounded: 'rounded-xl',
-            }"
-          />
-        </div>
-
-        <div>
-          <p class="opacity-80 text-sm mb-2">شماره تلفن</p>
-          <UInput
-            v-model="userData.phone"
-            size="xl"
-            :ui="{
-              rounded: 'rounded-xl',
-            }"
-          />
-        </div>
-
-        <div>
-          <p class="opacity-80 text-sm mb-2">نقش</p>
-          <USelect
-            v-model="userData.role"
-            :options="['CUSTOMER', 'ADMIN']"
-            size="xl"
-            :ui="{
-              rounded: 'rounded-xl',
-            }"
-          />
-        </div>
-
-        <UCheckbox v-model="userData.email_verified" label="تایید ایمیل" />
 
         <div class="flex justify-end gap-2">
           <UButton
             variant="soft"
             class="px-6 py-3 rounded-xl"
-            @click="isOpenEditModal = false"
+            @click="modal.isOpenEdit = false"
             >انصراف</UButton
           >
           <UButton
             color="green"
             variant="soft"
             class="px-10 py-3 rounded-xl"
-            @click="updateUser"
+            @click="updateCategory"
             >ذخیره</UButton
           >
         </div>

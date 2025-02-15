@@ -53,4 +53,7 @@ declare type TCategory = {
   title: string;
   title_eng: string;
   url: string;
+  created_by: number;
+  created_at: Date;
+  updated_at: Date;
 };

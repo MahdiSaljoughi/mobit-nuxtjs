@@ -96,14 +96,14 @@ const items = (row: TProduct) => [
   ],
 ];
 
-const pageTotal = computed(() => data.value?.products?.length || 0);
+const pageTotal = computed(() => data.value?.length || 0);
 
 const filteredRows = computed(() => {
   if (!search.value) {
-    return data?.value?.products;
+    return data?.value;
   }
 
-  return data?.value?.products.filter((person: TProduct) => {
+  return data.value?.filter((person: TProduct) => {
     return Object.values(person).some((value: unknown) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });

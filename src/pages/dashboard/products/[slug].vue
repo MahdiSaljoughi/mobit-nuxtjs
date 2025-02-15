@@ -34,17 +34,17 @@ const { data, refresh } = useProduct().getBySlug(String(slug));
 const toast = useToast();
 
 const productData = reactive<IProduct>({
-  title: data.value?.product.title,
-  title_eng: data.value?.product.title_eng,
-  slug: data.value?.product.slug,
-  brand: data.value?.product.brand,
-  brand_eng: data.value?.product.brand_eng,
-  category_id: data.value?.product.category_id,
-  description: data.value?.product.description,
-  is_fake: data.value?.product.is_fake,
-  is_fast_delivery: data.value?.product.is_fast_delivery,
-  is_offer: data.value?.product.is_offer,
-  is_show: data.value?.product.is_show,
+  title: data.value?.title,
+  title_eng: data.value?.title_eng,
+  slug: data.value?.slug,
+  brand: data.value?.brand,
+  brand_eng: data.value?.brand_eng,
+  category_id: data.value?.category_id,
+  description: data.value?.description,
+  is_fake: data.value?.is_fake,
+  is_fast_delivery: data.value?.is_fast_delivery,
+  is_offer: data.value?.is_offer,
+  is_show: data.value?.is_show,
 });
 const isLoading = ref<boolean>(false);
 
@@ -92,11 +92,9 @@ const updateProduct = async (productData: IProduct) => {
 
   try {
     await $fetch(
-      `${useRuntimeConfig().public.apiBase}/products/${
-        data?.value?.product.slug
-      }`,
+      `${useRuntimeConfig().public.apiBase}/products/slug/${data?.value?.slug}`,
       {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
         },
@@ -133,12 +131,12 @@ const updateProduct = async (productData: IProduct) => {
             <p class="text-zinc-500 dark:text-zinc-300 text-nowrap">
               ویرایش محصول :
             </p>
-            <p class="text-center leading-6">{{ data?.product.title }}</p>
+            <p class="text-center leading-6">{{ data?.title }}</p>
           </div>
 
           <DashboardComponentsManageProductImages
-            :product-id="data?.product.id!"
-            :product-images="data?.product.images"
+            :product-id="data?.id!"
+            :product-images="data?.images"
             @refresh="refresh"
           />
 
@@ -193,8 +191,8 @@ const updateProduct = async (productData: IProduct) => {
 
         <div class="w-full xl:w-96">
           <DashboardComponentsManageProductVariant
-            :product-id="data?.product.id!"
-            :product-variants="data?.product.variants"
+            :product-id="data?.id!"
+            :product-variants="data?.variants"
             @refresh="refresh"
           />
         </div>

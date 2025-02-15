@@ -11,7 +11,10 @@ const useAuths = () => {
     signOut,
   } = useAuth();
 
+  const accessToken = data.value?.user.access_token;
+
   return {
+    accessToken,
     status,
     data,
     lastRefreshedAt,

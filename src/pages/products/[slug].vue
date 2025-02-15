@@ -9,7 +9,7 @@ const slug = route.params.slug;
 
 const { data, status, error } = await useProduct().getBySlug(String(slug));
 
-const product = data.value?.product;
+const product = data.value;
 
 const variantIndex = ref<number>(0);
 

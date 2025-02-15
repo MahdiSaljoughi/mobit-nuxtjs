@@ -54,10 +54,10 @@ const categories = ref<{ value: number; label: string }[]>([]);
 
 onMounted(async () => {
   try {
-    const categoriesFetch = await $fetch<{ category: TCategory[] }>(
+    const categoriesFetch = await $fetch<TCategory[]>(
       `${useRuntimeConfig().public.apiBase}/categories`
     );
-    categories.value = categoriesFetch.category.map((category) => ({
+    categories.value = categoriesFetch.map((category) => ({
       value: category.id,
       label: category.title,
     }));
@@ -71,7 +71,7 @@ const createProduct = async (data: any) => {
     await $fetch(`${useRuntimeConfig().public.apiBase}/products`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+        Authorization: `Bearer ${useAuths().accessToken}`,
       },
       body: data,
     });

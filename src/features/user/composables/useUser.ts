@@ -4,7 +4,7 @@ const useUser = () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/users`;
 
   const info = async () => {
-    const { data } = await useAsyncData<{ user: TUser }>("user-info", () =>
+    const { data } = await useAsyncData<TUser>("user-info", () =>
       $fetch(`${BASE_URL}/info`, {
         headers: {
           Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
@@ -12,27 +12,25 @@ const useUser = () => {
       })
     );
 
-    return { userInfo: data.value?.user };
+    return { userInfo: data.value };
   };
 
   const getAll = () => {
-    const { data, status, error, refresh } = useLazyAsyncData<{
-      users: TUser[];
-    }>("all-users", () =>
-      $fetch(BASE_URL, {
-        headers: {
-          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-        },
-      })
+    const { data, status, error, refresh } = useLazyAsyncData<TUser[]>(
+      "all-users",
+      () =>
+        $fetch(BASE_URL, {
+          headers: {
+            Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+          },
+        })
     );
 
     return { status, data, error, refresh };
   };
 
   const getById = (id: number) => {
-    const { status, data } = useLazyAsyncData<{
-      user: TUser;
-    }>(`user-${id}`, () =>
+    const { status, data } = useLazyAsyncData<TUser>(`user-${id}`, () =>
       $fetch(`${BASE_URL}/${id}`, {
         headers: {
           Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
@@ -40,12 +38,12 @@ const useUser = () => {
       })
     );
 
-    return { status, user: data.value?.user };
+    return { status, user: data.value };
   };
 
   const update = (dataUser: Partial<TUser>) => {
     return useFetch(`${BASE_URL}/${dataUser.id}`, {
-      method: "PUT",
+      method: "PATCH",
       key: "update-user",
       headers: {
         Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,

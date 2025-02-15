@@ -1,7 +1,8 @@
 import { NuxtAuthHandler } from "#auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const secret = useRuntimeConfig().authSecret;
+const config = useRuntimeConfig();
+const secret = config.authSecret;
 
 export default NuxtAuthHandler({
   secret,
@@ -24,11 +25,11 @@ export default NuxtAuthHandler({
       },
       async authorize(credentials: { phone: string; otp: string }) {
         if (!credentials.phone || !credentials.otp) {
-          throw new Error("اطلاعات ورودی ناقص است"); // Use Error for better error handling
+          throw new Error("اطلاعات ورودی ناقص است");
         }
 
         try {
-          const res = await fetch("https://api-moobit.vercel.app/auth", {
+          const res = await fetch(`${config.public.apiBase}/auth`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

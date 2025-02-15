@@ -6,5 +6,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div>categories</div>
+  <div>
+    <DashboardComponentsTablesCategory />
+  </div>
 </template>

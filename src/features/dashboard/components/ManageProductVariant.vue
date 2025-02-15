@@ -25,7 +25,7 @@ const addVariant = async () => {
   isLoading.value = true;
 
   try {
-    await $fetch(`${useRuntimeConfig().public.apiBase}/products/variants`, {
+    await $fetch(`${useRuntimeConfig().public.apiBase}/variants`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
@@ -53,15 +53,12 @@ const deleteVariant = async (id: number) => {
   isLoading.value = true;
 
   try {
-    await $fetch(
-      `${useRuntimeConfig().public.apiBase}/products/variants/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-        },
-      }
-    );
+    await $fetch(`${useRuntimeConfig().public.apiBase}/variants/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+      },
+    });
 
     emit("refresh");
 
