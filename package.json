@@ -14,8 +14,8 @@
     "@nuxt/eslint": "0.7.5",
     "@nuxt/image": "1.9.0",
     "@nuxt/ui": "^2.21.0",
-    "@vueuse/core": "^12.5.0",
-    "eslint": "^9.19.0",
+    "@vueuse/core": "^12.7.0",
+    "eslint": "^9.20.1",
     "formidable": "^3.5.2",
     "jsonwebtoken": "^9.0.2",
     "next-auth": "4.21.1",
@@ -36,6 +36,6 @@
     "@types/jsonwebtoken": "^9.0.8",
     "h3": "^1.15.0",
     "typescript": "^5.7.3",
-    "vue-tsc": "^2.2.0"
+    "vue-tsc": "^2.2.2"
   }
 }
