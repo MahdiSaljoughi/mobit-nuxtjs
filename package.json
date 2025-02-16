@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@nuxt/eslint": "0.7.5",
-    "@nuxt/image": "1.9.0",
+    "@nuxt/image": "^1.9.0",
     "@nuxt/ui": "^2.21.0",
     "@vueuse/core": "^12.7.0",
     "eslint": "^9.20.1",
@@ -37,5 +37,6 @@
     "h3": "^1.15.0",
     "typescript": "^5.7.3",
     "vue-tsc": "^2.2.2"
-  }
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }

@@ -10,8 +10,8 @@ export default defineNuxtConfig({
   modules: [
     "@sidebase/nuxt-auth",
     "@nuxt/ui",
-    "@nuxt/eslint",
     "@nuxt/image",
+    "@nuxt/eslint",
     "nuxt-swiper",
   ],
 
