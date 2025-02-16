@@ -146,7 +146,6 @@ const updateProduct = async (productData: IProduct) => {
             class="flex flex-col gap-y-2"
           >
             <label class="opacity-80 text-sm">{{ input.label }}</label>
-            <!-- @vue-expect-error -->
             <UInput
               v-model="productData[input.name]"
               required
