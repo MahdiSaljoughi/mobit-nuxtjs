@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   plugins: ["~/plugins/pinia.ts"],
 
   auth: {
-    baseURL: "http://localhost:3000/api/auth",
+    baseURL: `${process.env.NUXT_AUTH_BASE_URL}/api/auth`,
     globalAppMiddleware: false,
     provider: {
       type: "authjs",
