@@ -65,4 +65,11 @@ export const homeCategory: IHomeCategory[] = [
     alt: "ساعت هوشمند",
     href: "https://www.mobit.ir/search/category-smart-watch-wristband",
   },
+  {
+    id: id++,
+    title: "گجت هوشمند",
+    srcImg: "/images/home/category/8gajet.webp",
+    alt: "گجت هوشمند",
+    href: "https://www.mobit.ir/search/category-smart-gadget",
+  },
 ];

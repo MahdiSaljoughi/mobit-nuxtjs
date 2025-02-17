@@ -10,13 +10,14 @@ const toast = useToast();
 
 const variantData = reactive({
   product_id: Number(props.productId),
-  quantity: 0,
+  quantity: undefined as number | undefined,
   hex_code: "",
   color_name: "",
-  price: 0,
-  discount: 0,
-  price_after_discount: 0,
+  price: undefined as number | undefined,
+  discount: undefined as number | undefined,
+  price_after_discount: undefined as number | undefined,
 });
+
 const isLoading = ref<boolean>(false);
 
 const addVariant = async () => {
@@ -33,9 +34,19 @@ const addVariant = async () => {
 
     emit("refresh");
 
+    Object.assign(variantData, {
+      quantity: undefined as number | undefined,
+      hex_code: "",
+      color_name: "",
+      price: undefined as number | undefined,
+      discount: undefined as number | undefined,
+      price_after_discount: undefined as number | undefined,
+    });
+
     toast.add({
       title: "ویژگی با موفقیت اضافه شد",
     });
+
     isLoading.value = false;
   } catch (err) {
     isLoading.value = false;
@@ -139,7 +150,6 @@ const deleteVariant = async (id: number) => {
       <p class="opacity-80 text-sm">درصد تخفیف</p>
       <UInput
         v-model="variantData.discount"
-        placeholder="5"
         size="xl"
         :ui="{
           rounded: 'rounded-xl',

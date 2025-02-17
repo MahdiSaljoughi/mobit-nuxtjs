@@ -51,7 +51,10 @@ defineProps<{ products?: TProduct[] }>();
     :modules="[Navigation]"
     :slides-per-view="1"
   >
-    <SwiperSlide v-for="product in products" :key="product.id">
+    <SwiperSlide
+      v-for="product in products?.filter((p) => p.is_show !== false)"
+      :key="product.id"
+    >
       <div class="sm:p-2">
         <ProductComponentsSingleSlider :product="product" />
       </div>
