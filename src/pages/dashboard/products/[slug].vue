@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TCategory } from "~/types";
-
 definePageMeta({
   middleware: ["dashboard"],
   layout: "dashboard",
@@ -29,7 +27,9 @@ const route = useRoute();
 
 const slug = route.params.slug;
 
-const { data, refresh } = useProduct().getBySlug(String(slug));
+const { data, refresh } = await useProduct().getBySlug(String(slug));
+
+const categories = ref<{ value: number; label: string }[]>([]);
 
 const toast = useToast();
 
@@ -71,52 +71,35 @@ const inputs: IInputs[] = [
   },
 ];
 
-const categories = ref<{ value: number; label: string }[]>([]);
+const { data: category } = await useCategory().getAll();
 
-onMounted(async () => {
-  try {
-    const categoriesFetch = await $fetch<{ category: TCategory[] }>(
-      `${useRuntimeConfig().public.apiBase}/categories`
-    );
-    categories.value = categoriesFetch.category.map((category) => ({
-      value: category.id,
-      label: category.title,
-    }));
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-  }
-});
+categories.value =
+  category.value?.map((category: TCategory) => ({
+    value: category.id,
+    label: category.title,
+  })) || [];
 
-const updateProduct = async (productData: IProduct) => {
+const updateProduct = (productData: IProduct) => {
   isLoading.value = true;
 
-  try {
-    await $fetch(
-      `${useRuntimeConfig().public.apiBase}/products/slug/${data?.value?.slug}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-        },
-        body: productData,
-      }
-    );
+  const { error } = useProduct().update(String(productData.slug), productData);
 
-    refresh?.();
-
-    toast.add({
-      title: "محصول با موفقیت ویرایش شد",
-    });
-
-    isLoading.value = false;
-  } catch (err) {
-    console.log(err);
+  // @ts-expect-error
+  if (error.value) {
+    // @ts-expect-error
+    console.log(error.value);
     toast.add({
       title: "خطا در ویرایش محصول",
       color: "red",
     });
     isLoading.value = false;
   }
+
+  refresh?.();
+  isLoading.value = false;
+  toast.add({
+    title: "محصول با موفقیت ویرایش شد",
+  });
 };
 </script>
 

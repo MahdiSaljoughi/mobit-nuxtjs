@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TProduct } from "~/types";
-
 const props = defineProps<{ product: TProduct }>();
 
 const isAvailableProduct = computed(() => {

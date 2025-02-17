@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TProduct } from "~/types";
-
 const router = useRouter();
 
 const { status, data, error, refresh } = useProduct().getAll();
@@ -320,7 +318,9 @@ const updateProduct = async () => {
             </p>
 
             <!-- Date -->
-            <div class="flex items-start justify-between">
+            <div
+              class="flex flex-col gap-y-4 lg:flex-row lg:items-center justify-between"
+            >
               <div class="flex items-center gap-x-2 text-emerald-400">
                 <span class="opacity-80">تاریخ ایجاد:</span>
                 <span>

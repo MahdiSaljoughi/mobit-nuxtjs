@@ -40,6 +40,7 @@ export default defineNuxtConfig({
         lang: "fa-IR",
         dir: "rtl",
       },
+      title: "فروشگاه اینترنتی مبیت",
       meta: [
         {
           name: "theme-color",

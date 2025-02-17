@@ -7,17 +7,10 @@ cartStore.loadCart();
 </script>
 
 <template>
-  <Head>
-    <Title>فروشگاه اینترنتی مبیت</Title>
-  </Head>
-
-  <NuxtRouteAnnouncer />
-
-  <NuxtLoadingIndicator color="blue" />
-
-  <UNotifications />
-
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <UNotifications />
+  <NuxtRouteAnnouncer />
+  <NuxtLoadingIndicator color="blue" />
 </template>

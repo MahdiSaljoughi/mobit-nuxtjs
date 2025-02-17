@@ -1,19 +1,25 @@
 <script setup lang="ts">
-import type { TCategory } from "~/types";
-
 const { status, data, error, refresh } = useCategory().getAll();
 
 const search = ref<string>("");
 const page = ref<number>(1);
 const pageCount = ref<number>(20);
-const pageTotal = computed(() => {
-  if (status?.value != "pending") {
-    return data?.value?.length;
-  } else return 0;
-});
+const pageTotal = computed(() =>
+  status.value !== "pending" ? data?.value?.length ?? 0 : 0
+);
 
-const categoryId = ref<number>(0);
 const categoryData = ref({
+  id: 0,
+  url: "",
+  title: "",
+  title_eng: "",
+});
+const categoryDataCreate = ref({
+  url: "",
+  title: "",
+  title_eng: "",
+});
+const categoryDataUpdate = ref({
   url: "",
   title: "",
   title_eng: "",
@@ -77,11 +83,12 @@ const items = (row: TCategory) => [
       click: () => {
         modal.isOpenEdit = true;
 
-        categoryId.value = row.id;
-
+        categoryData.value.id = row.id;
         categoryData.value.title = row.title;
-        categoryData.value.title_eng = row.title_eng;
-        categoryData.value.url = row.url;
+
+        categoryDataUpdate.value.title = row.title;
+        categoryDataUpdate.value.title_eng = row.title_eng;
+        categoryDataUpdate.value.url = row.url;
       },
     },
     {
@@ -89,7 +96,8 @@ const items = (row: TCategory) => [
       icon: "i-heroicons-trash-20-solid",
       click: () => {
         modal.isOpenDelete = true;
-        categoryId.value = row.id;
+        categoryData.value.id = row.id;
+        categoryData.value.title = row.title;
       },
     },
   ],
@@ -125,7 +133,7 @@ const expand = ref({
 });
 
 const createCategory = async () => {
-  await useCategory().create(categoryData.value);
+  await useCategory().create(categoryDataCreate.value);
 
   modal.isOpenCreate = false;
 
@@ -133,7 +141,7 @@ const createCategory = async () => {
 };
 
 const removeCategory = async () => {
-  await useCategory().remove(categoryId.value);
+  await useCategory().remove(categoryData.value.id);
 
   modal.isOpenDelete = false;
 
@@ -142,8 +150,8 @@ const removeCategory = async () => {
 
 const updateCategory = async () => {
   await useCategory().update({
-    ...categoryData,
-    id: categoryId.value,
+    ...categoryDataUpdate.value,
+    id: categoryData.value.id,
   });
 
   modal.isOpenEdit = false;
@@ -240,7 +248,9 @@ const updateCategory = async () => {
               <span class="text-indigo-500">{{ row.author.user_name }}</span>
             </div>
 
-            <div class="flex items-center justify-between">
+            <div
+              class="flex flex-col gap-y-4 lg:flex-row lg:items-center justify-between"
+            >
               <div class="flex items-center gap-x-2 text-emerald-400">
                 <span class="opacity-80">تاریخ ثبت نام:</span>
                 <span>
@@ -299,7 +309,7 @@ const updateCategory = async () => {
         <div>
           <p class="opacity-80 text-sm mb-2">عنوان</p>
           <UInput
-            v-model="categoryData.title"
+            v-model="categoryDataCreate.title"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
@@ -309,7 +319,7 @@ const updateCategory = async () => {
         <div>
           <p class="opacity-80 text-sm mb-2">عنوان انگلیسی</p>
           <UInput
-            v-model="categoryData.title_eng"
+            v-model="categoryDataCreate.title_eng"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
@@ -319,7 +329,7 @@ const updateCategory = async () => {
         <div>
           <p class="opacity-80 text-sm mb-2">آدرس</p>
           <UInput
-            v-model="categoryData.url"
+            v-model="categoryDataCreate.url"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
@@ -379,7 +389,7 @@ const updateCategory = async () => {
         <div>
           <p class="opacity-80 text-sm mb-2">عنوان</p>
           <UInput
-            v-model="categoryData.title"
+            v-model="categoryDataUpdate.title"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
@@ -389,7 +399,7 @@ const updateCategory = async () => {
         <div>
           <p class="opacity-80 text-sm mb-2">عنوان انگلیسی</p>
           <UInput
-            v-model="categoryData.title_eng"
+            v-model="categoryDataUpdate.title_eng"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
@@ -399,7 +409,7 @@ const updateCategory = async () => {
         <div>
           <p class="opacity-80 text-sm mb-2">آدرس</p>
           <UInput
-            v-model="categoryData.url"
+            v-model="categoryDataUpdate.url"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',

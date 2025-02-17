@@ -1,5 +1,3 @@
-import type { TUser } from "~/types";
-
 const useUser = () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/users`;
 

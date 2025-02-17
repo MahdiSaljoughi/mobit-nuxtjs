@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TProductVariant } from "~/types";
-
 const props = defineProps<{
   productId: number;
   productVariants?: TProductVariant[];

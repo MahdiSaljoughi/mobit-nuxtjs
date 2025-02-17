@@ -1,5 +1,3 @@
-import type { UserRole } from "@prisma/client";
-
 declare type TUser = {
   id: number;
   user_name: string | null;
@@ -7,7 +5,7 @@ declare type TUser = {
   last_name: string | null;
   email: string | null;
   phone: string;
-  role: UserRole;
+  role: string;
   email_verified: boolean;
   created_at: Date;
   updated_at: Date;

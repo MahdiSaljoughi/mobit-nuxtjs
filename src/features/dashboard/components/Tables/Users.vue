@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TUser } from "~/types";
-
 const { status, data, error, refresh } = useUser().getAll();
 
 const search = ref<string>("");
@@ -228,7 +226,9 @@ const updateUser = async () => {
               </span>
             </div>
 
-            <div class="flex items-center justify-between">
+            <div
+              class="flex flex-col gap-y-4 lg:flex-row lg:items-center justify-between"
+            >
               <div class="flex items-center gap-x-2 text-emerald-400">
                 <span class="opacity-80">تاریخ ثبت نام:</span>
                 <span>

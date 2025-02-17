@@ -1,5 +1,3 @@
-import type { TProduct } from "~/types";
-
 const useProduct = () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/products`;
   const token = useAuths().accessToken;
@@ -19,18 +17,13 @@ const useProduct = () => {
       return { data: null, error: new Error("دسترسی غیرمجاز") };
     }
 
-    return useFetch(`${BASE_URL}/slug/${slug}`, {
+    return useFetch<TProduct>(`${BASE_URL}/slug/${slug}`, {
       method: "PATCH",
       key: `update-product-${slug}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
       body: dataProduct,
-      onResponse({ response }) {
-        if (!response.ok) {
-          console.error("خطا در بروزرسانی محصول:", response);
-        }
-      },
     });
   };
 

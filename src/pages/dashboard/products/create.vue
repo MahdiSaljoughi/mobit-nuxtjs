@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TCategory } from "~/types";
-
 definePageMeta({
   middleware: ["dashboard"],
   layout: "dashboard",
@@ -36,6 +34,7 @@ const inputs: IInputs[] = [
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const productData = reactive<Record<string, any>>({
   title: "",
   title_eng: "",
@@ -66,6 +65,7 @@ onMounted(async () => {
   }
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createProduct = async (data: any) => {
   try {
     await $fetch(`${useRuntimeConfig().public.apiBase}/products`, {

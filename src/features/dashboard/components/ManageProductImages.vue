@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TProductImage } from "~/types";
-
 const props = defineProps<{
   productId: number;
   productImages?: TProductImage[];
