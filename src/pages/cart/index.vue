@@ -2,117 +2,167 @@
 import { useCartStore } from "@/stores/cartStore";
 
 definePageMeta({
-  layout: "main-lg",
+  layout: "cart",
 });
 
-const cartStore = useCartStore();
-
-const { items } = cartStore;
+const { items } = useCartStore();
 </script>
 
 <template>
-  <div>
-    <div
-      class="sticky top-0 pt-8 pb-3 border-b-2 bg-white dark:bg-zinc-900 border-zinc-100 dark:border-zinc-700 z-20"
-    >
-      Header
+  <div class="mb-4 xl:mb-20">
+    <div v-show="items.length === 0">
+      <CartComponentsEmpty />
     </div>
 
-    <Container>
-      <div class="py-10 lg:py-32">
-        <div v-show="items.length === 0">
-          <CartComponentsEmpty />
-        </div>
-        <div v-show="items.length > 0">
+    <div v-show="items.length > 0">
+      <div
+        class="flex flex-col lg:flex-row gap-y-10 justify-between w-full gap-x-10"
+      >
+        <div class="flex flex-col gap-y-5 w-full">
           <div
-            class="flex flex-col lg:flex-row gap-y-10 justify-between w-full gap-x-10"
+            v-for="item in items"
+            :key="item.id"
+            class="flex flex-col lg:flex-row lg:items-center justify-between gap-y-4 w-full border-b dark:border-zinc-700 pb-2 lg:pb-4"
           >
-            <div class="flex flex-col gap-y-5 w-full">
+            <NuxtLink
+              :to="`/products/${item.slug}`"
+              class="flex items-start gap-x-4 h-full"
+            >
+              <div class="bg-zinc-100 dark:bg-zinc-800 p-3 lg:p-4 rounded-xl">
+                <NuxtImg
+                  :src="item.image"
+                  :alt="item.title"
+                  class="mx-auto w-32 sm:w-20"
+                />
+              </div>
               <div
-                v-for="item in items"
-                :key="item.id"
-                class="flex flex-col lg:flex-row lg:items-center justify-between gap-y-4 w-full border-b dark:border-zinc-800 pb-2 lg:pb-4"
+                class="flex flex-col justify-between h-full text-xs text-zinc-500 dark:text-zinc-400"
               >
-                <NuxtLink
-                  :to="`/products/${item.slug}`"
-                  class="flex items-start gap-x-4"
+                <p
+                  class="text-sx leading-7 line-clamp-2 text-slate-700 dark:text-slate-200"
                 >
-                  <div
-                    class="bg-zinc-100 dark:bg-zinc-800 w-60 sm:w-40 p-2 rounded-xl"
-                  >
-                    <NuxtImg
-                      :src="item.image"
-                      width="100"
-                      :alt="item.title"
-                      class="mx-auto"
+                  {{ item.title }}
+                </p>
+                <div
+                  class="hidden lg:flex items-center justify-between gap-x-4"
+                >
+                  <div class="flex items-center gap-x-2">
+                    <div
+                      :style="{ backgroundColor: item.variant.hex_code }"
+                      class="size-5 rounded-md"
                     />
+                    <span>{{ item.variant.color_name }}</span>
                   </div>
-                  <p class="pt-2 text-sm leading-7 line-clamp-2">
-                    {{ item.title }}
-                  </p>
-                </NuxtLink>
-                <div
-                  class="flex flex-row-reverse justify-between lg:flex-col items-center lg:items-stretch"
-                >
-                  <span class="lg:pb-4 text-left">
-                    {{ item.price.toLocaleString() }} تومان
-                  </span>
-                  <CartComponentsItemCounter
-                    :id="item.id"
-                    :title="item.title"
-                    :price="item.price"
-                    :slug="item.slug"
-                    :image="item.image"
+                  <div class="flex items-center gap-x-2">
+                    <IconSvg icon-id="i-store-fill" class="size-5" />
+                    <span>تفکر زرین کریمان</span>
+                  </div>
+                  <div class="flex items-center gap-x-2">
+                    <IconSvg icon-id="i-zemanat-product" class="size-5" />
+                    <span>18 ماهه شرکتی</span>
+                  </div>
+                  <div class="flex items-center gap-x-2">
+                    <UIcon name="i-eva-car-fill" size="18" />
+                    <span>ارسال توسط مبیت از 1 روز دیگر</span>
+                  </div>
+                </div>
+                <button class="hidden lg:flex items-center gap-x-2 text-main">
+                  <IconSvg icon-id="i-cart-list" class="size-5" />
+                  <span>انتقال به لیست خرید</span>
+                  <UIcon
+                    name="i-solar-alt-arrow-right-line-duotone"
+                    class="rotate-180"
+                    size="14"
                   />
-                </div>
+                </button>
               </div>
-            </div>
-            <div>
-              <div
-                class="bg-zinc-50 dark:bg-zinc-800 sticky top-24 rounded-2xl lg:w-96 flex flex-col gap-y-4 justify-between p-4 mb-20 lg:mb-0"
-              >
-                <p class="opacity-70">اطلاعات پرداخت</p>
-                <div class="flex items-center justify-between w-full text-sm">
-                  <p>مبلغ کالاها</p>
-                  <span>
-                    {{
-                      items
-                        .reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
-                        .toLocaleString()
-                    }}
-                    <span class="text-zinc-500 text-xs mr-0.5">تومان</span>
-                  </span>
-                </div>
-                <div class="flex items-center justify-between w-full">
-                  <span class="block text-sm">هزینه ارسال</span>
-                  <span class="block text-sm text-zinc-500">
-                    در مرحله بعد مشخص می شود
-                  </span>
-                </div>
+            </NuxtLink>
+
+            <div
+              class="grid lg:hidden grid-cols-2 text-xs text-zinc-500 dark:text-zinc-400 gap-4"
+            >
+              <div class="flex items-center gap-x-2">
                 <div
-                  class="w-full flex items-center justify-between border-t dark:border-zinc-700 pt-4"
-                >
-                  <span class="text-sm">مبلغ قابل پرداخت :</span>
-                  <span>
-                    {{
-                      items
-                        .reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
-                        .toLocaleString()
-                    }}
-                    <span class="text-zinc-500 text-xs mr-0.5">تومان</span>
-                  </span>
-                </div>
-                <NuxtLink
-                  :to="useAuths().data.value?.user ? '/shipping' : '/auth'"
-                  class="rounded-xl bg-main hover:bg-blue-600 text-white p-2.5 w-full transition-colors text-center"
-                >
-                  ادامه
-                </NuxtLink>
+                  :style="{ backgroundColor: item.variant.hex_code }"
+                  class="size-5 rounded-md"
+                />
+                <span>{{ item.variant.color_name }}</span>
+              </div>
+              <div class="flex items-center gap-x-2">
+                <IconSvg icon-id="i-store-fill" class="size-4" />
+                <span>تفکر زرین کریمان</span>
+              </div>
+              <div class="flex items-center gap-x-2">
+                <IconSvg icon-id="i-zemanat-product" class="size-5" />
+                <span>18 ماهه شرکتی</span>
+              </div>
+              <div class="flex items-center gap-x-2">
+                <UIcon name="i-eva-car-fill" size="16" />
+                <span>ارسال توسط مبیت از 1 روز دیگر</span>
               </div>
             </div>
+
+            <div
+              class="flex flex-row-reverse justify-between lg:justify-end lg:flex-col items-center lg:items-end h-full gap-y-3"
+            >
+              <div class="flex flex-col items-end">
+                <div v-if="item.variant.discount">
+                  <div class="flex items-center gap-x-2">
+                    <p class="line-through opacity-70 text-xs font-IRANr mt-1">
+                      {{ item.variant.price.toLocaleString() }}
+                    </p>
+                    <div
+                      class="flex items-center gap-x-0.5 bg-red-400 dark:bg-red-500 rounded-md pl-0.5 pr-1.5 py-0.5 text-white text-xs"
+                    >
+                      <span>{{ item.variant.discount }}</span>
+                      <IconSvg icon-id="i-percent" class="size-4" />
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-end gap-x-2 mt-4">
+                    <p class="text-xs lg:text-sx">
+                      {{ item.variant.price_after_discount?.toLocaleString() }}
+                      <span
+                        class="text-xs text-zinc-600 dark:text-zinc-300 mr-1"
+                      >
+                        تومان
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div v-else class="flex items-center justify-end">
+                  <p class="text-xs lg:text-sx">
+                    {{ item.variant.price.toLocaleString() }}
+                    <span class="text-xs text-zinc-600 dark:text-zinc-300 mr-1">
+                      تومان
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <CartComponentsItemCounter
+                :id="item.id"
+                :title="item.title"
+                :price="item.price"
+                :slug="item.slug"
+                :image="item.image"
+                :variant="item.variant"
+              />
+            </div>
+
+            <button
+              class="flex lg:hidden items-center justify-end gap-x-2 text-main text-xs"
+            >
+              <IconSvg icon-id="i-cart-list" class="size-5" />
+              <span>انتقال به لیست خرید</span>
+              <UIcon
+                name="i-solar-alt-arrow-right-line-duotone"
+                class="rotate-180"
+                size="14"
+              />
+            </button>
           </div>
         </div>
       </div>
-    </Container>
+    </div>
   </div>
 </template>

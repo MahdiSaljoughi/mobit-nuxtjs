@@ -1,10 +1,15 @@
-export default defineNuxtRouteMiddleware(async (to) => {
+import { useCartStore } from "~/stores/cartStore";
+
+export default defineNuxtRouteMiddleware(async () => {
   const session = await useAuths().getSession();
 
-  if (to.path.startsWith("/shipping")) {
-    if (!session?.user) {
-      return navigateTo("/auth");
-    }
-    return;
+  const { items } = useCartStore();
+
+  if (!session?.user) {
+    return navigateTo("/auth");
+  }
+
+  if (items.length === 0) {
+    return navigateTo("/cart");
   }
 });

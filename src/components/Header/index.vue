@@ -8,8 +8,7 @@ const userHref = computed(() =>
   userInfo?.role === "ADMIN" ? "/dashboard" : "/profile"
 );
 
-const cartStore = useCartStore();
-const { items } = cartStore;
+const { items } = useCartStore();
 </script>
 
 <template>
@@ -47,30 +46,6 @@ const { items } = cartStore;
 
         <!-- Login And Cart -->
         <div class="flex items-center gap-x-4 xl:gap-x-6 2xl:gap-x-10 text-xs">
-          <!-- <NuxtLink
-            :to="status === 'authenticated' ? userHref : '/auth'"
-            class="flex items-center gap-x-2"
-          >
-            <div class="relative">
-              <IconSvg icon-id="i-profilefill" class="w-6" />
-              <div
-                v-if="status === 'authenticated'"
-                class="bg-main size-1.5 rounded-full absolute bottom-0.5 right-1"
-              />
-            </div>
-            <p class="hidden xl:block">
-              <span v-if="status === 'loading'">در حال بررسی</span>
-              <span v-if="status === 'authenticated'" class="mt-0.5 block">
-                {{
-                  (userInfo?.user_name ?? "").length > 14
-                    ? (userInfo?.user_name ?? "").slice(0, 14) + "..."
-                    : userInfo?.user_name ?? ""
-                }}
-              </span>
-              <span v-else>ورود / ثبت نام</span>
-            </p>
-          </NuxtLink> -->
-
           <NuxtLink
             v-if="status !== 'authenticated'"
             to="/auth"

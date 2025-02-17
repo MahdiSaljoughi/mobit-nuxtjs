@@ -7,6 +7,7 @@ export type CartItem = {
   quantity: number;
   slug: string;
   image: string;
+  variant: TProductVariant;
 };
 
 type CartState = {

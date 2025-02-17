@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCartStore } from "~/stores/cartStore";
+
 definePageMeta({
   layout: "product",
 });
@@ -12,6 +14,12 @@ const { data, status, error } = await useProduct().getBySlug(String(slug));
 const product = data.value;
 
 const variantIndex = ref<number>(0);
+
+const { items } = useCartStore();
+const itemInCart = computed(() =>
+  items.find((item) => item.id === product!.variants[variantIndex.value].id)
+);
+const itemQuantity = computed(() => itemInCart.value?.quantity ?? 0);
 
 const isAvailableProduct = computed(() => {
   return (
@@ -295,14 +303,28 @@ const links = [
               </div>
             </div>
 
-            <div class="lg:w-full">
+            <div
+              class="lg:w-full"
+              :class="
+                itemQuantity > 0 && 'flex items-center justify-between gap-x-2'
+              "
+            >
               <CartComponentsItemCounter
                 :id="product!.variants[variantIndex].id"
                 :title="product!.title"
                 :price="product!.variants[variantIndex].discount! ? product!.variants[variantIndex].price_after_discount! : product!.variants[variantIndex].price!"
                 :slug="product?.slug!"
                 :image="product?.images[variantIndex]?.url!"
+                :variant="product?.variants[variantIndex]!"
               />
+              <NuxtLink
+                v-if="itemQuantity > 0"
+                to="/cart"
+                class="flex items-center gap-x-2 text-main"
+              >
+                <IconSvg icon-id="i-cart-fill-new" class="size-5 lg:size-4" />
+                <span class="hidden sm:block text-xs">مشاهده سبد خرید</span>
+              </NuxtLink>
             </div>
             <button
               class="hidden lg:block w-full border border-zinc-800 dark:border-zinc-600 p-2.5 text-sm rounded-xl font-IRANr"
