@@ -50,7 +50,7 @@ const links = [
   </div>
 
   <div v-else-if="error" class="bg-red-500 text-white p-10 rounded-3xl">
-    {{ error }}
+    {{ error.data?.message }}
   </div>
 
   <div

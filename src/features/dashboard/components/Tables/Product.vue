@@ -12,7 +12,7 @@ const productData = reactive({
 
 const search = ref("");
 const page = ref(1);
-const pageCount = ref(20);
+const pageCount = ref(10);
 const isOpenDeleteModal = ref(false);
 const isOpenEditIsShowModal = ref(false);
 

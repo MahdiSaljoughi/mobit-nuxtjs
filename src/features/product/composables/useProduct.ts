@@ -3,20 +3,22 @@ const useProduct = () => {
   const token = useAuths().accessToken;
 
   const getAll = () =>
-    useAsyncData<TProduct[]>("all-products", () =>
-      $fetch<TProduct[]>(BASE_URL)
-    );
+    useFetch<TProduct[]>(BASE_URL, {
+      key: "all-products",
+      getCachedData(key) {
+        return useNuxtApp().payload.data[key] || useNuxtApp().static.data[key];
+      },
+    });
 
   const getBySlug = (slug: string) =>
-    useAsyncData<TProduct>(`product-${slug}`, () =>
-      $fetch<TProduct>(`${BASE_URL}/slug/${slug}`)
-    );
+    useFetch<TProduct>(`${BASE_URL}/slug/${slug}`, {
+      key: `product-${slug}`,
+      getCachedData(key) {
+        return useNuxtApp().payload.data[key] || useNuxtApp().static.data[key];
+      },
+    });
 
   const update = (slug: string, dataProduct: Partial<TProduct>) => {
-    if (!token) {
-      return { data: null, error: new Error("دسترسی غیرمجاز") };
-    }
-
     return useFetch<TProduct>(`${BASE_URL}/slug/${slug}`, {
       method: "PATCH",
       key: `update-product-${slug}`,
@@ -28,10 +30,6 @@ const useProduct = () => {
   };
 
   const remove = (id: number) => {
-    if (!token) {
-      return { data: null, error: new Error("دسترسی غیرمجاز") };
-    }
-
     return useFetch(`${BASE_URL}/${id}`, {
       method: "DELETE",
       key: `remove-product-${id}`,

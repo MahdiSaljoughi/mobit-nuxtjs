@@ -13,29 +13,27 @@ const useUser = () => {
     return { userInfo: data.value };
   };
 
-  const getAll = () => {
-    const { data, status, error, refresh } = useLazyAsyncData<TUser[]>(
-      "all-users",
-      () =>
-        $fetch(BASE_URL, {
-          headers: {
-            Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-          },
-        })
-    );
-
-    return { status, data, error, refresh };
-  };
+  const getAll = () =>
+    useFetch<TUser[]>(BASE_URL, {
+      key: "all-users",
+      headers: {
+        Authorization: `Bearer ${useAuths().accessToken}`,
+      },
+      getCachedData(key) {
+        return useNuxtApp().payload.data[key] || useNuxtApp().static.data[key];
+      },
+    });
 
   const getById = (id: number) => {
-    const { status, data } = useLazyAsyncData<TUser>(`user-${id}`, () =>
-      $fetch(`${BASE_URL}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
-        },
-      })
-    );
-
+    const { status, data } = useFetch<TUser>(`${BASE_URL}/${id}`, {
+      key: `user-${id}`,
+      headers: {
+        Authorization: `Bearer ${useAuths().accessToken}`,
+      },
+      getCachedData(key) {
+        return useNuxtApp().payload.data[key] || useNuxtApp().static.data[key];
+      },
+    });
     return { status, user: data.value };
   };
 

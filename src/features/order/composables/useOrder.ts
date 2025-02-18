@@ -1,10 +1,10 @@
-const useCategory = () => {
-  const BASE_URL = `${useRuntimeConfig().public.apiBase}/categories`;
+const useOrder = () => {
+  const BASE_URL = `${useRuntimeConfig().public.apiBase}/orders`;
 
-  const create = (body: Partial<TCategory>) =>
+  const create = (body: Partial<TOrder>) =>
     useFetch(BASE_URL, {
       method: "POST",
-      key: "create-category",
+      key: "create-order",
       headers: {
         Authorization: `Bearer ${useAuths().accessToken}`,
       },
@@ -12,35 +12,41 @@ const useCategory = () => {
     });
 
   const getAll = () =>
-    useFetch<TCategory[]>(BASE_URL, {
-      key: "all-category",
+    useFetch<TOrder[]>(BASE_URL, {
+      key: "all-order",
+      headers: {
+        Authorization: `Bearer ${useAuths().accessToken}`,
+      },
       getCachedData(key) {
         return useNuxtApp().payload.data[key] || useNuxtApp().static.data[key];
       },
     });
 
   const getById = (id: number) =>
-    useFetch<TCategory>(`${BASE_URL}/${id}`, {
-      key: `category-${id}`,
+    useFetch<TOrder>(`${BASE_URL}/${id}`, {
+      key: `order-${id}`,
+      headers: {
+        Authorization: `Bearer ${useAuths().accessToken}`,
+      },
       getCachedData(key) {
         return useNuxtApp().payload.data[key] || useNuxtApp().static.data[key];
       },
     });
 
-  const update = (dataCategory: Partial<TCategory>) =>
-    useFetch(`${BASE_URL}/${dataCategory.id}`, {
+  const update = (data: Partial<TOrder>) =>
+    useFetch(`${BASE_URL}/${data.id}`, {
       method: "PATCH",
-      key: "update-category",
+      key: "update-order",
       headers: {
         Authorization: `Bearer ${useAuths().accessToken}`,
       },
-      body: dataCategory,
+      body: data,
     });
 
   const remove = (id: number) =>
     useFetch(`${BASE_URL}/${id}`, {
       method: "DELETE",
-      key: "remove-category",
+      key: "remove-order",
       headers: {
         Authorization: `Bearer ${useAuths().accessToken}`,
       },
@@ -49,4 +55,4 @@ const useCategory = () => {
   return { create, getAll, getById, update, remove };
 };
 
-export default useCategory;
+export default useOrder;

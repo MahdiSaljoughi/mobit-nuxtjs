@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { status, data, error, refresh } = useCategory().getAll();
+const { status, data, error, refresh } = await useOrder().getAll();
 
 const search = ref<string>("");
 const page = ref<number>(1);
@@ -8,25 +8,17 @@ const pageTotal = computed(() =>
   status.value !== "pending" ? data?.value?.length ?? 0 : 0
 );
 
-const categoryData = ref({
+const orderData = reactive({
   id: 0,
-  url: "",
-  title: "",
-  title_eng: "",
 });
-const categoryDataCreate = ref({
-  url: "",
-  title: "",
-  title_eng: "",
-});
-const categoryDataUpdate = ref({
-  url: "",
-  title: "",
-  title_eng: "",
+const orderDataUpdate = ref<Partial<TOrder>>({
+  total_price: 0,
+  status: "PENDING",
+  payment_method: "ONLINE",
+  delivery_address: "",
 });
 
 const modal = reactive({
-  isOpenCreate: false,
   isOpenDelete: false,
   isOpenEdit: false,
 });
@@ -52,13 +44,12 @@ const columns = [
     sortable: true,
   },
   {
-    key: "title",
-    label: "عنوان",
-    sortable: false,
+    key: "customer.user_name",
+    label: "کاربر",
   },
   {
-    key: "title_eng",
-    label: "عنوان انگلیسی",
+    key: "status",
+    label: "وضعیت",
   },
   {
     key: "created_at",
@@ -75,7 +66,7 @@ const sort = ref({
   direction: "asc" as const,
 });
 
-const items = (row: TCategory) => [
+const items = (row: TOrder) => [
   [
     {
       label: "ویرایش",
@@ -83,12 +74,12 @@ const items = (row: TCategory) => [
       click: () => {
         modal.isOpenEdit = true;
 
-        categoryData.value.id = row.id;
-        categoryData.value.title = row.title;
+        orderData.id = row.id;
 
-        categoryDataUpdate.value.title = row.title;
-        categoryDataUpdate.value.title_eng = row.title_eng;
-        categoryDataUpdate.value.url = row.url;
+        orderDataUpdate.value.total_price = row.total_price;
+        orderDataUpdate.value.status = row.status;
+        orderDataUpdate.value.payment_method = row.payment_method;
+        orderDataUpdate.value.delivery_address = row.delivery_address;
       },
     },
     {
@@ -96,8 +87,7 @@ const items = (row: TCategory) => [
       icon: "i-heroicons-trash-20-solid",
       click: () => {
         modal.isOpenDelete = true;
-        categoryData.value.id = row.id;
-        categoryData.value.title = row.title;
+        orderData.id = row.id;
       },
     },
   ],
@@ -108,7 +98,7 @@ const filteredRows = computed(() => {
     return data?.value;
   }
 
-  return data.value?.filter((person: TCategory) => {
+  return data.value?.filter((person: TOrder) => {
     return Object.values(person).some((value: unknown) => {
       return String(value).toLowerCase().includes(search.value.toLowerCase());
     });
@@ -132,16 +122,8 @@ const expand = ref({
   row: {},
 });
 
-const createCategory = async () => {
-  await useCategory().create(categoryDataCreate.value);
-
-  modal.isOpenCreate = false;
-
-  await refresh?.();
-};
-
 const removeCategory = async () => {
-  await useCategory().remove(categoryData.value.id);
+  await useOrder().remove(orderData.id);
 
   modal.isOpenDelete = false;
 
@@ -149,9 +131,10 @@ const removeCategory = async () => {
 };
 
 const updateCategory = async () => {
-  await useCategory().update({
-    ...categoryDataUpdate.value,
-    id: categoryData.value.id,
+  await useOrder().update({
+    ...orderDataUpdate.value,
+    total_price: Number(orderDataUpdate.value.total_price),
+    id: orderData.id,
   });
 
   modal.isOpenEdit = false;
@@ -167,7 +150,7 @@ const updateCategory = async () => {
         color="red"
         variant="subtle"
         title="خطایی رخ داده است"
-        :description="error.message"
+        :description="error.data?.message"
       />
     </div>
 
@@ -181,25 +164,14 @@ const updateCategory = async () => {
           icon="i-heroicons-magnifying-glass-20-solid"
         />
 
-        <div class="flex items-center gap-x-2">
-          <UButton
-            class="rounded-xl px-4 py-3"
-            :loading="status === 'pending'"
-            icon="i-heroicons-arrow-path-20-solid"
-            @click="refresh"
-          >
-            <span class="text-sm hidden sm:block">تازه سازی</span>
-          </UButton>
-          <UButton
-            color="primary"
-            variant="solid"
-            class="rounded-xl px-4 py-3"
-            @click="modal.isOpenCreate = true"
-          >
-            <UIcon name="i-heroicons-plus-20-solid" size="20" />
-            <span class="text-sm hidden sm:block">افزودن دسته بندی</span>
-          </UButton>
-        </div>
+        <UButton
+          class="rounded-xl px-4 py-3"
+          :loading="status === 'pending'"
+          icon="i-heroicons-arrow-path-20-solid"
+          @click="refresh"
+        >
+          <span class="text-sm hidden sm:block">تازه سازی</span>
+        </UButton>
       </div>
 
       <div v-show="status === 'pending'" class="my-6">
@@ -226,26 +198,113 @@ const updateCategory = async () => {
           th: { size: 'text-xs' },
         }"
       >
-        <template #created_at-data="{ row }">
-          <div>
-            {{ formatJalali(row.created_at) }}
-          </div>
+        <template #status-data="{ row }">
+          <p v-if="row.status === 'PENDING'" class="text-orange-400">
+            در حال انتظار
+          </p>
+          <p v-else-if="row.status === 'SHIPPED'" class="text-green-500">
+            ارسال شده
+          </p>
+          <p v-else-if="row.status === 'CANCELED'" class="text-red-500">
+            لغو شده
+          </p>
+          <p v-else-if="row.status === 'DELIVERED'" class="text-green-500">
+            تحویل داده شده
+          </p>
+          <p v-else class="text-main">در حال پردازش</p>
         </template>
 
-        <template #expand="{ row }">
+        <template #created_at-data="{ row }">
+          <p>
+            {{ formatJalali(row.created_at) }}
+          </p>
+        </template>
+
+        <template #expand="{ row }: { row: TOrder }">
           <div
             class="flex flex-col gap-y-6 px-2 py-4 text-xs text-zinc-500 dark:text-zinc-400 border-x dark:border-gray-800"
           >
             <div class="flex items-center gap-x-2">
-              <span class="opacity-80">آدرس :</span>
+              <span class="opacity-80">روش پرداخت :</span>
+              <p v-if="row.payment_method === 'ONLINE'" class="text-main">
+                آنلاین
+              </p>
+              <p v-else class="text-orange-400">حضوری</p>
+            </div>
+
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">مبلغ کل :</span>
               <span>
-                {{ row.url }}
+                {{ row.total_price.toLocaleString() }}
               </span>
             </div>
 
             <div class="flex items-center gap-x-2">
-              <span class="opacity-80">ایجاد شده توسط :</span>
-              <span class="text-indigo-500">{{ row.author.user_name }}</span>
+              <span class="opacity-80">وضعیت :</span>
+              <p v-if="row.status === 'PENDING'" class="text-orange-400">
+                در حال انتظار
+              </p>
+              <p v-else-if="row.status === 'SHIPPED'" class="text-green-500">
+                ارسال شده
+              </p>
+              <p v-else-if="row.status === 'CANCELED'" class="text-red-500">
+                لغو شده
+              </p>
+              <p v-else-if="row.status === 'DELIVERED'" class="text-green-500">
+                تحویل داده شده
+              </p>
+              <p v-else class="text-main">در حال پردازش</p>
+            </div>
+
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">آدرس :</span>
+              <span>
+                {{ row.delivery_address }}
+              </span>
+            </div>
+
+            <div class="flex items-center gap-x-2">
+              <span class="opacity-80">مشخصات کاربر :</span>
+              <span class="text-indigo-500">{{ row.customer.user_name }}</span>
+              <span class="text-indigo-500">{{ row.customer.first_name }}</span>
+              <span class="text-indigo-500">{{ row.customer.last_name }}</span>
+              <span class="text-indigo-500">{{ row.customer.phone }}</span>
+              <span class="text-indigo-500">{{ row.customer.role }}</span>
+            </div>
+
+            <div class="flex items-center flex-wrap gap-4">
+              <NuxtLink
+                v-for="product in row.products"
+                :key="product.id"
+                :to="`/products/${product.product.slug}`"
+                class="flex flex-col gap-y-4 shadow-around w-fit p-4 rounded-xl"
+              >
+                <div class="flex gap-x-2">
+                  <div>
+                    <div
+                      class="flex items-center justify-center size-24 p-2 bg-zinc-100 dark:bg-zinc-800 rounded-xl"
+                    >
+                      <NuxtImg :src="product.image" />
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-y-4">
+                    <p class="line-clamp-2 max-w-60 leading-5">
+                      {{ product.product.title }}
+                    </p>
+                    <p>{{ product.quantity + " " + "عدد" }}</p>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <p>{{ product.price.toLocaleString() + " " + "تومان" }}</p>
+                  <div class="flex items-center gap-x-2">
+                    <p>{{ product.color_name }}</p>
+                    <div
+                      :style="{ backgroundColor: product.hex_code }"
+                      class="size-5 rounded-md ring ring-main/20"
+                    />
+                  </div>
+                </div>
+              </NuxtLink>
             </div>
 
             <div
@@ -302,66 +361,11 @@ const updateCategory = async () => {
     </div>
 
     <!-- Modal -->
-    <UModal v-model="modal.isOpenCreate">
-      <div class="p-4 flex flex-col gap-y-4">
-        <p>ایجاد دسته بندی</p>
-
-        <div>
-          <p class="opacity-80 text-sm mb-2">عنوان</p>
-          <UInput
-            v-model="categoryDataCreate.title"
-            size="xl"
-            :ui="{
-              rounded: 'rounded-xl',
-            }"
-          />
-        </div>
-        <div>
-          <p class="opacity-80 text-sm mb-2">عنوان انگلیسی</p>
-          <UInput
-            v-model="categoryDataCreate.title_eng"
-            size="xl"
-            :ui="{
-              rounded: 'rounded-xl',
-            }"
-          />
-        </div>
-        <div>
-          <p class="opacity-80 text-sm mb-2">آدرس</p>
-          <UInput
-            v-model="categoryDataCreate.url"
-            size="xl"
-            :ui="{
-              rounded: 'rounded-xl',
-            }"
-          />
-        </div>
-
-        <div class="flex justify-end gap-2">
-          <UButton
-            variant="soft"
-            class="px-6 py-3 rounded-xl"
-            @click="modal.isOpenCreate = false"
-            >انصراف</UButton
-          >
-          <UButton
-            color="green"
-            variant="soft"
-            class="px-10 py-3 rounded-xl"
-            :loading="status === 'pending'"
-            :disabled="status === 'pending'"
-            @click="createCategory"
-            >ذخیره</UButton
-          >
-        </div>
-      </div>
-    </UModal>
-
     <UModal v-model="modal.isOpenDelete">
       <div class="p-4 flex flex-col gap-y-8">
         <p class="text-sm">
-          آیا از حذف دسته بندی
-          <span class="font-bold">{{ categoryData.title }}</span>
+          آیا از حذف سفارش
+          <span class="font-bold">{{ orderData.id }}</span>
           مطمئن هستید؟
         </p>
         <div class="flex items-center justify-end gap-x-3">
@@ -384,12 +388,12 @@ const updateCategory = async () => {
 
     <UModal v-model="modal.isOpenEdit">
       <div class="p-4 flex flex-col gap-y-4">
-        <p>ویرایش دسته بندی {{ categoryData.title }}</p>
+        <p>ویرایش سفارش {{ orderData.id }}</p>
 
         <div>
-          <p class="opacity-80 text-sm mb-2">عنوان</p>
+          <p class="opacity-80 text-sm mb-2">مبلغ کل</p>
           <UInput
-            v-model="categoryDataUpdate.title"
+            v-model="orderDataUpdate.total_price"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
@@ -397,9 +401,51 @@ const updateCategory = async () => {
           />
         </div>
         <div>
-          <p class="opacity-80 text-sm mb-2">عنوان انگلیسی</p>
-          <UInput
-            v-model="categoryDataUpdate.title_eng"
+          <p class="opacity-80 text-sm mb-2">وضعیت</p>
+          <USelect
+            v-model="orderDataUpdate.status"
+            :options="[
+              {
+                label: 'در حال انتظار',
+                value: 'PENDING',
+              },
+              {
+                label: 'در حال پردازش',
+                value: 'PROCESSING',
+              },
+              {
+                label: 'ارسال شده',
+                value: 'SHIPPED',
+              },
+              {
+                label: 'تحویل داده شده',
+                value: 'DELIVERED',
+              },
+              {
+                label: 'لغو شده',
+                value: 'CANCELED',
+              },
+            ]"
+            size="xl"
+            :ui="{
+              rounded: 'rounded-xl',
+            }"
+          />
+        </div>
+        <div>
+          <p class="opacity-80 text-sm mb-2">روش پرداخت</p>
+          <USelect
+            v-model="orderDataUpdate.payment_method"
+            :options="[
+              {
+                label: 'آنلاین',
+                value: 'ONLINE',
+              },
+              {
+                label: 'حضوری',
+                value: 'FACETOFACE',
+              },
+            ]"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',
@@ -409,7 +455,7 @@ const updateCategory = async () => {
         <div>
           <p class="opacity-80 text-sm mb-2">آدرس</p>
           <UInput
-            v-model="categoryDataUpdate.url"
+            v-model="orderDataUpdate.delivery_address"
             size="xl"
             :ui="{
               rounded: 'rounded-xl',

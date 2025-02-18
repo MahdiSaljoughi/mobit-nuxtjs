@@ -84,9 +84,7 @@ const updateProduct = (productData: IProduct) => {
 
   const { error } = useProduct().update(String(productData.slug), productData);
 
-  // @ts-expect-error
   if (error.value) {
-    // @ts-expect-error
     console.log(error.value);
     toast.add({
       title: "خطا در ویرایش محصول",

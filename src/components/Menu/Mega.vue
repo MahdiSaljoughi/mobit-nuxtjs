@@ -4,14 +4,28 @@ import { megaMenuData } from "~/data/header/megaMenu";
 
 const showMenu = ref<boolean>(false);
 const activeSubMenuIndex = ref<number>(0);
+let timeout: ReturnType<typeof setTimeout> | null = null;
+
+const handleMouseEnter = () => {
+  timeout = setTimeout(() => {
+    showMenu.value = true;
+  }, 200);
+};
+
+const handleMouseLeave = () => {
+  if (timeout) {
+    clearTimeout(timeout);
+  }
+  showMenu.value = false;
+};
 </script>
 
 <template>
   <div class="flex items-center gap-x-4 xl:gap-x-8">
     <div
       class="relative cursor-pointer transition-colors z-40"
-      @mouseenter="showMenu = true"
-      @mouseleave="showMenu = false"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
     >
       <div
         :class="`menu-item flex items-center gap-x-2 xl:gap-x-3 ${

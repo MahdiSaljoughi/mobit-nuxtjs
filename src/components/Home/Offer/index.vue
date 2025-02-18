@@ -15,7 +15,7 @@ const { data, error, status } = useProduct().getAll();
       v-if="error"
       variant="soft"
       color="red"
-      :title="error.statusCode.toString()"
+      :title="error.data?.statusCode.toString()"
       :description="error.message"
     />
 

@@ -3,7 +3,7 @@ const { status, data, error, refresh } = useUser().getAll();
 
 const search = ref<string>("");
 const page = ref<number>(1);
-const pageCount = ref<number>(20);
+const pageCount = ref<number>(10);
 const pageTotal = computed(() => {
   if (status?.value != "pending") {
     return data?.value?.length;

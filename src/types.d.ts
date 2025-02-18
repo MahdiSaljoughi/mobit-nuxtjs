@@ -11,6 +11,19 @@ declare type TUser = {
   updated_at: Date;
 };
 
+declare type TProductImage = { id: number; url: string; product_id: number };
+
+declare type TProductVariant = {
+  id: number;
+  product_id: number;
+  quantity: number;
+  hex_code: string;
+  color_name: string;
+  price: number;
+  discount: number | null;
+  price_after_discount: number | null;
+};
+
 declare type TProduct = {
   id: number;
   title: string;
@@ -33,19 +46,6 @@ declare type TProduct = {
   author: { user_name: string | null };
 };
 
-declare type TProductImage = { id: number; url: string; product_id: number };
-
-declare type TProductVariant = {
-  id: number;
-  product_id: number;
-  quantity: number;
-  hex_code: string;
-  color_name: string;
-  price: number;
-  discount: number | null;
-  price_after_discount: number | null;
-};
-
 declare type TCategory = {
   id: number;
   title: string;
@@ -54,4 +54,44 @@ declare type TCategory = {
   created_by: number;
   created_at: Date;
   updated_at: Date;
+};
+
+declare type TProductOrder = {
+  id: number;
+  price: number;
+  order_id: number;
+  product_id: number;
+  quantity: number;
+  color_name: string;
+  hex_code: string;
+  image: string;
+  created_at: Date;
+  updated_at: Date;
+  product: TProduct;
+};
+
+declare type TOrderStatus = {
+  PENDING: string;
+  PROCESSING: string;
+  SHIPPED: string;
+  DELIVERED: string;
+  CANCELED: string;
+};
+
+declare type TOrderPayMentMethod = {
+  ONLINE: string;
+  FACETOFACE: string;
+};
+
+declare type TOrder = {
+  id: number;
+  customer_id: number;
+  total_price: number;
+  status: keyof TOrderStatus;
+  payment_method: keyof TOrderPayMentMethod;
+  delivery_address: string;
+  created_at: Date;
+  updated_at: Date;
+  products: TProductOrder[];
+  customer: TUser;
 };
