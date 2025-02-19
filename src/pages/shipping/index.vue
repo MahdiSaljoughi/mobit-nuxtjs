@@ -75,13 +75,17 @@ const onPaymentClick = () => {
     return;
   }
 
-  useToast().add({
-    title: "سفارش با موفقیت تکمیل شد",
-  });
+  setTimeout(() => {
+    location.reload();
+  }, 2000);
 
   clearCart();
 
   navigateTo("/profile");
+
+  useToast().add({
+    title: "سفارش با موفقیت تکمیل شد",
+  });
 };
 </script>
 

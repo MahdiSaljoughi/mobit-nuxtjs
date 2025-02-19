@@ -2,7 +2,7 @@ const useUser = () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/users`;
 
   const info = async () => {
-    const { data } = await useAsyncData<TUser>("user-info", () =>
+    const { data, refresh } = await useAsyncData<TUser>("user-info", () =>
       $fetch(`${BASE_URL}/info`, {
         headers: {
           Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
@@ -10,7 +10,18 @@ const useUser = () => {
       })
     );
 
-    return { userInfo: data.value };
+    return { userInfo: data.value, refresh };
+  };
+
+  const updateInfo = (dataUser: Partial<TUser>) => {
+    return useFetch(`${BASE_URL}/info`, {
+      method: "PATCH",
+      key: "update-user-info",
+      headers: {
+        Authorization: `Bearer ${useAuths().data.value?.user.access_token}`,
+      },
+      body: dataUser,
+    });
   };
 
   const getAll = () =>
@@ -60,7 +71,7 @@ const useUser = () => {
     return { data: data.value, error };
   };
 
-  return { info, getAll, getById, update, remove };
+  return { info, getAll, getById, updateInfo, update, remove };
 };
 
 export default useUser;

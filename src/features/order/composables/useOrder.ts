@@ -35,6 +35,28 @@ const useOrder = () => {
       },
     });
 
+  const getAllOrderUser = () =>
+    useFetch<TOrder[]>(`${BASE_URL}/user`, {
+      key: "user-order",
+      headers: {
+        Authorization: `Bearer ${useAuths().accessToken}`,
+      },
+      lazy: true,
+      cache: "default",
+      getCachedData(key) {
+        return useNuxtApp().payload.data[key] || useNuxtApp().static.data[key];
+      },
+    });
+
+  const cancelOrderUser = (id: number) =>
+    useFetch<TOrder[]>(`${BASE_URL}/user/${id}`, {
+      method: "PATCH",
+      key: "user-order-cancel",
+      headers: {
+        Authorization: `Bearer ${useAuths().accessToken}`,
+      },
+    });
+
   const getById = (id: number) =>
     useFetch<TOrder>(`${BASE_URL}/${id}`, {
       key: `order-${id}`,
@@ -83,6 +105,8 @@ const useOrder = () => {
     updateOrderUser,
     update,
     remove,
+    getAllOrderUser,
+    cancelOrderUser,
   };
 };
 
