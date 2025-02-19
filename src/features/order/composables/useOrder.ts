@@ -28,6 +28,8 @@ const useOrder = () => {
       headers: {
         Authorization: `Bearer ${useAuths().accessToken}`,
       },
+      lazy: true,
+      cache: "default",
       getCachedData(key) {
         return useNuxtApp().payload.data[key] || useNuxtApp().static.data[key];
       },
@@ -44,8 +46,18 @@ const useOrder = () => {
       },
     });
 
-  const update = (data: Partial<TOrder>) =>
-    useFetch(`${BASE_URL}/${data.id}`, {
+  const updateOrderUser = (data: Partial<TOrder>, id: number) =>
+    useFetch(`${BASE_URL}/user/${id}`, {
+      method: "PATCH",
+      key: "update-order",
+      headers: {
+        Authorization: `Bearer ${useAuths().accessToken}`,
+      },
+      body: data,
+    });
+
+  const update = (data: Partial<TOrder>, id: number) =>
+    useFetch(`${BASE_URL}/${id}`, {
       method: "PATCH",
       key: "update-order",
       headers: {
@@ -63,7 +75,15 @@ const useOrder = () => {
       },
     });
 
-  return { create, createProduct, getAll, getById, update, remove };
+  return {
+    create,
+    createProduct,
+    getAll,
+    getById,
+    updateOrderUser,
+    update,
+    remove,
+  };
 };
 
 export default useOrder;

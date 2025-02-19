@@ -4,9 +4,7 @@ const { status, data, error, refresh } = useOrder().getAll();
 const search = ref<string>("");
 const page = ref<number>(1);
 const pageCount = ref<number>(10);
-const pageTotal = computed(() =>
-  status.value !== "pending" ? data?.value?.length ?? 0 : 0
-);
+const pageTotal = computed(() => data?.value?.length ?? 0);
 
 const orderData = reactive({
   id: 0,
@@ -93,16 +91,24 @@ const items = (row: TOrder) => [
   ],
 ];
 
-const filteredRows = computed(() => {
-  if (!search.value) {
-    return data?.value;
+const filteredRows = ref<TOrder[]>([]);
+
+watchEffect(() => {
+  if (!data.value) return;
+  let tempRows = [...data.value];
+
+  if (search.value) {
+    tempRows = tempRows.filter((order) =>
+      Object.values(order).some((value) =>
+        String(value).toLowerCase().includes(search.value.toLowerCase())
+      )
+    );
   }
 
-  return data.value?.filter((person: TOrder) => {
-    return Object.values(person).some((value: unknown) => {
-      return String(value).toLowerCase().includes(search.value.toLowerCase());
-    });
-  });
+  filteredRows.value = tempRows.slice(
+    (page.value - 1) * pageCount.value,
+    page.value * pageCount.value
+  );
 });
 
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1);
@@ -131,11 +137,13 @@ const removeCategory = async () => {
 };
 
 const updateCategory = async () => {
-  await useOrder().update({
-    ...orderDataUpdate.value,
-    total_price: Number(orderDataUpdate.value.total_price),
-    id: orderData.id,
-  });
+  await useOrder().update(
+    {
+      ...orderDataUpdate.value,
+      total_price: Number(orderDataUpdate.value.total_price),
+    },
+    orderData.id
+  );
 
   modal.isOpenEdit = false;
 
