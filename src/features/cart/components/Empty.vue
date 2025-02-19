@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col items-center justify-center gap-y-6">
+  <div
+    class="flex flex-col items-center justify-center gap-y-6 fixed xl:static inset-0"
+  >
     <NuxtImg
       src="/images/cart/empty.svg"
       alt="cart empty"

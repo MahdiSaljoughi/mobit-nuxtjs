@@ -65,15 +65,14 @@ const handlePaymentClick = () => {
               <span class="text-zinc-500 text-xs mr-0.5">تومان</span>
             </span>
           </div>
-          <div class="flex items-center justify-between w-full">
-            <span class="block text-sm">هزینه ارسال</span>
-            <span class="block text-sm text-zinc-500">
-              {{
-                $route.path === "/cart"
-                  ? "در مرحله بعد مشخص خواهد شد"
-                  : "رایگان"
-              }}
-            </span>
+          <div class="flex items-center justify-between w-full text-sm">
+            <p>هزینه ارسال</p>
+            <p class="text-zinc-500">
+              <span v-if="$route.path === '/cart'">
+                در مرحله بعد مشخص خواهد شد
+              </span>
+              <span v-if="$route.path === '/shipping'"> رایگان </span>
+            </p>
           </div>
           <div
             class="w-full hidden lg:flex items-center justify-between border-t dark:border-zinc-700 pt-4"

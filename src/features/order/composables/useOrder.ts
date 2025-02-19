@@ -2,7 +2,18 @@ const useOrder = () => {
   const BASE_URL = `${useRuntimeConfig().public.apiBase}/orders`;
 
   const create = (body: Partial<TOrder>) =>
-    useFetch(BASE_URL, {
+    useFetch<TOrder>(BASE_URL, {
+      method: "POST",
+      key: "create-order",
+      headers: {
+        Authorization: `Bearer ${useAuths().accessToken}`,
+      },
+      body: body,
+    });
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const createProduct = (body: any[]) =>
+    useFetch(`${BASE_URL}/products`, {
       method: "POST",
       key: "create-order",
       headers: {
@@ -52,7 +63,7 @@ const useOrder = () => {
       },
     });
 
-  return { create, getAll, getById, update, remove };
+  return { create, createProduct, getAll, getById, update, remove };
 };
 
 export default useOrder;

@@ -56,43 +56,29 @@ const { items } = useCartStore();
             <p class="hidden xl:block">ورود / ثبت نام</p>
           </NuxtLink>
 
-          <UPopover v-else mode="hover">
-            <NuxtLink :to="userHref" class="flex items-center gap-x-2">
-              <div class="relative">
-                <IconSvg icon-id="i-profilefill" class="w-6" />
-                <div
-                  v-if="status === 'authenticated'"
-                  class="bg-main size-1.5 rounded-full absolute bottom-0.5 right-1"
-                />
-              </div>
-              <p class="hidden xl:block">
-                {{
-                  (userInfo?.user_name ?? "").length > 14
-                    ? (userInfo?.user_name ?? "").slice(0, 14) + "..."
-                    : userInfo?.user_name ?? ""
-                }}
-              </p>
-            </NuxtLink>
+          <NuxtLink v-else :to="userHref" class="flex items-center gap-x-2">
+            <div class="relative">
+              <IconSvg icon-id="i-profilefill" class="w-6" />
+              <div
+                v-if="status === 'authenticated'"
+                class="bg-main size-1.5 rounded-full absolute bottom-0.5 right-1"
+              />
+            </div>
+            <p class="hidden xl:block">
+              {{
+                (userInfo?.user_name ?? "").length > 14
+                  ? (userInfo?.user_name ?? "").slice(0, 14) + "..."
+                  : userInfo?.user_name ?? ""
+              }}
+            </p>
+          </NuxtLink>
 
-            <template #panel>
-              <div class="p-20" />
-            </template>
-          </UPopover>
-
-          <UPopover mode="hover">
-            <NuxtLink to="/cart" class="flex items-center gap-x-2">
-              <IconSvg icon-id="i-cart-fill-new" class="w-5" />
-              <p v-if="items.length > 0" class="hidden 2xl:block">
-                {{
-                  `${items.reduce((acc, cur) => acc + cur.quantity, 0)} کالا`
-                }}
-              </p>
-            </NuxtLink>
-
-            <template #panel>
-              <div class="p-20" />
-            </template>
-          </UPopover>
+          <NuxtLink to="/cart" class="flex items-center gap-x-2">
+            <IconSvg icon-id="i-cart-fill-new" class="w-5" />
+            <p v-if="items.length > 0" class="hidden 2xl:block">
+              {{ `${items.reduce((acc, cur) => acc + cur.quantity, 0)} کالا` }}
+            </p>
+          </NuxtLink>
         </div>
       </div>
     </div>

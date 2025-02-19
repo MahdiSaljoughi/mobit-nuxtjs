@@ -17,7 +17,9 @@ const variantIndex = ref<number>(0);
 
 const { items } = useCartStore();
 const itemInCart = computed(() =>
-  items.find((item) => item.id === product!.variants[variantIndex.value].id)
+  items.find(
+    (item) => item.variant.id === product?.variants[variantIndex.value].id
+  )
 );
 const itemQuantity = computed(() => itemInCart.value?.quantity ?? 0);
 
@@ -310,9 +312,9 @@ const links = [
               "
             >
               <CartComponentsItemCounter
-                :id="product!.variants[variantIndex].id"
-                :title="product!.title"
-                :price="product!.variants[variantIndex].discount! ? product!.variants[variantIndex].price_after_discount! : product!.variants[variantIndex].price!"
+                :id="product?.id!"
+                :title="product?.title!"
+                :price="product?.variants[variantIndex].discount! ? product!.variants[variantIndex].price_after_discount! : product!.variants[variantIndex].price!"
                 :slug="product?.slug!"
                 :image="product?.images[variantIndex]?.url!"
                 :variant="product?.variants[variantIndex]!"

@@ -26,7 +26,9 @@ export const useCartStore = defineStore("cart", {
   },
   actions: {
     addToCart(item: CartItem) {
-      const itemIndex = this.items.findIndex((i) => i.id === item.id);
+      const itemIndex = this.items.findIndex(
+        (i) => i.variant.id === item.variant.id
+      );
       if (itemIndex >= 0) {
         this.items[itemIndex].quantity++;
       } else {
@@ -34,8 +36,10 @@ export const useCartStore = defineStore("cart", {
       }
       this.saveCart();
     },
-    removeFromCart(id: number) {
-      const itemIndex = this.items.findIndex((item) => item.id === id);
+    removeFromCart(variantId: number) {
+      const itemIndex = this.items.findIndex(
+        (item) => item.variant.id === variantId
+      );
       if (itemIndex >= 0) {
         if (this.items[itemIndex].quantity === 1) {
           this.items.splice(itemIndex, 1);

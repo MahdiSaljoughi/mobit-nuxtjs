@@ -10,11 +10,9 @@ const { items } = useCartStore();
 
 <template>
   <div class="mb-4 xl:mb-20">
-    <div v-show="items.length === 0">
-      <CartComponentsEmpty />
-    </div>
+    <CartComponentsEmpty v-if="items.length <= 0" />
 
-    <div v-show="items.length > 0">
+    <div v-else>
       <div
         class="flex flex-col lg:flex-row gap-y-10 justify-between w-full gap-x-10"
       >
@@ -26,7 +24,7 @@ const { items } = useCartStore();
           >
             <NuxtLink
               :to="`/products/${item.slug}`"
-              class="flex items-start gap-x-4 h-full"
+              class="flex items-start gap-x-4"
             >
               <div class="bg-zinc-100 dark:bg-zinc-800 p-3 lg:p-4 rounded-xl">
                 <NuxtImg
@@ -36,7 +34,7 @@ const { items } = useCartStore();
                 />
               </div>
               <div
-                class="flex flex-col justify-between h-full text-xs text-zinc-500 dark:text-zinc-400"
+                class="flex flex-col justify-between h-28 text-xs text-zinc-500 dark:text-zinc-400"
               >
                 <p
                   class="text-sx leading-7 line-clamp-2 text-slate-700 dark:text-slate-200"

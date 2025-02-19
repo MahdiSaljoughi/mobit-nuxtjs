@@ -13,7 +13,7 @@ const props = defineProps<{
 const cartStore = useCartStore();
 
 const itemInCart = computed(() =>
-  cartStore.items.find((item) => item.id === props.id)
+  cartStore.items.find((item) => item.variant.id === props.variant.id)
 );
 const itemQuantity = computed(() => itemInCart.value?.quantity ?? 0);
 
@@ -46,7 +46,7 @@ const addToCart = () => {
 
 const removeFromCart = () => {
   if (itemQuantity.value > 0) {
-    cartStore.removeFromCart(props.id);
+    cartStore.removeFromCart(props.variant.id);
   }
 };
 </script>

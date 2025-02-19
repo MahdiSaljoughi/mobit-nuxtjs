@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { status, data, error, refresh } = await useOrder().getAll();
+const { status, data, error, refresh } = useOrder().getAll();
 
 const search = ref<string>("");
 const page = ref<number>(1);
