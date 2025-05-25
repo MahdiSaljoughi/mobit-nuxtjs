@@ -52,8 +52,8 @@ const handlePhone = async () => {
     isLoading.value = true;
 
     const sendOtp: { message: string; otp: string } = await $fetch(
-      // `${useRuntimeConfig().public.apiBase}/auth/otp`,
-      "https://api-moobit.vercel.app/auth/otp",
+      `${useRuntimeConfig().public.apiBase}/auth/otp`,
+      // "https://api-mobit.vercel.app/auth/otp",
       {
         method: "POST",
         body: {
